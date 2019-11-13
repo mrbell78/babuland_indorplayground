@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.Thirdragment"
+    android:layout_centerVertical="true"
+    >
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/linearlayout_shake"
+        >
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="What is the question "
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:id="@+id/questionid"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            >
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                app:cardElevation="5dp"
+                android:layout_margin="10dp"
+                >
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:text="A select ooption "
+                    android:textSize="19sp"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:id="@+id/buttona"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    />
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                app:cardElevation="5dp"
+                android:layout_margin="10dp"
+                >
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:text="B select ooption "
+                    android:textSize="19sp"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:id="@+id/buttonb"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    />
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                app:cardElevation="5dp"
+                android:layout_margin="10dp"
+                >
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:text="C select ooption "
+                    android:textSize="19sp"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:id="@+id/buttonc"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    />
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                app:cardElevation="5dp"
+                android:layout_margin="10dp"
+                >
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:text="D select ooption "
+                    android:textSize="19sp"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:id="@+id/buttond"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textAlignment="center"
+            android:textSize="40sp"
+            android:layout_marginTop="15dp"
+            android:id="@+id/tv_time"
+            android:layout_marginBottom="20dp"
+            android:textColor="#43A047"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="7dp"
+            android:elevation="10dp"
+            app:cardElevation="7dp"
+            >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:background="#a7205f"
+                android:id="@+id/next"
+                />
+
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</RelativeLayout>

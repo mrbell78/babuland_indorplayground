@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Babuland</string>
+    <string name="facebook_app_id">2408380726099956</string>
+    <string name="fb_login_protocol_scheme">fb2408380726099956</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="heading">
+        <item>Platter</item>
+        <item>Garlic soup </item>
+        <item>ozinbutter</item>
+        <item>Chocolate cake </item>
+        <item>Thai soup</item>
+        <item>Orange Juce</item>
+        <item>Virtual Reality </item>
+
+
+    </string-array>
+    <string-array name="contetn">
+
+        <item>120tk</item>
+        <item>350tk</item>
+        <item>90tk</item>
+        <item>220tk</item>
+        <item>70tk</item>
+        <item>300tk</item>
+        <item>130tk</item>
+
+
+    </string-array>
+
+    <string-array name="name">
+
+        <item>Toylet</item>
+        <item>Food Quality</item>
+        <item>PGA service </item>
+        <item>Hygienic/cleanliness</item>
+    </string-array>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+</resources>

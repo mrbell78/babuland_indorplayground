@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#525C5B5B"
+    tools:context=".activity.QrcodeActivity">
+
+    <include layout="@layout/maintoolbar"
+        android:id="@+id/toolbar_qrcode"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_above="@+id/imgqr"
+        android:text="This Qrcode is your ticket. Please Scan this qrcode at babuland POS pointer in your respective  branch"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:padding="10dp"
+        android:textStyle="bold"
+
+        />
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:foregroundGravity="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imgqr"
+        android:src="@drawable/jouce2"
+        android:scaleType="centerCrop"
+        />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgqr"
+        android:layout_marginTop="50dp"
+         android:text="Your total babuland points is 400"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:background="@drawable/btn_confirm_background"
+        android:textAlignment="center"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:padding="10dp"
+        />
+
+
+</RelativeLayout>

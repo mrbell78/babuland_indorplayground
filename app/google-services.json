@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "154407399184",
+    "firebase_url": "https://babuland-c9c28.firebaseio.com",
+    "project_id": "babuland-c9c28",
+    "storage_bucket": "babuland-c9c28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154407399184:android:33dce8fe2a7c107b16ff95",
+        "android_client_info": {
+          "package_name": "com.example.babuland1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154407399184-mbveajutpppficrqpjvdk3f6ankhgdie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.babuland1",
+            "certificate_hash": "29e58483eba79e5717d6f6a58f743a7cee70ca14"
+          }
+        },
+        {
+          "client_id": "154407399184-adr5v3g88oer0cqoncrjr3n96tkqtbr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa5RY50-iOLBk7GZJIYS1KQZZ4YCVbeRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154407399184-adr5v3g88oer0cqoncrjr3n96tkqtbr6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

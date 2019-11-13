@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context=".activity.LoginActivity">
+
+
+    <include layout="@layout/maintoolbar"
+
+        />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/babuland"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/img_logo"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_centerHorizontal="true"
+        android:textColor="#6F6C6C"
+        android:textSize="25sp"
+        android:id="@+id/txt_title"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/img_logo"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/txt_title"
+        android:padding="8dp"
+        android:id="@+id/edt_numberholder"
+        android:drawableLeft="@drawable/ic_call"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#F5F5F5"
+        android:textSize="20sp"
+        android:text="01762957451"
+        android:drawablePadding="15dp"
+        android:paddingLeft="5dp"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Continue"
+        android:textStyle="normal"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:layout_below="@+id/edt_numberholder"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/phone_continiue"
+
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Enterpin"
+        android:textStyle="normal"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/phone_ok"
+        android:layout_below="@+id/edt_numberholder"
+        android:visibility="invisible"
+        />
+    <com.facebook.login.widget.LoginButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#2E41A7"
+        android:text="Login With Facebook"
+        android:textStyle="normal"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:layout_below="@+id/phone_continiue"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingLeft="20dp"
+        android:id="@+id/btn_facebboklogin"
+
+
+
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_facebboklogin"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have account!?"
+            android:textSize="17sp"
+            android:textColor="#FF9800"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign up"
+            android:textSize="18sp"
+            android:textColor="#F44336"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/login_signup"
+            />
+
+    </LinearLayout>
+</RelativeLayout>

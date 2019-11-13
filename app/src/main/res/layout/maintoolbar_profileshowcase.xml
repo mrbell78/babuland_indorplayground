@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:id="@+id/rederingtoolbarmain"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
+        >
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical"
+               android:gravity="center"
+               >
+
+               <!--<de.hdodenhof.circleimageview.CircleImageView
+                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                   android:id="@+id/profile_image"
+                   android:layout_width="50dp"
+                   android:layout_height="50dp"
+                   android:src="@drawable/babuland"
+                   app:civ_border_width="2dp"
+                   app:civ_border_color="@color/colorPrimary"
+                   android:focusableInTouchMode="true"
+                   />-->
+               <ImageView
+                   android:layout_width="match_parent"
+                   android:layout_height="?attr/actionBarSize"
+                   android:src="@drawable/bbl"
+                   android:scaleType="fitCenter"
+                   />
+
+           </LinearLayout>
+
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+</LinearLayout>

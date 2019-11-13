@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.PaymentActivity">
+    <include layout="@layout/maintoolbar"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="view Mask"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:id="@+id/vieworiginal"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:padding="10dp"
+                android:text="selected branch"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                />
+            <TextView
+                android:id="@+id/branchname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="Mirpur"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:padding="10dp"
+                android:text="Infant(0-11month)"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                />
+            <TextView
+                android:id="@+id/invoice_infant"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="150X3=450"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:padding="10dp"
+                android:text="Kids(at best 120cm)"
+                android:id="@+id/tv_invoice_kids"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                />
+            <TextView
+                android:id="@+id/invoice_Kids"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="300X3=900"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:padding="10dp"
+                android:text="Gardian"
+                android:id="@+id/tv_invoice_gardian"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                />
+            <TextView
+                android:id="@+id/invoice_gardian"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="100X3=300"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:padding="10dp"
+                android:text="Socks(pair)"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                />
+            <TextView
+                android:id="@+id/invoice_socks"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="30X3=90"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:minWidth="1dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:padding="10dp"
+                android:text="Total"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                />
+            <TextView
+                android:id="@+id/invoice_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="1740"/>
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Pay 1740tk"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            android:layout_marginTop="30dp"
+            android:id="@+id/payment"
+
+
+            />
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
