@@ -36,7 +36,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Customclas
 
         View v = LayoutInflater.from(context).inflate(R.layout.itemlayout,parent,false);
         Customclass holder = new Customclass(v);
-
        return holder;
    }
 
@@ -82,7 +81,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Customclas
         View mView;
        public Customclass(@NonNull View itemView) {
            super(itemView);
-
            mView=itemView;
            img=mView.findViewById(R.id.image_show);
            tvheading=mView.findViewById(R.id.heading);
@@ -91,9 +89,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Customclas
            swithchc=mView.findViewById(R.id.swithch);*/
           imgLike=mView.findViewById(R.id.like_unlike);
           like_number=mView.findViewById(R.id.num_like);
-
-
-
        }
    }
 }

@@ -108,18 +108,13 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
     int point;
     int databaspoint;
 
-
+    String gatawayname;
     boolean pointflag=false;
 
     ProgressDialog mProgress;
-    final SSLCommerzInitialization sslCommerzInitialization = new SSLCommerzInitialization("babul5dc25b039d6e8",
-            "babul5dc25b039d6e8@ssl", 600, CurrencyType.BDT,
-            "123456789098765", "food", SdkType.TESTBOX);
+    SSLCommerzInitialization sslCommerzInitialization ;
 
-    final CustomerInfoInitializer customerInfoInitializer = new CustomerInfoInitializer("reza", "rubel12131103078@gmail.com",
-            "mirpur12", "dhaka", "1216", "Bangladesh", "01762957451");
-
-
+     CustomerInfoInitializer customerInfoInitializer;
 
 
     @Override
@@ -201,7 +196,6 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         tv_total=findViewById(R.id.invoice_total);
         btn_pay=findViewById(R.id.payment);
         tv_branchname=findViewById(R.id.branchname);
-
         tv_branchname.setText(branchname);
 
 
@@ -230,6 +224,16 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         });
 
 
+        sslCommerzInitialization = new SSLCommerzInitialization("babul5dc25b039d6e8",
+                "babul5dc25b039d6e8@ssl", Total, CurrencyType.BDT,
+                "123456789098765", "food", SdkType.TESTBOX);
+
+        customerInfoInitializer = new CustomerInfoInitializer("reza", "rubel12131103078@gmail.com",
+                "mirpur12", "dhaka", "1216", "Bangladesh", "01762957451");
+
+
+
+
     }
 
     private void startPayment() {
@@ -246,7 +250,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
     @Override
     public void transactionSuccess(TransactionInfoModel transactionInfoModel) {
 
-
+        gatawayname=transactionInfoModel.getBankTranId();
         point=(Total*10)/100;
 
         mUser=FirebaseAuth.getInstance().getCurrentUser();
@@ -260,6 +264,8 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(PaymentActivity.this, "your point added", Toast.LENGTH_SHORT).show();
+                    mDatabase.child("nof_purchase_time").setValue(1);
+                    mDatabase.child("branch_name").setValue(branchname);
                 }
             }
         });
@@ -288,9 +294,6 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
                 stringBuffer.append( rs.getString(1)+"\n");
                 orderid_maxvalue = rs.getInt(1);
                 //
-
-
-
             }
             ResultSet productid_in=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='INFANT'");
             while(productid_in.next())
@@ -333,7 +336,9 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
 
             pointflag=true;
 
-            startActivity(new Intent(getApplicationContext(),QrcodeActivity.class).putExtra("totalammount",Total).putExtra("branchname",branchname));
+            startActivity(new Intent(getApplicationContext(),QrcodeActivity.class).putExtra("totalammount",Total).putExtra("branchname",branchname)
+            .putExtra("infant",infant_ticket).putExtra("kids",kids_ticket).putExtra("gardian",gardian_ticket).putExtra("socks",socks_ticket)
+            .putExtra("orderid",orderid_maxvalue).putExtra("transectionid",gatawayname));
             finish();
 
         } catch (ClassNotFoundException e) {
@@ -353,7 +358,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
     private void babuLandpoints() {
 
 
-          mProgress.setTitle("Processing");
+        mProgress.setTitle("Processing");
         mProgress.setMessage("Please wait");
         mProgress.show();
          point =  (Total*10)/100;
@@ -377,7 +382,6 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
                         mProgress.dismiss();
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 

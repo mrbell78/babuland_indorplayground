@@ -109,15 +109,14 @@ public class TestactivityActivity extends AppCompatActivity {
                 stringBuffer.append( rs.getString(1)+"\n");
                 orderid_maxvalue = rs.getInt(1);
 
-
-
             }
             Log.d("ordermaxvalue", "onCreate: ---------------------------------------------------ordermaxvalue="+orderid_maxvalue);
 
             stmt.executeUpdate("INSERT INTO TICKET_ORDER_ITEMS (ORDER_ITEM_ID,ORDER_ID,PRODUCT_ID,UNIT_PRICE,QUANTITY) " + "VALUES (null,"+orderid_maxvalue+",247,300,3)");
 
 
-            //orderid=Integer.parseInt(stringBuffer.toString());
+            //orderid=Integer.parseInt(stringBuffer.toStrin
+            // g());
             Toast.makeText(this, "orderid is ="+orderid_maxvalue, Toast.LENGTH_SHORT).show();
             connection.close();
 

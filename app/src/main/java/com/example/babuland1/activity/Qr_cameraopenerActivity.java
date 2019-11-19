@@ -161,6 +161,4 @@ public class Qr_cameraopenerActivity extends AppCompatActivity implements ZXingS
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         cameraPermision();
     }
-
-
 }

@@ -100,6 +100,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
     int numberprogress=0,addressprogress=0,emailprogress=0,genderprogress=0,dateofbirdthprogress=0,profilepicprogress=0;
 
+    Button btn_more;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +132,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         Log.d(TAG, "onCreate: ----------------------------------------------------------------------------------------fb varificationcode-----------------------------"+fbVarificationId);
 
 
+        btn_more=findViewById(R.id.btn_more);
 
         //mAuth= FirebaseAuth.getInstance();
       //  mUser=mAuth.getCurrentUser();
@@ -384,6 +387,13 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
 
+
+        btn_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AccountSettingsActivity.this,Profiling_moreActivity.class));
+            }
+        });
 
         btn_saveChange.setOnClickListener(new View.OnClickListener() {
             @Override

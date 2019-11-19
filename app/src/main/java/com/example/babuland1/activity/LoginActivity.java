@@ -260,6 +260,7 @@ public class LoginActivity extends AppCompatActivity {
                         mDatabaseref.child("ticket_redeem").setValue(0);
                         mDatabaseref.child("progressvalue").setValue(30);
                         mDatabaseref.child("BabulandPoints").setValue(0);
+                        mDatabaseref.child("nof_purchase_time").setValue(0);
                     }
                 });
                 ;
@@ -300,8 +301,6 @@ public class LoginActivity extends AppCompatActivity {
             edt_number.setError("Please enter valid phone number");
             return;
         }
-
-
         PhoneAuthProvider.getInstance().verifyPhoneNumber(phonenumber, 60, TimeUnit.SECONDS, this, mCallback);
     }
 
@@ -357,6 +356,7 @@ public class LoginActivity extends AppCompatActivity {
                                                    mDatabaseref.child("ticket_redeem").setValue(0);
                                                    mDatabaseref.child("progressvalue").setValue(20);
                                                    mDatabaseref.child("BabulandPoints").setValue(0);
+                                                   mDatabaseref.child("nof_purchase_time").setValue(0);
                                                }
 
                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));

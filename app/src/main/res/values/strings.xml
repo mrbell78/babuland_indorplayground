@@ -12,6 +12,13 @@
         <item>Others</item>
     </string-array>
 
+    <string-array name="branch_prefered">
+        <item>Select Branch</item>
+        <item>Uttara</item>
+        <item>Wari</item>
+        <item>Mirpur</item>
+    </string-array>
+
     <string-array name="heading">
         <item>Platter</item>
         <item>Garlic soup </item>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.babuland1">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,23 +17,27 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <uses-feature android:name="android.hardware.camera2" />
     <uses-feature android:name="android.hardware.camera2.autofocus" />
 
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
+        android:name=".utils.Myapp"
         android:allowBackup="true"
         android:icon="@drawable/babuland"
         android:label="@string/app_name"
+
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.FooditemActivity"></activity>
+        <activity android:name=".activity.Profiling_moreActivity"></activity>
+        <activity android:name=".activity.FooditemActivity" />
         <activity android:name=".activity.BabulandpointsActivity" />
         <activity android:name=".activity.QuizresultActivity" />
         <activity android:name=".activity.TicketfailedActivity" />
@@ -69,7 +74,10 @@
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value"
+
+            />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -87,6 +95,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+
+
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

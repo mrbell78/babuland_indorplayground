@@ -10,10 +10,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,11 +30,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.babuland1.activity.AccountSettingsActivity;
-import com.example.babuland1.activity.LoginActivity;
 import com.example.babuland1.activity.MyeTicketActivity;
 import com.example.babuland1.activity.Qr_cameraopenerActivity;
 
@@ -38,9 +44,10 @@ import com.example.babuland1.fragment.FirstFragment;
 import com.example.babuland1.fragment.ForthFragment;
 import com.example.babuland1.fragment.Secondragment;
 import com.example.babuland1.fragment.Thirdragment;
-import com.example.babuland1.interfacee.NameChangedListener;
+import com.example.babuland1.utils.BroadcastService;
+import com.example.babuland1.utils.Exampleservice;
+
 import com.facebook.login.LoginManager;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -57,13 +64,6 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -88,11 +88,16 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     String name_fromfirebase;
     String phone;
     String imageuri;
+    int ticket_pTime;
 
     public String finaldatafromcamera;
 
 
+    private CountDownTimer mcountDownTimer;
+    private static final long START_TIME_INMILIS=10000;
+    private long mTimerinleft_inmils= START_TIME_INMILIS;
     DrawerLayout drawerLayout;
+
 
 
     ActionBarDrawerToggle mToggle;
@@ -102,6 +107,12 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
 
     private  NavigationView navigationView;
+
+    int  value;
+    int firsttime;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
 
 
+
         mUser=FirebaseAuth.getInstance().getCurrentUser();
         if(mUser!=null){
             userId=mUser.getUid();
@@ -154,12 +166,15 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                         name_fromfirebase=dataSnapshot.child("name").getValue().toString();
                         phone=dataSnapshot.child("phone").getValue().toString();
                         imageuri = dataSnapshot.child("image").getValue().toString();
-
-
+                        //ticket_pTime=dataSnapshot.child("nof_purchase_time").getValue(Integer.class);
+                        if(ticket_pTime!=0){
+                            firsttime=1;
+                            Log.d(TAG, "onDataChange: -----------------------------------------------service started again "+ isMyServiceRunning(BroadcastService.class));
+                            startService(new Intent(MainActivity.this, BroadcastService.class));
+                        }
                         header_name.setText(name);
                         header_number.setText(phone);
                         Picasso.with(MainActivity.this).load(imageuri).into(header_proimg);
-
                     }
                 }
 
@@ -199,9 +214,6 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
         }
 
-
-
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
           @Override
           public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -226,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
         if (savedInstanceState == null) {
             bottomNavigationView.setSelectedItemId(R.id.home);
+
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -234,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         mToggle=new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
         drawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
-
     }
 
     private void replacefragment(Fragment fragment) {
@@ -257,7 +269,6 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
            }else{
              sendTologin();
            }
-
     }
 
     private void sendTologin() {
@@ -416,7 +427,6 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                 default:
                     bottomNavigationView.setSelectedItemId(R.id.home);
         }
-
         drawerLayout.closeDrawer(GravityCompat.START);
        return true;
     }
@@ -482,6 +492,27 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
     }
 
+    private void dialogbox_review(){
+        AlertDialog.Builder albuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.reviewus_popup,null);
+        albuilder.setView(view);
+        final AlertDialog dialog = albuilder.create();
+       if(!isFinishing()){
+           dialog.show();
+       }
+
+        RatingBar ratingBar = view.findViewById(R.id.ratingbar_reviewmain);
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                startActivity(new Intent(getApplicationContext(),ReviewActivity.class));
+                finish();
+                dialog.dismiss();
+            }
+        });
+    }
+
 
 //header profile setting
 
@@ -494,6 +525,44 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     private DatabaseReference mDatabase;
     View navHeaderView;
 
+    private BroadcastReceiver br = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+           // updateGUI(intent); // or whatever method used to update your GUI fields
+
+
+
+            //int value =  intent.getIntExtra("countdown",0);
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+              value = preferences.getInt("timer",0);
+            Log.d(TAG, "onReceive: ------------------------------------value recived==="+value);
+            if(value==0){
+
+                dialogbox_review();
+            }
+
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(br, new IntentFilter(BroadcastService.COUNTDOWN_BR));
+        Log.i(TAG, "Registered broacast receiver");
+    }
+
+
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }

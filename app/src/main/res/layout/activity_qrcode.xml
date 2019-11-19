@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_above="@+id/imgqr"
+        android:layout_below="@+id/toolbar_qrcode"
         android:text="This Qrcode is your ticket. Please Scan this qrcode at babuland POS pointer in your respective  branch"
         android:textAlignment="center"
         android:gravity="center"
@@ -20,35 +20,284 @@
         android:textColor="@android:color/white"
         android:padding="10dp"
         android:textStyle="bold"
-
+        android:id="@+id/tips_hint"
         />
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:foregroundGravity="center"
-        android:layout_centerVertical="true"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+       android:layout_below="@+id/tips_hint"
         android:layout_centerHorizontal="true"
         android:id="@+id/imgqr"
         android:src="@drawable/jouce2"
         android:scaleType="centerCrop"
+
         />
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imgqr"
-        android:layout_marginTop="50dp"
-         android:text="Your total babuland points is 400"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:background="@drawable/btn_confirm_background"
-        android:textAlignment="center"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight="20sp"
-        android:padding="10dp"
-        />
 
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/imgqr"
+      android:layout_marginTop="20dp"
+      >
+
+
+      <androidx.cardview.widget.CardView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_below="@+id/imgqr"
+          android:layout_marginLeft="5dp"
+          android:layout_marginRight="5dp"
+          android:layout_marginBottom="5dp"
+          android:padding="5dp"
+          >
+
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+
+              >
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_margin="5dp"
+
+                  >
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Branch Name:"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Mirpur"
+                      android:id="@+id/branchname"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="5-09-2019"
+                      android:id="@+id/Current_date"
+                      />
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_margin="5dp"
+
+                  >
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Name:"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="2"
+                      android:layout_height="wrap_content"
+                      android:text="Nurhossen"
+                      android:id="@+id/username"
+                      />
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_margin="5dp"
+
+                  >
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Infant"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="2"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/infant"
+                      android:text="2"
+                      />
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_margin="5dp"
+                  >
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Kids"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="2"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/kids"
+                      android:text="3"
+                      />
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_margin="5dp"
+
+                  >
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Gardian"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="2"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/gardian"
+                      android:text="1"
+                      />
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_margin="5dp"
+
+                  >
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Socks"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="2"
+                      android:layout_height="wrap_content"
+                      android:text="0"
+                      android:id="@+id/socks"
+                      />
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_margin="5dp"
+
+                  >
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Order_Id"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="2"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/orderid"
+                      android:text="1542131325"
+                      />
+              </LinearLayout>
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_margin="5dp"
+
+                  >
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Gateway"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="2"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/gateway"
+                      android:text="Bkash"
+                      />
+              </LinearLayout>
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_marginBottom="5dp"
+
+                  >
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:text="Total"
+                      />
+                  <TextView
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/totalamount"
+                      android:text="1200"
+                      />
+                  <Button
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/bt_print"
+                      android:text="Print"
+                      android:background="@color/colorAccent"
+                      android:textColor="@android:color/white"
+                      android:textAllCaps="false"
+                      android:layout_marginBottom="5dp"
+                      />
+              </LinearLayout>
+
+
+          </LinearLayout>
+
+      </androidx.cardview.widget.CardView>
+
+
+  </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

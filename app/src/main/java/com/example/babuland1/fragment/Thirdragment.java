@@ -325,12 +325,7 @@ public class Thirdragment extends Fragment {
                                     @Override
                                     public void run() {
                                         correct++;
-
-
-
                                         Updatequestion();
-
-
                                     }
                                 },1000);
                             }else {
