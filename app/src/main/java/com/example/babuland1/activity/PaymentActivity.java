@@ -116,6 +116,8 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
 
      CustomerInfoInitializer customerInfoInitializer;
 
+     String timestapm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

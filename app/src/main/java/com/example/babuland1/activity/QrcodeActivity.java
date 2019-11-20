@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
@@ -33,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
@@ -66,22 +70,38 @@ public class QrcodeActivity extends AppCompatActivity {
     String imagename;
 
     DbHelper db;
-    Uri qrimageuri;
+    static Uri qrimageuri;
     String result;
 
     byte imageInByte[];
     StorageReference mStorage;
+
+    ProgressDialog mDialog;
+
+    String passengerID;
+    DatabaseReference ref;
+    QRGEncoder qrgEncoder;
+
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    SharedPreferences.Editor editor = preferences.edit();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
 
+
+
+
         mToolbar=findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("eTicket");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mDialog=new ProgressDialog(this);
+        mDialog.setTitle("Ticket on processing");
+        mDialog.setMessage("Please wait");
         initializietextview();
         getvalueformpymentactivity();
         //settextview();
@@ -104,58 +124,13 @@ public class QrcodeActivity extends AppCompatActivity {
         }
 
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
+
+
+       /* mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                      name= dataSnapshot.child("name").getValue().toString();
-
-                     //start--------------------------------
-                    if( name.length()>0 && totalamount!=0){
-
-                        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-                        Display display = manager.getDefaultDisplay();
-                        Point point = new Point();
-                        display.getSize(point);
-                        int width = point.x;
-                        int height =point.y;
-                        int smallerDimension= width<height?width:height;
-                        smallerDimension=smallerDimension*3/4;
-
-                        String totalvalue="name :"+name+"\n"+"Total price="+Integer.toString(totalamount)+"\nBranch Name: "+branchname+"\n"+"Userid "+userId;
-                        QRGEncoder qrgEncoder = new QRGEncoder(totalvalue, null, QRGContents.Type.TEXT, smallerDimension);
-
-
-                        boolean save;
-
-                        try {
-
-                            bitmap= qrgEncoder.encodeAsBitmap();
-                            imageView.setImageBitmap(bitmap);
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                             imageInByte = stream.toByteArray();
-
-                            save = QRGSaver.save(savePath, imagename, bitmap, QRGContents.ImageType.IMAGE_JPEG);
-                            result = save ? "Saved" : "Image Not Saved";
-                            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-
-                    tv_name.setText(name);
-                    tv_infant.setText(Integer.toString(infant));
-                    tv_kids.setText(Integer.toString(kids));
-                    tv_gardian.setText(Integer.toString(gardian));
-                    tv_socks.setText(Integer.toString(socks));
-                    tv_branchname.setText(branchname);
-                    tv_orderid.setText(Integer.toString(orderid));
-                    tv_gateway.setText(transectionid);
-                    tv_totalamount.setText(Integer.toString(totalamount));
-
                     //end----------------------------------
                 }
             }
@@ -164,16 +139,123 @@ public class QrcodeActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+        });*/
+
+
+
+
+
+
+
+
+
+        tv_name.setText(name);
+        tv_infant.setText(Integer.toString(infant));
+        tv_kids.setText(Integer.toString(kids));
+        tv_gardian.setText(Integer.toString(gardian));
+        tv_socks.setText(Integer.toString(socks));
+        tv_branchname.setText(branchname);
+        tv_orderid.setText(Integer.toString(orderid));
+        tv_gateway.setText(transectionid);
+        tv_totalamount.setText(Integer.toString(totalamount));
+
+
+        //start--------------------------------
+        if( transectionid.length()>0 && totalamount!=0){
+
+            WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+            Display display = manager.getDefaultDisplay();
+            Point point = new Point();
+            display.getSize(point);
+            int width = point.x;
+            int height =point.y;
+            int smallerDimension= width<height?width:height;
+            smallerDimension=smallerDimension*3/4;
+
+            String totalvalue="Total price="+Integer.toString(totalamount)+"\nBranch Name: "+branchname+"\n"+"Userid "+userId;
+            qrgEncoder = new QRGEncoder(totalvalue, null, QRGContents.Type.TEXT, smallerDimension);
+
+            boolean save;
+
+            try {
+                bitmap= qrgEncoder.encodeAsBitmap();
+
+                covertBitmaptobyte(bitmap);
+                mDialog.show();
+
+
+                save = QRGSaver.save(savePath, imagename, bitmap, QRGContents.ImageType.IMAGE_JPEG);
+                result = save ? "Saved" : "Image Not Saved";
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.d("qrimage", "onComplete: ------------------------------------------- "+imageInByte);
+
+
+}
+
+    private void covertBitmaptobyte(Bitmap bitmap) {
+
+        //imageView.setImageBitmap(bitmap);
+
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        imageInByte = stream.toByteArray();
+
+        final StorageReference qrimage = mStorage.child("Allqrimage").child(userId+imagename+".jpg");
+        UploadTask uploadTask =  qrimage.putBytes(imageInByte);
+
+
+
+        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task) {
+                if(task.isSuccessful()){
+                    qrimage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            Uri downloaduri=uri;
+                            qrimageuri=downloaduri;
+
+                            if(task.isSuccessful()){
+                                uploadticket(downloaduri.toString());
+                            }
+                        }
+                    });
+                    Log.d("special", "onComplete: ------------------------------------------- "+qrimageuri);
+                }
+
+            }
+        });
+
+    }
+
+    private void uploadticket(final String toString) {
+
+        Log.d("uri", "onSuccess: -------------------------------------- "+toString);
+        Map imagedatawiththum=  new HashMap();
+        imagedatawiththum.put("imageqr_name"+imagename,toString);
+        imagedatawiththum.put("key1",imagename);
+
+
+        mDatabase.updateChildren(imagedatawiththum).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    mDialog.dismiss();
+                    Picasso.with(QrcodeActivity.this).load(toString).into(imageView);
+                }
+            }
         });
 
 
-        if(result.equals("Saved")){
-            final StorageReference qrimage = mStorage.child("Allqrimage").child(userId+imagename+".jpg");
-            UploadTask uploadTask =  qrimage.putBytes(imageInByte);
 
-        }
-
-}
+    }
 
     private void settextview() {
 
