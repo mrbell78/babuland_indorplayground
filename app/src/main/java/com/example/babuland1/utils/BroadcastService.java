@@ -20,9 +20,6 @@ public class BroadcastService extends Service {
     Intent bi = new Intent(COUNTDOWN_BR);
 
     CountDownTimer cdt = null;
-
-
-
     @Override
     public void onCreate() {
         super.onCreate();

@@ -37,6 +37,7 @@ import com.example.babuland1.activity.PaymentActivity;
 import com.example.babuland1.adapter.CustomAdapter;
 import com.example.babuland1.adapter.Viewpageradapter;
 import com.example.babuland1.adapter.Viewpageradapter_homeslider;
+import com.example.babuland1.utils.DbHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -102,6 +103,7 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
     String userId;
     LinearLayout fooditem;
 
+
     public ForthFragment() {
         // Required empty public constructor
     }
@@ -126,6 +128,7 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
         fooditem=getActivity().findViewById(R.id.fooditem);
         babulandpoints_liniarid=getActivity().findViewById(R.id.babulandpoint_liniarid);
         tv_babulandpoints=getActivity().findViewById(R.id.babulandpoint_tvid);
+
 
         mUser= FirebaseAuth.getInstance().getCurrentUser();
         if(mUser!=null) {
@@ -294,8 +297,8 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
                 tv_minus_infat.setText(Integer.toString(Count_infat));
                 break;
             case R.id.btn_add_kids:
-                tv_minus_kids.setText(Integer.toString(Count_kids));
                 Count_kids++;
+                tv_minus_kids.setText(Integer.toString(Count_kids));
                 break;
 
             case R.id.btn_add_gardian:
@@ -363,22 +366,7 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
                     if(radiovalue!=null){
 
                         Intent intent = new Intent(getActivity(),PaymentActivity.class);
-                        if(radiovalue.equals("mirpur")){
-                            intent.putExtra("infant_id",447);
-                            intent.putExtra("kids_id",448);
-                            intent.putExtra("gardian_id",449);
-                            intent.putExtra("socks_id",450);
-                        }else if(radiovalue.equals("wari")){
-                            intent.putExtra("infant_id",451);
-                            intent.putExtra("kids_id",452);
-                            intent.putExtra("gardian_id",453);
-                            intent.putExtra("socks_id",454);
-                        }else if(radiovalue.equals("uttara")){
-                            intent.putExtra("infant_id",455);
-                            intent.putExtra("kids_id",456);
-                            intent.putExtra("gardian_id",457);
-                            intent.putExtra("socks_id",458);
-                        }
+
                         intent.putExtra("infant",Count_infat);
                         intent.putExtra("kids",Count_kids);
                         intent.putExtra("gardian",Count_gardian);

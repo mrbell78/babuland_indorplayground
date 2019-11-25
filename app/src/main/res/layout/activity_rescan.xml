@@ -25,7 +25,7 @@
         android:textColor="@android:color/white"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:text="welcome to babu land"
+        android:text="Welcome to Babuland"
         android:layout_below="@+id/imgbabuland"
         android:layout_centerHorizontal="true"
         android:id="@+id/tv_titlebabuland"

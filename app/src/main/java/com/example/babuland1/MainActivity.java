@@ -45,6 +45,7 @@ import com.example.babuland1.fragment.ForthFragment;
 import com.example.babuland1.fragment.Secondragment;
 import com.example.babuland1.fragment.Thirdragment;
 import com.example.babuland1.utils.BroadcastService;
+import com.example.babuland1.utils.DbHelper;
 import com.example.babuland1.utils.Exampleservice;
 
 import com.facebook.login.LoginManager;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     int firsttime;
 
 
+    DbHelper helper;
 
 
     @Override
@@ -139,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         explorefragment= new Secondragment();
         accountfragment=new Thirdragment();
         offersfragment=new ForthFragment();
+
 
 
         //header profile settings start
@@ -295,9 +298,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
             case R.id.logout:
                 logout();
                 return true;
-            case R.id.eticket:
-                sendToMyeTicket();
-                return true;
+
             case R.id.setting:
                 sendToAccountSettings();
                 return true;
@@ -418,6 +419,9 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
             case R.id.comment:
                dialogbox();
                break;
+            case R.id.eticket:
+                sendToMyeTicket();
+                return true;
             case R.id.logout:
                 logout();
                 break;

@@ -124,7 +124,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
-        vieworginal=findViewById(R.id.vieworiginal);
+
         mstorage= FirebaseStorage.getInstance().getReference();
         mUser=FirebaseAuth.getInstance().getCurrentUser();
         mProgress=new ProgressDialog(this);
@@ -142,7 +142,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         socks_ticket = intent.getIntExtra("socks",0);
         branchname=intent.getStringExtra("radiovalue_string");
         Log.d(TAG, "onCreate: -------------------------------------infat ticket num-----------------------"+infant_ticket);
-        Log.d(TAG, "onCreate: -------------------------------------infat ticket num-----------------------"+kids_ticket);
+        Log.d(TAG, "onCreate: -------------------------------------kids ticket num-----------------------"+kids_ticket);
         Log.d(TAG, "onCreate: -------------------------------------infat ticket num-----------------------"+gardian_ticket);
         Log.d(TAG, "onCreate: -------------------------------------infat ticket num-----------------------"+socks_ticket);
 
@@ -156,37 +156,13 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         socks_ticket_product_id = intent.getIntExtra("socks_id",0);
         branchname=intent.getStringExtra("radiovalue_string");
 
+
         // product id event end
 
         //vieworginal start
 
 
-        vieworginal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),TestactivityActivity.class);
-                intent.putExtra("infant_id",infant_ticket_product_id);
-                intent.putExtra("kids_id",kids_ticket_product_id);
-                intent.putExtra("gardian_id",gardian_ticket_product_id);
-                intent.putExtra("socks_id",socks_ticket_product_id);
 
-                intent.putExtra("infant_quantity",infant_ticket);
-                intent.putExtra("kids_quantity",kids_ticket);
-                intent.putExtra("gardian_quantity",gardian_ticket);
-                intent.putExtra("socks_quantity",socks_ticket);
-
-                intent.putExtra("infant_unitprice",price_infant);
-                intent.putExtra("kids_unitprice",price_kids);
-                intent.putExtra("gardian_unitprice",price_gardian);
-                intent.putExtra("socks_unitprice",price_socks);
-
-                intent.putExtra("branchname",branchname);
-
-                intent.putExtra("total",Total);
-
-                startActivity(intent);
-            }
-        });
         //vieworginal end
         //Arethmetic event
 
@@ -232,10 +208,6 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
 
         customerInfoInitializer = new CustomerInfoInitializer("reza", "rubel12131103078@gmail.com",
                 "mirpur12", "dhaka", "1216", "Bangladesh", "01762957451");
-
-
-
-
     }
 
     private void startPayment() {
@@ -245,8 +217,6 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
                 .addSSLCommerzInitialization(sslCommerzInitialization)
                 .addCustomerInfoInitializer(customerInfoInitializer)
                 .buildApiCall( PaymentActivity.this);
-
-
     }
 
     @Override
@@ -281,6 +251,14 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        transectionSuccess();
+    }
+
+    private void transectionSuccess() {
+
+
+
         try {
             this.connection= createConnection();
             Toast.makeText(this, "database connected", Toast.LENGTH_SHORT).show();
@@ -288,7 +266,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             StringBuffer stringBuffer = new StringBuffer();
 
 
-            stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVED_AMOUNT,PAYMENT_TYPE) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'Card')");
+            stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVED_AMOUNT,STATUS,PAYMENT_TYPE) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'valid','Card')");
 
             ResultSet rs=stmt.executeQuery(" select  MAX(ORDER_ID) from  TICKET_ORDERS ");
 
@@ -339,14 +317,18 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             pointflag=true;
 
             startActivity(new Intent(getApplicationContext(),QrcodeActivity.class).putExtra("totalammount",Total).putExtra("branchname",branchname)
-            .putExtra("infant",infant_ticket).putExtra("kids",kids_ticket).putExtra("gardian",gardian_ticket).putExtra("socks",socks_ticket)
-            .putExtra("orderid",orderid_maxvalue).putExtra("transectionid",gatawayname));
+                    .putExtra("infant",infant_ticket).putExtra("kids",kids_ticket).putExtra("gardian",gardian_ticket).putExtra("socks",socks_ticket)
+                    .putExtra("orderid",orderid_maxvalue).putExtra("transectionid",gatawayname));
             finish();
+
+
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             Log.d("errorsql", "onCreate: ------------------------------------------------------"+e.getMessage());
             startActivity(new Intent(getApplicationContext(),TicketfailedActivity.class).putExtra("orderid",orderid_maxvalue));
+
+
             finish();
 
         } catch (SQLException e) {
@@ -390,24 +372,6 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
                 }
             });
         }
-            /*point=point+databaspoint;
-            Log.d(TAG, "transactionSuccess: ----------------------------------------------babuland point "+ point);
-
-            mDatabase.child("BabulandPoints").setValue(point).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
-                        mProgress.dismiss();
-                    }
-                }
-            });
-
-        }else{
-            Log.d(TAG, "onCreate: ----------------------------------------------------------------------------firebase user ---------------------------------------------------"+userId);
-        }
-
-
-        Toast.makeText(this, "your total point is "+ point, Toast.LENGTH_SHORT).show();*/
 
 
     }
@@ -422,155 +386,4 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
 
     }
 
-
-/*
-    @Override
-    public void onPaymentSuccess(String s) {
-
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
-        try {
-            this.connection= createConnection();
-            Toast.makeText(this, "database connected", Toast.LENGTH_SHORT).show();
-            Statement stmt=connection.createStatement();
-            StringBuffer stringBuffer = new StringBuffer();
-
-
-            stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVED_AMOUNT,PAYMENT_TYPE) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'Card')");
-
-            ResultSet rs=stmt.executeQuery(" select  MAX(ORDER_ID) from  TICKET_ORDERS ");
-
-            while(rs.next()) {
-                stringBuffer.append( rs.getString(1)+"\n");
-                orderid_maxvalue = rs.getInt(1);
-              //
-
-
-
-            }
-            ResultSet productid_in=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='INFANT'");
-            while(productid_in.next())
-                productid_infant=productid_in.getInt(1);
-
-            ResultSet productid_kidsl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='CHILDREN'");
-            while(productid_kidsl.next())
-                productid_kids=productid_kidsl.getInt(1);
-
-            ResultSet productid_gardianl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='PARENT'");
-            while(productid_gardianl.next())
-                productid_gardian=productid_gardianl.getInt(1);
-
-            ResultSet productid_socksl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='SOCKS'");
-            while(productid_socksl.next())
-                productid_socks=productid_socksl.getInt(1);
-
-
-            Log.d("ordermaxvalue", "onCreate: ---------------------------------------------------ordermaxvalue="+orderid_maxvalue);
-            Log.d("productid", "onCreate: ---------------------------------------------------productid="+productid_infant);
-            Log.d("productid", "onCreate: ---------------------------------------------------productid="+productid_kids);
-            Log.d("productid", "onCreate: ---------------------------------------------------productid="+productid_gardian);
-            Log.d("productid", "onCreate: ---------------------------------------------------productid="+productid_socks);
-            if(infant_ticket!=0)
-                stmt.executeUpdate("INSERT INTO TICKET_ORDER_ITEMS (ORDER_ITEM_ID,ORDER_ID,PRODUCT_ID,UNIT_PRICE,QUANTITY) " + "VALUES (null,"+orderid_maxvalue+","+productid_infant+",null,"+infant_ticket+")");
-
-            if(kids_ticket!=0)
-                stmt.executeUpdate("INSERT INTO TICKET_ORDER_ITEMS (ORDER_ITEM_ID,ORDER_ID,PRODUCT_ID,UNIT_PRICE,QUANTITY) " + "VALUES (null,"+orderid_maxvalue+","+productid_kids+",null,"+kids_ticket+")");
-
-            if(gardian_ticket!=0)
-                stmt.executeUpdate("INSERT INTO TICKET" +"_ORDER_ITEMS (ORDER_ITEM_ID,ORDER_ID,PRODUCT_ID,UNIT_PRICE,QUANTITY) " + "VALUES (null,"+orderid_maxvalue+","+productid_gardian+",null,"+gardian_ticket+")");
-
-            if(socks_ticket!=0)
-                stmt.executeUpdate("INSERT INTO TICKET_ORDER_ITEMS (ORDER_ITEM_ID,ORDER_ID,PRODUCT_ID,UNIT_PRICE,QUANTITY) " + "VALUES (null,"+orderid_maxvalue+","+productid_socks+",null,"+socks_ticket+")");
-
-
-            //orderid=Integer.parseInt(stringBuffer.toString());
-            Toast.makeText(this, "orderid is ="+orderid_maxvalue, Toast.LENGTH_SHORT).show();
-            connection.close();
-
-            startActivity(new Intent(getApplicationContext(),QrcodeActivity.class).putExtra("totalammount",Total).putExtra("branchname",branchname));
-            finish();
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            Log.d("errorsql", "onCreate: ------------------------------------------------------"+e.getMessage());
-            startActivity(new Intent(getApplicationContext(),TicketfailedActivity.class).putExtra("orderid",orderid_maxvalue));
-            finish();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Log.d("sql exception", "onCreate: ----------------------------------------------------database error---------------------------"+e.getMessage());
-            Toast.makeText(this, "error  "+e.getMessage(), Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(),TicketfailedActivity.class).putExtra("orderid",orderid_maxvalue));
-        }
-    }
-
-    @Override
-    public void onPaymentError(int i, String s) {
-
-        Toast.makeText(this, "Paymetn failed", Toast.LENGTH_SHORT).show();
-    }
-
-
-    public void startPayment() {
-        *//**
-         * Instantiate Checkout
-         *//*
-        Checkout checkout = new Checkout();
-
-        *//**
-         * Set your logo here
-         *//*
-        //checkout.setImage(R.drawable.logo);
-
-        *//**
-         * Reference to current activity
-         *//*
-        final Activity activity = this;
-
-        *//**
-         * Pass your payment options to the Razorpay Checkout as a JSONObject
-         *//*
-        try {
-            JSONObject options = new JSONObject();
-
-            *//**
-             * Merchant Name
-             * eg: ACME Corp || HasGeek etc.
-             *//*
-            options.put("name", "Techriz");
-
-            *//**
-             * Description can be anything
-             * eg: Reference No. #123123 - This order number is passed by you for your internal reference. This is not the `razorpay_order_id`.
-             *     Invoice Payment
-             *     etc.
-             *//*
-            options.put("description", "Test Order");
-            //0options.put("order_id", "order_9A33XWu170gUtm");
-            options.put("currency", "INR");
-
-            *//**
-             * Amount is always passed in currency subunits
-             * Eg: "500" = INR 5.00
-             *//*
-            options.put("amount", "5000");
-
-            checkout.open(activity, options);
-        } catch(Exception e) {
-            Log.e("error", "Error in starting Razorpay Checkout", e);
-            Log.d(TAG, "startPayment: -------------------------------------------error: "+e);
-        }
-    }
-
-    public static Connection createConnection(String driver, String url, String username, String password) throws ClassNotFoundException, SQLException {
-
-        Class.forName(driver);
-        return DriverManager.getConnection(url, username, password);
-    }
-
-    public static Connection createConnection() throws ClassNotFoundException, SQLException {
-        return createConnection(DEFAULT_DRIVER, DEFAULT_URL, DEFAULT_USERNAME, DEFAULT_PASSWORD);
-    }*/
 }

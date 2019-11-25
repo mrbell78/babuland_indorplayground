@@ -261,17 +261,15 @@ public class LoginActivity extends AppCompatActivity {
                         mDatabaseref.child("progressvalue").setValue(30);
                         mDatabaseref.child("BabulandPoints").setValue(0);
                         mDatabaseref.child("nof_purchase_time").setValue(0);
+                        mDatabaseref.child("progressvalue_stamp").setValue(0);
                     }
                 });
-                ;
 
                 Log.d(TAG, "updateUI: -------------------------------------------------------------------name----------------------------------------" + fullname);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class).putExtra("fullname", fullname).putExtra("profileimage", profileimage).putExtra("r_home","allow"));
                 mdialog.dismiss();
                 finish();
-
         }
-
     }
 
     @Override
@@ -282,13 +280,13 @@ public class LoginActivity extends AppCompatActivity {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-
     private void varyfycode() {
 
         String code = edt_number.getText().toString();
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codesent, code);
         signInWithPhoneAuthCredential(credential);
     }
+
     private void sendVarificationcode() {
 
 
@@ -357,8 +355,8 @@ public class LoginActivity extends AppCompatActivity {
                                                    mDatabaseref.child("progressvalue").setValue(20);
                                                    mDatabaseref.child("BabulandPoints").setValue(0);
                                                    mDatabaseref.child("nof_purchase_time").setValue(0);
+                                                   mDatabaseref.child("progressvalue_stamp").setValue(0);
                                                }
-
                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                                mdialog.dismiss();
                                                finish();

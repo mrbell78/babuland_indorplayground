@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:padding="5dp"
+    android:id="@+id/relativeListener"
+    >
+
+   <androidx.cardview.widget.CardView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginLeft="10dp"
+       android:layout_marginRight="10dp"
+       android:layout_marginTop="10dp"
+       android:elevation="10dp"
+       app:cardElevation="5dp"
+       >
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <ImageView
+               android:layout_width="100dp"
+               android:layout_height="100dp"
+               android:src="@drawable/qrimage"
+               android:layout_gravity="center"
+               />
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_marginLeft="15dp"
+               android:padding="5dp"
+               android:layout_gravity="center"
+               >
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+
+                   >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Totalamount"
+                       android:textStyle="bold"
+                       android:textSize="18sp"
+                       />
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="120dp"
+                       android:id="@+id/amountid"
+                       android:layout_marginLeft="10dp"
+                       android:textStyle="italic"
+                       android:textSize="18sp"
+                       />
+
+               </LinearLayout>
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:layout_marginTop="10dp"
+                   >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Status"
+                       android:textStyle="bold"
+                       android:textSize="18sp"
+                       />
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="not Expired"
+                       android:id="@+id/statusid"
+                       android:layout_marginLeft="10dp"
+                       android:textStyle="italic"
+                       android:textSize="18sp"
+
+                       />
+
+               </LinearLayout>
+               <!--<LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:layout_marginTop="5dp"
+                   >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Orderid"
+                       android:textStyle="bold"
+                       android:textSize="18sp"
+                       />
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="121320"
+                       android:id="@+id/orderid"
+                       android:layout_marginLeft="10dp"
+                       android:textStyle="italic"
+                       android:textSize="18sp"
+
+                       />
+
+               </LinearLayout>-->
+
+
+              <!-- <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:layout_marginBottom="5dp"
+                   android:layout_marginTop="5dp"
+                   android:padding="5dp"
+                   >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Time"
+                       android:textSize="18sp"
+                       android:textStyle="bold"
+
+                       />
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="120dp"
+                       android:id="@+id/timeid"
+                       android:layout_marginLeft="3dp"
+                       android:textStyle="italic"
+                       android:textSize="12sp"
+                       android:padding="5dp"
+                       />
+               </LinearLayout>-->
+           </LinearLayout>
+       </LinearLayout>
+
+   </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

@@ -97,7 +97,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
     private ProgressBar v;
     private ObjectAnimator animator;
     private homefragmentlistener listener;
-    private String progressvalue;
+    private int progressvalue;
     private MediaPlayer mp,mpp;
     private LinearLayout layout_rdm;
     private TextView tv_percentage;
@@ -151,7 +151,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                 mDatabaseref.child("count4").setValue("avail");
                 mDatabaseref.child("count5").setValue("avail");
                 mDatabaseref.child("count6").setValue("avail");
-                mDatabaseref.child("progressvalue").setValue("0") ;
+                mDatabaseref.child("progressvalue_stamp").setValue(0) ;
 
                 mDatabaseref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -471,33 +471,33 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                             }
                         });
                     }
-                        progressvalue=dataSnapshot.child("progressvalue").getValue().toString();
-                        if(progressvalue.equals("17")){
+                        progressvalue=dataSnapshot.child("progressvalue_stamp").getValue(Integer.class);
+                        if(progressvalue==17){
                             v.setVisibility(View.VISIBLE);
                             v.setProgress(17);
                             tv_percentage.setText("17%");
                         }
-                        else if(progressvalue.equals("34")){
+                        else if(progressvalue==34){
                             v.setVisibility(View.VISIBLE);
                             v.setProgress(34);
                             tv_percentage.setText("34%");
                         }
-                        else if(progressvalue.equals("51")){
+                        else if(progressvalue==51){
                             v.setVisibility(View.VISIBLE);
                             v.setProgress(51);
                             tv_percentage.setText("50%");
                         }
-                        else if(progressvalue.equals("68")){
+                        else if(progressvalue==68){
                             v.setVisibility(View.VISIBLE);
                             v.setProgress(68);
                             tv_percentage.setText("68%");
                         }
-                        else if(progressvalue.equals("85")){
+                        else if(progressvalue==85){
                             v.setVisibility(View.VISIBLE);
                             v.setProgress(85);
                             tv_percentage.setText("85%");
                         }
-                        else if(progressvalue.equals("100")){
+                        else if(progressvalue==100){
                             v.setVisibility(View.VISIBLE);
                             v.setProgress(100);
                             tv_percentage.setText("100%");
@@ -678,7 +678,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                            img_scan1.setEnabled(false);
                            cd1.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
 
-                           mDatabaseref.child("progressvalue").setValue("17");
+                           mDatabaseref.child("progressvalue_stamp").setValue(17);
                            v.setProgress(17);
                            tv_percentage.setText("17%");
                            finladatafromqr=null;
@@ -701,7 +701,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                        img_scan2.setEnabled(false);
                        cd2.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
 
-                       mDatabaseref.child("progressvalue").setValue("34");
+                       mDatabaseref.child("progressvalue_stamp").setValue(34);
                        v.setProgress(34);
                        tv_percentage.setText("34%");
                        finladatafromqr=null;
@@ -726,7 +726,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                        img_scan3.setEnabled(false);
                        cd3.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
 
-                       mDatabaseref.child("progressvalue").setValue("51");
+                       mDatabaseref.child("progressvalue_stamp").setValue(51);
                        v.setProgress(51);
                        tv_percentage.setText("50%");
                        finladatafromqr=null;
@@ -747,7 +747,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                        img_scan4.setEnabled(false);
                        cd4.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
 
-                       mDatabaseref.child("progressvalue").setValue("68");
+                       mDatabaseref.child("progressvalue_stamp").setValue(68);
                        v.setProgress(68);
                        tv_percentage.setText("68%");
                        finladatafromqr=null;
@@ -768,7 +768,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                        img_scan5.setEnabled(false);
                        cd5.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
 
-                       mDatabaseref.child("progressvalue").setValue("85");
+                       mDatabaseref.child("progressvalue_stamp").setValue(85);
                        v.setProgress(85);
                        tv_percentage.setText("85%");
                        finladatafromqr=null;
@@ -789,7 +789,8 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                        //Toast.makeText(getContext(), "load success", Toast.LENGTH_SHORT).show();
                        img_scan6.setEnabled(false);
                        cd6.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
-                       mDatabaseref.child("progressvalue").setValue("100");
+                       mDatabaseref.child("progressvalue_stamp").setValue(100);
+                       mDatabaseref.child("progressvalue_stamp").setValue(100);
                        v.setProgress(100);
                        tv_percentage.setText("100%");
                        finladatafromqr = null;

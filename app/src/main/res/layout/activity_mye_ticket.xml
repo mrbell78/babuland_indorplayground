@@ -8,14 +8,10 @@
     <include layout="@layout/maintoolbar"
         android:id="@+id/mytickettoolbar"/>
 
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/mytickettoolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:id="@+id/imageview"
-        />
-
+<androidx.recyclerview.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/mytickettoolbar"
+    android:id="@+id/ticketrecylerview"
+    ></androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

@@ -14,10 +14,7 @@
         android:title="Account Settings"
         app:showAsAction="never"
         />
-    <item android:id="@+id/eticket"
-        android:title="MyeTicket"
-        app:showAsAction="never"
-        />
+
     <item android:id="@+id/logout"
         android:title="Logout"
         app:showAsAction="never"/>

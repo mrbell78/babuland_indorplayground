@@ -60,9 +60,7 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
 
                     mWaveLoadingView.setProgressValue(progress);
                     mWaveLoadingView.setCenterTitle(progress+"%");
-
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 

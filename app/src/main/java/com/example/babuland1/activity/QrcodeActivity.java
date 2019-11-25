@@ -82,8 +82,6 @@ public class QrcodeActivity extends AppCompatActivity {
     DatabaseReference ref;
     QRGEncoder qrgEncoder;
 
-    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-    SharedPreferences.Editor editor = preferences.edit();
 
 
     @Override
@@ -142,13 +140,6 @@ public class QrcodeActivity extends AppCompatActivity {
         });*/
 
 
-
-
-
-
-
-
-
         tv_name.setText(name);
         tv_infant.setText(Integer.toString(infant));
         tv_kids.setText(Integer.toString(kids));
@@ -161,6 +152,26 @@ public class QrcodeActivity extends AppCompatActivity {
 
 
         //start--------------------------------
+
+        Intent intent = getIntent();
+        int orderid_adapter = intent.getIntExtra("orderid",0);
+
+        Log.d("orderid_adapter", "onCreate: ------------------------------------- orderidadapter "+orderid_adapter);
+        if(orderid_adapter!=0 )
+            qrcodegenaretorfromadapter(String.valueOf(orderid_adapter));
+        else
+            qrcodegenaretor(String.valueOf(orderid));
+
+
+
+
+        //Log.d("qrimage", "onComplete: ------------------------------------------- "+imageInByte);
+
+
+}
+
+    private void qrcodegenaretor(String name) {
+
         if( transectionid.length()>0 && totalamount!=0){
 
             WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -172,14 +183,14 @@ public class QrcodeActivity extends AppCompatActivity {
             int smallerDimension= width<height?width:height;
             smallerDimension=smallerDimension*3/4;
 
-            String totalvalue="Total price="+Integer.toString(totalamount)+"\nBranch Name: "+branchname+"\n"+"Userid "+userId;
-            qrgEncoder = new QRGEncoder(totalvalue, null, QRGContents.Type.TEXT, smallerDimension);
+            //String totalvalue="Total price="+Integer.toString(totalamount)+"\nBranch Name: "+branchname+"\n"+"Userid "+userId;
+            qrgEncoder = new QRGEncoder(name, null, QRGContents.Type.TEXT, smallerDimension);
 
             boolean save;
 
             try {
                 bitmap= qrgEncoder.encodeAsBitmap();
-
+                imageView.setImageBitmap(bitmap);
                 covertBitmaptobyte(bitmap);
                 mDialog.show();
 
@@ -191,16 +202,44 @@ public class QrcodeActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
 
-        Log.d("qrimage", "onComplete: ------------------------------------------- "+imageInByte);
+    public void qrcodegenaretorfromadapter(String orderid){
 
+        if( orderid!=null){
 
-}
+            WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+            Display display = manager.getDefaultDisplay();
+            Point point = new Point();
+            display.getSize(point);
+            int width = point.x;
+            int height =point.y;
+            int smallerDimension= width<height?width:height;
+            smallerDimension=smallerDimension*3/4;
+
+            //String totalvalue="Total price="+Integer.toString(totalamount)+"\nBranch Name: "+branchname+"\n"+"Userid "+userId;
+            qrgEncoder = new QRGEncoder(orderid, null, QRGContents.Type.TEXT, smallerDimension);
+
+            boolean save;
+
+            try {
+                bitmap= qrgEncoder.encodeAsBitmap();
+                imageView.setImageBitmap(bitmap);
+                covertBitmaptobyte(bitmap);
+                mDialog.show();
+
+                save = QRGSaver.save(savePath, imagename, bitmap, QRGContents.ImageType.IMAGE_JPEG);
+                result = save ? "Saved" : "Image Not Saved";
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     private void covertBitmaptobyte(Bitmap bitmap) {
 
         //imageView.setImageBitmap(bitmap);
-
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -240,7 +279,10 @@ public class QrcodeActivity extends AppCompatActivity {
         Log.d("uri", "onSuccess: -------------------------------------- "+toString);
         Map imagedatawiththum=  new HashMap();
         imagedatawiththum.put("imageqr_name"+imagename,toString);
-        imagedatawiththum.put("key1",imagename);
+        imagedatawiththum.put("status","valid");
+         db.insertdata(imagename,totalamount,orderid,"valid",branchname);
+
+         //status value will come frome firebase
 
 
         mDatabase.updateChildren(imagedatawiththum).addOnCompleteListener(new OnCompleteListener() {
@@ -252,8 +294,6 @@ public class QrcodeActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
     }
 
@@ -283,7 +323,6 @@ public class QrcodeActivity extends AppCompatActivity {
     }
 
     private void initializietextview() {
-
 
         tv_branchname=findViewById(R.id.branchname);
         tv_name=findViewById(R.id.username);

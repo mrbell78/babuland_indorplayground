@@ -21,18 +21,16 @@ import static android.provider.BaseColumns._ID;
 public class DbHelper extends SQLiteOpenHelper {
     private static final String TAG = DbHelper.class.getSimpleName();
 
-    private static final String DATABASE_NAME = "SaveBitmap.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "qrimage_child.db";
+    private static final int DATABASE_VERSION = 1;
     Context context;
     SQLiteDatabase db;
     ContentResolver mContentResolver;
 
-    public final static String TABLE_NAME = "Bitmaatmp";
-    public final static String COLUMN_DATA = "Data";
-    public final static String IMAGE_NAME = "Name";
+    public final static String TABLE_NAME = "qr_child";
+    public final static String IMAGE_NAME = "name";
     public final static String ClomnID= "id";
-
-    String statement = "create table "+ TABLE_NAME + "("+ClomnID+" integer primary key autoincrement, "+ IMAGE_NAME + "text not null,"+COLUMN_DATA+"BLOB"+ ")";
+    public final static String Totalamount= "total";
 
 
 
@@ -40,28 +38,17 @@ public class DbHelper extends SQLiteOpenHelper {
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
-        mContentResolver = context.getContentResolver();
 
-        db = this.getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(statement);
+        db.execSQL(" CREATE TABLE  " + TABLE_NAME + "(id INTEGER PRIMARY KEY AUTOINCREMENT,  name TEXT, total integer not null,orderid INTEGER not null,status TEXT,branchname TEXT )");
 
     }
 
-    public void addToDb(String name,byte[] image){
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put(IMAGE_NAME,name);
-        cv.put(COLUMN_DATA,image);
-        db.insert( TABLE_NAME, null, cv );
-        //Toast.makeText(context, "data upload successful", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -70,7 +57,28 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
+    public boolean insertdata(String name, int total,int orderid,String status,String branchname){
 
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("name",name);
+        contentValues.put("total",total);
+        contentValues.put("orderid",orderid);
+        contentValues.put("status",status);
+        contentValues.put("branchname",branchname);
+
+        long result =  db.insert(TABLE_NAME,null,contentValues);
+
+        if(result==-1){
+            return false;
+        }else {
+            return true;
+        }
+
+    }
+/*
     public byte[] getBitmapName(String name){
         SQLiteDatabase db = this.getWritableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -90,7 +98,23 @@ public class DbHelper extends SQLiteOpenHelper {
 
         }
         return result;
-    }
+    }*/
+
+
+ public Cursor pulldata(){
+
+     SQLiteDatabase db = this.getWritableDatabase();
+
+     Cursor cursor = db.rawQuery("select * From "+TABLE_NAME,null);
+     return cursor;
+ }
+ public int count(){
+
+     SQLiteDatabase db = this.getWritableDatabase();
+     Cursor cursor = db.rawQuery("select * From "+TABLE_NAME,null);
+     int count = cursor.getCount();
+     return count;
+ }
 
 }
 
