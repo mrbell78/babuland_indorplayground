@@ -39,6 +39,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -280,7 +281,9 @@ public class QrcodeActivity extends AppCompatActivity {
         Map imagedatawiththum=  new HashMap();
         imagedatawiththum.put("imageqr_name"+imagename,toString);
         imagedatawiththum.put("status","valid");
-         db.insertdata(imagename,totalamount,orderid,"valid",branchname);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy hh.mm.ss. aa");
+        String formattedDate = dateFormat.format(new Date()).toString();
+         db.insertdata(formattedDate,totalamount,orderid,"valid",branchname);
 
          //status value will come frome firebase
 

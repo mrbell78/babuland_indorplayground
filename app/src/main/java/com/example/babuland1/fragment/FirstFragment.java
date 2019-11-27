@@ -43,9 +43,14 @@ import android.widget.Toast;
 
 import com.example.babuland1.MainActivity;
 import com.example.babuland1.R;
+import com.example.babuland1.activity.MyFreeTicketActivity;
 import com.example.babuland1.activity.MyeTicketActivity;
 import com.example.babuland1.activity.Qr_cameraopenerActivity;
+import com.example.babuland1.activity.QrcodeActivity;
+import com.example.babuland1.activity.TicketfromListviewActivity;
 import com.example.babuland1.interfacee.NameChangedListener;
+import com.example.babuland1.utils.DbHelper;
+import com.example.babuland1.utils.DbHelper_freeTicket;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,7 +64,10 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -106,12 +114,16 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
     private TextView btn_later;
     private Boolean status;
     private TextView tv_ticketrdm;
+    private Button btn_redmticket;
     private Activity activity=getActivity();
 
+    private Date currentTime;
+    private String imagename;
     private int count_ticketrdm=0;
+    DbHelper_freeTicket db;
 
-
-
+    SimpleDateFormat dateFormat;
+    String formattedDate;
 
     public FirstFragment() {
         // Required empty public constructor
@@ -135,8 +147,67 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
         // Inflate the layout for this fragment
        View view=inflater.inflate(R.layout.fragment_first,container,false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        db=new DbHelper_freeTicket(getContext());
         status=true;
         btn_later=view.findViewById(R.id.btn_later);
+        dateFormat = new SimpleDateFormat("dd-MMM-yy hh.mm.ss.S aa");
+
+        btn_redmticket=view.findViewById(R.id.btn_redeemtk);
+
+        if(status.equals(true)){
+            btn_redmticket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    mDatabaseref.child("count1").setValue("avail");
+                    mDatabaseref.child("count2").setValue("avail");
+                    mDatabaseref.child("count3").setValue("avail");
+                    mDatabaseref.child("count4").setValue("avail");
+                    mDatabaseref.child("count5").setValue("avail");
+                    mDatabaseref.child("count6").setValue("avail");
+                    mDatabaseref.child("progressvalue_stamp").setValue(0) ;
+
+
+
+                    mDatabaseref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            count_ticketrdm =  dataSnapshot.child("ticket_redeem").getValue(Integer.class) ;
+                            mDatabaseref.child("ticket_redeem").setValue(count_ticketrdm=count_ticketrdm+1);
+                            formattedDate = dateFormat.format(new Date()).toString();
+                            db.insertdata_free(formattedDate,0,123456789+count_ticketrdm,"free","any");
+                            tv_ticketrdm.setText(Integer.toString(count_ticketrdm)+" free ticket");
+
+
+
+                            Intent intent = new Intent(getContext(), TicketfromListviewActivity.class);
+
+                            intent.putExtra("orderid",123456789+count_ticketrdm);
+                            intent.putExtra("time",formattedDate);
+                            intent.putExtra("total",0);
+                            intent.putExtra("status","free");
+                            intent.putExtra("branch","any");
+                            getContext().startActivity(intent);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    Log.d(TAG, "onClick: ---------------------------------------------current date "+ formattedDate);
+                /*QrcodeActivity activity = new QrcodeActivity();
+                activity.qrcodegenaretorfromadapter(String.valueOf(403)+"free"+"any");*/
+                    v.setProgress(0);
+                    pre_win.setVisibility(View.VISIBLE);
+                    layout_rdm.setVisibility(View.INVISIBLE);
+                    startActivity(new Intent(getActivity(),MainActivity.class));
+                }
+            });
+        }
+
 
 
     if(status.equals(true)){
@@ -158,6 +229,8 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         count_ticketrdm =  dataSnapshot.child("ticket_redeem").getValue(Integer.class) ;
                         mDatabaseref.child("ticket_redeem").setValue(count_ticketrdm=count_ticketrdm+1);
+                        formattedDate = dateFormat.format(new Date()).toString();
+                        db.insertdata_free(formattedDate,0,123456789+count_ticketrdm,"free","any");
                         tv_ticketrdm.setText(Integer.toString(count_ticketrdm)+" free ticket");
                     }
 
@@ -166,16 +239,10 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
 
                     }
                 });
-
-
-
                 v.setProgress(0);
                 pre_win.setVisibility(View.VISIBLE);
                 layout_rdm.setVisibility(View.INVISIBLE);
                 startActivity(new Intent(getActivity(),MainActivity.class));
-
-
-
 
             }
         });
@@ -192,13 +259,14 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
 
         profileimage=getActivity().findViewById(R.id.first_cirimage);
         tv_percentage=getActivity().findViewById(R.id.tv_percentage);
-
         name=getActivity().findViewById(R.id.name_id);
         number=getActivity().findViewById(R.id.number_id);
         qrCodeScaner=getActivity().findViewById(R.id.qrcodeScaner);
         qrResult=getActivity().findViewById(R.id.qrResult);
         mCurrentUser= FirebaseAuth.getInstance().getCurrentUser();
         tv_ticketrdm=getActivity().findViewById(R.id.tv_ticketrdm);
+
+
 
         //stapm tv initialization
         tv_scan1=getActivity().findViewById(R.id.tv_scan1);
@@ -464,10 +532,11 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                         if (count_ticketrdm != 0){
                         tv_ticketrdm.setText(Integer.toString(count_ticketrdm) + "free ticket");
                         tv_ticketrdm.setVisibility(View.VISIBLE);
+
                         tv_ticketrdm.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                startActivity(new Intent(getActivity().getApplicationContext(), MyeTicketActivity.class));
+                                startActivity(new Intent(getActivity().getApplicationContext(), MyFreeTicketActivity.class));
                             }
                         });
                     }

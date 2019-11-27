@@ -9,6 +9,18 @@
     >
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_marginTop="45dp"
+        android:textStyle="bold"
+        android:text="You already answered this question"
+        android:textColor="#FB8C00"
+        android:id="@+id/anserstatus"
+        android:visibility="invisible"
+        />
 
 
     <LinearLayout
@@ -55,8 +67,7 @@
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:id="@+id/buttona"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
+
                     />
 
             </androidx.cardview.widget.CardView>
@@ -77,8 +88,6 @@
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:id="@+id/buttonb"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
                     />
 
             </androidx.cardview.widget.CardView>
@@ -99,8 +108,6 @@
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:id="@+id/buttonc"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
                     />
 
             </androidx.cardview.widget.CardView>
@@ -121,8 +128,6 @@
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:id="@+id/buttond"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
                     />
 
             </androidx.cardview.widget.CardView>
@@ -143,6 +148,20 @@
             android:textColor="#43A047"
             />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:layout_marginTop="-73dp"
+            android:id="@+id/tv_Correctans"
+            android:layout_marginBottom="20dp"
+            android:textColor="#43A047"
+            android:visibility="invisible"
+
+            />
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,12 +174,12 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Next"
+                android:text="Rank"
                 android:textSize="16sp"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:background="#a7205f"
+                android:background="#00897B"
                 android:id="@+id/next"
                 />
 

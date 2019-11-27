@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String emailkey="email";
 
 
-    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback;
+
     private FirebaseAuth mAuth;
     private static final String TAG = "LoginActivity";
 
@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+  /*      mCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
 
@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                // edt_number.setText(codesent);
                 Toast.makeText(LoginActivity.this, "code sent", Toast.LENGTH_SHORT).show();
             }
-        };
+        };*/
 
 
     }
@@ -301,6 +301,36 @@ public class LoginActivity extends AppCompatActivity {
         }
         PhoneAuthProvider.getInstance().verifyPhoneNumber(phonenumber, 60, TimeUnit.SECONDS, this, mCallback);
     }
+
+
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback= new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+            String code = phoneAuthCredential.getSmsCode();
+
+            if(code!=null){
+                varyfycode();
+                mdialog.dismiss();
+            }
+
+
+        }
+
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            mdialog.dismiss();
+        }
+
+        @Override
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            super.onCodeSent(s, forceResendingToken);
+
+            codesent=s;
+            Toast.makeText(LoginActivity.this, "code sent", Toast.LENGTH_SHORT).show();
+            mdialog.dismiss();
+        }
+    };
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)

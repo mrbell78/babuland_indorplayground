@@ -33,7 +33,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.TicketfromListviewActivity"></activity>
+        <activity android:name=".activity.LeaderboardActivity"></activity>
+        <activity
+            android:name=".activity.MyFreeTicketActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".activity.TicketfromListviewActivity" />
         <activity android:name=".activity.Profiling_moreActivity" />
         <activity android:name=".activity.FooditemActivity" />
         <activity android:name=".activity.BabulandpointsActivity" />

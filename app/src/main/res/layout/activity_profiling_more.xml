@@ -33,6 +33,72 @@
         app:wlv_waveColor="@color/colorAccent"/>
 
 
+
+
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@+id/waveLoadingView"
+      android:layout_marginTop="10dp"
+      android:orientation="vertical"
+      android:visibility="invisible"
+      android:id="@+id/childrcvview"
+      >
+
+
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="350dp"
+          android:padding="15dp"
+          android:id="@+id/childrcv"
+          android:layout_marginBottom="15dp"
+          >
+
+
+      </androidx.recyclerview.widget.RecyclerView>
+
+
+      <Button
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Add new Child"
+          android:textAllCaps="false"
+          android:textColor="@android:color/white"
+          android:background="@color/colorPrimary"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:id="@+id/btn_addchild"
+
+          />
+
+
+  </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,19 +108,36 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="30dp"
-       android:layout_below="@+id/waveLoadingView"
+        android:layout_below="@+id/waveLoadingView"
+        android:visibility="visible"
+
+        android:id="@+id/chil_edtview"
 
         >
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+
             >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/child"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+
+                />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+
                 >
 
                 <EditText
@@ -62,8 +145,46 @@
                     android:layout_height="wrap_content"
                     android:hint="Chaild name"
                     android:padding="15dp"
+                    android:id="@+id/chil_name"
 
                     />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:padding="7dp"
+                    android:layout_marginTop="3dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="15dp"
+                        android:id="@+id/tv_dateofBirdth_child"
+                        android:hint="Date of Bridthd"
+                        />
+                    <Spinner
+                        android:id="@+id/spiner_child"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dp"
+                        android:padding="15dp"
+                        android:layout_weight="1"
+                        >
+
+                    </Spinner>
+
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,6 +196,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Class....i.e class 4"
                     android:padding="15dp"
+                    android:id="@+id/class_child"
 
                     />
             </LinearLayout>
@@ -88,6 +210,7 @@
                     android:layout_height="wrap_content"
                     android:hint="School name"
                     android:padding="15dp"
+                    android:id="@+id/schollname_child"
 
                     />
             </LinearLayout>
@@ -109,15 +232,17 @@
                     />
 
                 <Spinner
-                android:id="@+id/profilng_spiner"
-                android:layout_width="0dp" android:layout_weight="1.5"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:textAlignment="center"
-                >
-            </Spinner>
+                    android:id="@+id/profilng_spiner"
+                    android:layout_width="0dp" android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:padding="15dp"
+                    android:textAlignment="center"
+                    >
+                </Spinner>
             </LinearLayout>
+
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,6 +252,9 @@
                 android:textAllCaps="false"
                 android:background="@color/colorPrimary"
                 android:textColor="@android:color/white"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/btn_saveChange"
                 />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -35,7 +35,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.babuland1.activity.TestactivityActivity.createConnection;
+
 
 public class MyeTicketActivity extends AppCompatActivity {
 
@@ -90,37 +90,13 @@ public class MyeTicketActivity extends AppCompatActivity {
 
        TicketAdapter adapter = new TicketAdapter(this,list);
 
+       recyclerView.setLayoutManager(new LinearLayoutManager(this));
+       recyclerView.setHasFixedSize(true);
+
         recyclerView.setAdapter(adapter);
 
         Log.d("count", "onCreate: ------------------------------total data count "+ count);
 
-
-
-    }
-
-    private void showdatafromapexdb() {
-
-        try {
-            this.connection=createConnection();
-            Statement stmt=connection.createStatement();
-
-
-            ResultSet rs=stmt.executeQuery(" select  ORDER_TOTAL,ORDER_TIMESTAMP,STATUS from  TICKET_ORDERS ");
-
-            while(rs.next()) {
-                Model_ticket model_ticket = new Model_ticket();
-                model_ticket.setTotal(1);
-                model_ticket.setTime(rs.getString(2));
-                model_ticket.setStatus(rs.getString(3));
-                //
-            }
-
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
 
     }

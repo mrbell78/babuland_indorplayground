@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,14 @@ import android.widget.Toast;
 
 import com.example.babuland1.R;
 import com.example.babuland1.activity.AccountSettingsActivity;
+import com.example.babuland1.activity.LeaderboardActivity;
 import com.example.babuland1.activity.QuizresultActivity;
 import com.example.babuland1.utils.Question;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +40,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,8 +53,14 @@ public class Thirdragment extends Fragment {
 
 
     Button btn_a,btn_b,btn_c,btn_d;
-    TextView tv_question,tv_time;
+    TextView tv_question,tv_time,tv_correctans,tv_anserstatus;
     DatabaseReference mdatabase;
+    DatabaseReference Leaderboard;
+
+    DatabaseReference Userinfodb;
+
+    DatabaseReference quizparticipant;
+
     int total=1;
     int correct=0;
     int wrong =0;
@@ -53,6 +68,16 @@ public class Thirdragment extends Fragment {
     Button btn_next;
     LinearLayout linearLayoutshake;
     Animation animation;
+    FirebaseUser mUser;
+    String mUserid;
+
+     String name;
+    String image;
+    String key;
+
+    String quzname;
+    String answer;
+
 
    ;
 
@@ -72,7 +97,6 @@ public class Thirdragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -97,10 +121,88 @@ public class Thirdragment extends Fragment {
         btn_c=getActivity().findViewById(R.id.buttonc);
         btn_d=getActivity().findViewById(R.id.buttond);
 
+        tv_correctans=getActivity().findViewById(R.id.tv_Correctans);
+        tv_anserstatus=getActivity().findViewById(R.id.anserstatus);
+
         btn_next=getActivity().findViewById(R.id.next);
         tv_question=getActivity().findViewById(R.id.questionid);
         tv_time=getActivity().findViewById(R.id.tv_time);
          animation = AnimationUtils.loadAnimation(getActivity(),R.anim.shake);
+         mUser= FirebaseAuth.getInstance().getCurrentUser();
+         mUserid=mUser.getUid();
+
+         Userinfodb=FirebaseDatabase.getInstance().getReference().child("User").child(mUserid);
+
+         quizparticipant=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
+         quizparticipant.addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                 if(dataSnapshot.child("name").exists()){
+                     key=dataSnapshot.getKey();
+                     quzname=dataSnapshot.child("name").getValue().toString();
+                     answer=dataSnapshot.child("answer").getValue().toString();
+
+                     Log.d("keyu", "Updatequestion: -------------------key for check "+ key);
+                     Log.d("quizname", "Updatequestion: -------------------quzname for check "+ quzname);
+
+                     if(key!=null && quzname!=null){
+                         btn_a.setEnabled(false);
+                         btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                         btn_b.setEnabled(false);
+                         btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                         btn_c.setEnabled(false);
+                         btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                         btn_d.setEnabled(false);
+                         btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                         tv_correctans.setVisibility(View.VISIBLE);
+                         tv_anserstatus.setVisibility(View.VISIBLE);
+                         tv_time.setVisibility(View.INVISIBLE);
+                         tv_correctans.setText("Correct Answer  "+answer);
+                         tv_anserstatus.setText("You answered this question & its correct");
+
+                     }else {
+
+                         btn_a.setBackgroundColor(Color.parseColor("#F57C00"));
+                         btn_b.setBackgroundColor(Color.parseColor("#F57C00"));
+                         btn_c.setBackgroundColor(Color.parseColor("#F57C00"));
+                         btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
+
+                         btn_a.setEnabled(true);
+                         btn_b.setEnabled(true);
+                         btn_c.setEnabled(true);
+                         btn_d.setEnabled(true);
+
+                         tv_time.setVisibility(View.VISIBLE);
+                         tv_correctans.setVisibility(View.INVISIBLE);
+                         tv_anserstatus.setVisibility(View.INVISIBLE);
+                     }
+                 }
+
+             }
+
+             @Override
+             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+             }
+         });
+
+
+        Userinfodb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    name = dataSnapshot.child("name").getValue().toString();
+                    image=dataSnapshot.child("image").getValue().toString();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         Updatequestion();
         startCountdown();
@@ -109,13 +211,8 @@ public class Thirdragment extends Fragment {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(getActivity(), LeaderboardActivity.class));
 
-                Updatequestion();
-                restartCountdown();
-                btn_a.setEnabled(true);
-                btn_b.setEnabled(true);
-                btn_c.setEnabled(true);
-                btn_d.setEnabled(true);
             }
         });
     }
@@ -125,10 +222,6 @@ public class Thirdragment extends Fragment {
     private void Updatequestion() {
 
 
-        btn_a.setBackgroundColor(Color.parseColor("#F57C00"));
-        btn_b.setBackgroundColor(Color.parseColor("#F57C00"));
-        btn_c.setBackgroundColor(Color.parseColor("#F57C00"));
-        btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
 
 
         if(total>7){
@@ -142,7 +235,7 @@ public class Thirdragment extends Fragment {
             mdatabase.keepSynced(true);
             mdatabase.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
 
                     final Question question =  dataSnapshot.getValue(Question.class);
                     tv_question.setText(question.getQuestions());
@@ -161,17 +254,42 @@ public class Thirdragment extends Fragment {
                                 mediaPlayer.start();
                                 restartCountdown();
 
-                                Handler handler = new Handler();
+
+
+                                correct=1;
+
+                              /*  Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        correct++;
+
+
                                         Updatequestion();
                                     }
-                                },1000);
+                                },1000);*/
+
+                                if(correct!=0){
+
+
+                                    Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
+                                    Map participant = new HashMap();
+
+                                    participant.put("name",name);
+                                    participant.put("image",image);
+                                    participant.put("answer",question.getAnswer());
+                                    Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
+                                }
 
 
                             }else {
+                                correct=0;
                                 MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
                                 mediaPlayer.start();
                                 Toast.makeText(getContext(), "Incorrect answer ", Toast.LENGTH_SHORT).show();
@@ -195,7 +313,7 @@ public class Thirdragment extends Fragment {
                                         btn_b.setBackgroundColor(Color.parseColor("#F57C00"));
                                         btn_c.setBackgroundColor(Color.parseColor("#F57C00"));
                                         btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        Updatequestion();
+                                        //Updatequestion();
                                     }
                                 },1000);
                             }
@@ -214,19 +332,61 @@ public class Thirdragment extends Fragment {
                                 MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
                                 mediaPlayer.start();
 
-                                Handler handler = new Handler();
+                            /*    Userinfodb.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if(dataSnapshot.exists()){
+
+
+                                            name = dataSnapshot.child("name").getValue().toString();
+                                            image=dataSnapshot.child("image").getValue().toString();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });*/
+
+
+                                correct=1;
+                           /*     Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        correct++;
 
 
 
-                                        Updatequestion();
+
+
+
+
+                                       // Updatequestion();
 
                                     }
-                                },1000);
+                                },1000);*/
+
+                                if(correct!=0){
+
+                                    Log.d("tagiduser", "run: --------------------------------------------muserid "+mUserid);
+
+                                    Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
+                                    Map participant = new HashMap();
+
+                                    participant.put("name",name);
+                                    participant.put("image",image);
+                                    participant.put("answer",question.getAnswer());
+                                    Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
                             }else {
+                                correct=0;
 
                                 MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
                                 mediaPlayer.start();
@@ -268,17 +428,67 @@ public class Thirdragment extends Fragment {
                                 btn_c.setBackgroundColor(Color.parseColor("#22bb33"));
                                 MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
                                 mediaPlayer.start();
-                                Handler handler = new Handler();
+
+/*
+
+
+                                Userinfodb.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if(dataSnapshot.exists()){
+
+
+                                            name = dataSnapshot.child("name").getValue().toString();
+                                            image=dataSnapshot.child("image").getValue().toString();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+*/
+
+                                correct=1;
+                                /*Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                                         @Override
                                                         public void run() {
-                                                            correct++;
 
-                                                            Updatequestion();
+
+
+
+                                                            //Updatequestion();
                                                         }
                                                     },
-                                        1000);
+                                        1000);*/
+
+
+                                if(correct!=0){
+
+
+
+                                    Log.d("tagiduser", "run: --------------------------------------------muserid "+mUserid);
+                                    Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
+                                    Map participant = new HashMap();
+
+                                    participant.put("name",name);
+                                    participant.put("image",image);
+                                    participant.put("answer",question.getAnswer());
+                                    Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+
+
+
                             }else {
+                                correct=0;
                                 MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
                                 mediaPlayer.start();
                                 linearLayoutshake.startAnimation(animation);
@@ -302,7 +512,7 @@ public class Thirdragment extends Fragment {
                                         btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
 
 
-                                        Updatequestion();
+                                        //Updatequestion();
                                     }
 
                                 },1000);
@@ -320,15 +530,57 @@ public class Thirdragment extends Fragment {
                                 btn_d.setBackgroundColor(Color.parseColor("#22bb33"));
                                 MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
                                 mediaPlayer.start();
-                                Handler handler = new Handler();
+/*
+                                Userinfodb.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if(dataSnapshot.exists()){
+
+
+                                            name = dataSnapshot.child("name").getValue().toString();
+                                            image=dataSnapshot.child("image").getValue().toString();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });*/
+                                correct=1;
+                            /*    Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        correct++;
-                                        Updatequestion();
+
+
+
+                                       // Updatequestion();
                                     }
-                                },1000);
+                                },1000);*/
+
+                                if(correct!=0){
+
+
+
+                                    Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
+                                    Map participant = new HashMap();
+
+                                    participant.put("name",name);
+                                    participant.put("image",image);
+                                    participant.put("answer",question.getAnswer());
+
+                                    Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+
                             }else {
+                                correct=0;
                                 MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
                                 mediaPlayer.start();
                                 linearLayoutshake.startAnimation(animation);
@@ -350,7 +602,7 @@ public class Thirdragment extends Fragment {
                                         btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
                                         btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
                                         btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                        Updatequestion();
+                                        //Updatequestion();
                                     }
                                 },1000);
                             }
@@ -365,6 +617,9 @@ public class Thirdragment extends Fragment {
                 }
             });
         }
+
+
+
     }
 
 

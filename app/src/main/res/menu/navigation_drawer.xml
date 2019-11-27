@@ -7,6 +7,10 @@
         android:title="My  Ticket"
         android:icon="@drawable/ticket_icon"
         />
+    <item android:id="@+id/eticket_free"
+        android:title="My  Free Ticket"
+        android:icon="@drawable/ticket_icon"
+        />
     <item android:id="@+id/review"
         android:title="Review us"
         android:icon="@drawable/ic_rate_review"

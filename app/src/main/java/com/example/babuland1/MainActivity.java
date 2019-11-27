@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.babuland1.activity.AccountSettingsActivity;
+import com.example.babuland1.activity.MyFreeTicketActivity;
 import com.example.babuland1.activity.MyeTicketActivity;
 import com.example.babuland1.activity.Qr_cameraopenerActivity;
 
@@ -422,6 +423,9 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
             case R.id.eticket:
                 sendToMyeTicket();
                 return true;
+            case R.id.eticket_free:
+                sendToMyFreeTicket();
+                return true;
             case R.id.logout:
                 logout();
                 break;
@@ -433,6 +437,11 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         }
         drawerLayout.closeDrawer(GravityCompat.START);
        return true;
+    }
+
+    private void sendToMyFreeTicket() {
+        startActivity(new Intent(getApplicationContext(), MyFreeTicketActivity.class));
+
     }
 
     private void shareapp() {

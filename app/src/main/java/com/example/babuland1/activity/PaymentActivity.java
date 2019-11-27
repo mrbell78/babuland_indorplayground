@@ -56,7 +56,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.babuland1.activity.TestactivityActivity.createConnection;
+
+
 
 public class PaymentActivity extends AppCompatActivity  implements TransactionResponseListener {
 
@@ -260,7 +261,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
 
 
         try {
-            this.connection= createConnection();
+            this.connection = createConnection();
             Toast.makeText(this, "database connected", Toast.LENGTH_SHORT).show();
             Statement stmt=connection.createStatement();
             StringBuffer stringBuffer = new StringBuffer();
@@ -385,5 +386,17 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
     public void merchantValidationError(String s) {
 
     }
+
+
+    public static Connection createConnection(String driver, String url, String username, String password) throws ClassNotFoundException, SQLException {
+
+        Class.forName(driver);
+        return DriverManager.getConnection(url, username, password);
+    }
+
+    public static Connection createConnection() throws ClassNotFoundException, SQLException {
+        return createConnection(DEFAULT_DRIVER, DEFAULT_URL, DEFAULT_USERNAME, DEFAULT_PASSWORD);
+    }
+
 
 }

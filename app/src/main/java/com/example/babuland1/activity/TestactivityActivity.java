@@ -31,7 +31,7 @@ public class TestactivityActivity extends AppCompatActivity {
     private static final String DEFAULT_USERNAME = "bland";
     private static final String DEFAULT_PASSWORD = "servicepack3";
 
-    private Connection connection;
+    /*private Connection connection;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,5 +140,5 @@ public class TestactivityActivity extends AppCompatActivity {
 
     public static Connection createConnection() throws ClassNotFoundException, SQLException {
         return createConnection(DEFAULT_DRIVER, DEFAULT_URL, DEFAULT_USERNAME, DEFAULT_PASSWORD);
-    }
+    }*/
 }
