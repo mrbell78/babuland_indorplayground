@@ -79,7 +79,6 @@ public class MyFreeTicketActivity extends AppCompatActivity {
                     model_ticket.setOrderid(cursor.getInt(3));
                     model_ticket.setStatus(cursor.getString(4));
                     model_ticket.setBranchname(cursor.getString(5));
-
                     list.add(model_ticket);
                 }while (cursor.moveToNext());
             }

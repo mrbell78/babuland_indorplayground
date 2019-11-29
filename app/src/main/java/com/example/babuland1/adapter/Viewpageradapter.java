@@ -28,14 +28,14 @@ public class Viewpageradapter extends PagerAdapter {
     }
 
     public int[]allimage={
-            R.drawable.fragment2,
-            R.drawable.fragment3,
-            R.drawable.fragment4,
-            R.drawable.frgment1,
+            R.drawable.ballpool,
+            R.drawable.carride,
+            R.drawable.rockclim,
+            R.drawable.ridecrcl,
             R.drawable.fragment6
     };
     public String[] headline={
-        "Have a ride guys","we are having fun","game is fun","ha ha we are gang","we are flying"
+        "Ball ocean Fun Ocean","Enjoy Car City","Be strong and climb rock","ha ha fun is life","we are flying"
     };
 
     @Override
@@ -58,7 +58,6 @@ public class Viewpageradapter extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.slidelayout,container,false);
         ImageView imageView=view.findViewById(R.id.slid_image);
         TextView tvHeadline = view.findViewById(R.id.sliderheading);
-
 
         imageView.setImageResource(allimage[position]);
         tvHeadline.setText(headline[position]);

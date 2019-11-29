@@ -347,8 +347,6 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
          gendervalue = spinner.getSelectedItem().toString();
 
-
-
         dateofBirdth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

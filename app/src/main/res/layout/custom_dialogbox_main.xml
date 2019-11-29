@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Say some thing about us"
+        android:text="Say something about us"
         android:textSize="22sp"
         android:background="@color/colorPrimary"
         android:textAlignment="center"
