@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.FirstFragment">
+    tools:context="com.example.babuland1.fragment.FirstFragment">
 
 
 
@@ -27,7 +27,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/default_profile_pic"
+                android:src="@drawable/nhossen"
                 app:civ_border_width="1dp"
                 app:civ_border_color="#fff"
                 android:id="@+id/first_cirimage"

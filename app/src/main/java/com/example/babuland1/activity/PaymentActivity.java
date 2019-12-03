@@ -1,28 +1,25 @@
 package com.example.babuland1.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.babuland1.MainActivity;
 import com.example.babuland1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,9 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import com.squareup.picasso.Picasso;
 import com.sslwireless.sslcommerzlibrary.model.initializer.CustomerInfoInitializer;
 import com.sslwireless.sslcommerzlibrary.model.initializer.SSLCommerzInitialization;
 import com.sslwireless.sslcommerzlibrary.model.response.TransactionInfoModel;
@@ -44,19 +39,11 @@ import com.sslwireless.sslcommerzlibrary.model.util.SdkType;
 import com.sslwireless.sslcommerzlibrary.view.singleton.IntegrateSSLCommerz;
 import com.sslwireless.sslcommerzlibrary.viewmodel.listener.TransactionResponseListener;
 
-import org.json.JSONObject;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-
 
 
 public class PaymentActivity extends AppCompatActivity  implements TransactionResponseListener {
@@ -93,10 +80,11 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
     String name;
     String phone;
     String imageuri;
+
     //for insert data in db
     public static final String DEFAULT_DRIVER="oracle.jdbc.driver.OracleDriver";
     private static final String DEFAULT_URL = "jdbc:oracle:thin:@itlimpex.ddns.net:2121:xe";
-    private static final String DEFAULT_USERNAME = "bland";
+    private  static String  DEFAULT_USERNAME;
     private static final String DEFAULT_PASSWORD = "servicepack3";
 
     private Connection connection;
@@ -132,6 +120,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         if(mUser!=null){
             userId=mUser.getUid();
             mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+            getphone(mDatabase);
         }else{
             Log.d(TAG, "onCreate: ----------------------------------------------------------------------------firebase user ---------------------------------------------------"+userId);
         }
@@ -142,11 +131,24 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         gardian_ticket = intent.getIntExtra("gardian",0);
         socks_ticket = intent.getIntExtra("socks",0);
         branchname=intent.getStringExtra("radiovalue_string");
+        DEFAULT_USERNAME=branchname;
+
+        if(branchname.equals("mirpur")){
+            DEFAULT_USERNAME="bland";
+            Log.d(TAG, "onCreate: branch name--------------------------------- "+DEFAULT_USERNAME);
+        }else if(branchname.equals("wari")){
+            DEFAULT_USERNAME="wari";
+            Log.d(TAG, "onCreate: branch name--------------------------------- "+DEFAULT_USERNAME);
+        }else if(branchname.equals("uttara")){
+            DEFAULT_USERNAME="uttara";
+            Log.d(TAG, "onCreate: branch name--------------------------------- "+DEFAULT_USERNAME);
+        }
         Log.d(TAG, "onCreate: -------------------------------------infat ticket num-----------------------"+infant_ticket);
         Log.d(TAG, "onCreate: -------------------------------------kids ticket num-----------------------"+kids_ticket);
         Log.d(TAG, "onCreate: -------------------------------------infat ticket num-----------------------"+gardian_ticket);
         Log.d(TAG, "onCreate: -------------------------------------infat ticket num-----------------------"+socks_ticket);
 
+        Log.d(TAG, "onCreate: dbname  ------------------------"+DEFAULT_USERNAME);
 
         //pruduct id event start mirpur
 
@@ -155,7 +157,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         kids_ticket_product_id = intent.getIntExtra("kids_id",0);
         gardian_ticket_product_id = intent.getIntExtra("gardian_id",0);
         socks_ticket_product_id = intent.getIntExtra("socks_id",0);
-        branchname=intent.getStringExtra("radiovalue_string");
+        //branchname=intent.getStringExtra("radiovalue_string");
 
 
         // product id event end
@@ -194,11 +196,27 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         btn_pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Total!=0){
-                    startPayment();
+/*
+                mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+               getphone(mDatabase);*/
+                Log.d(TAG, "onClick: ---------------------------------------phone "+phone);
+                if(!phone.equals("default") && phone!=null){
+
+                    if(Total!=0){
+                        startPayment();
+                    }else {
+
+                        Toast.makeText(PaymentActivity.this, "Transection failed. no payable amount ", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
                 }else {
-                    Toast.makeText(PaymentActivity.this, "Transection failed. no payable amount", Toast.LENGTH_SHORT).show();
-                }
+
+                    Toast.makeText(PaymentActivity.this, "Phone number required", Toast.LENGTH_SHORT).show();
+                    dialogbox_phonenumber();
+
+                    }
             }
         });
 
@@ -223,6 +241,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
     @Override
     public void transactionSuccess(TransactionInfoModel transactionInfoModel) {
 
+
         gatawayname=transactionInfoModel.getBankTranId();
         point=(Total*10)/100;
 
@@ -242,6 +261,8 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
                 }
             }
         });
+
+
 
     }else{
         Log.d(TAG, "onCreate: ----------------------------------------------------------------------------firebase user ---------------------------------------------------"+userId);
@@ -267,7 +288,31 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             StringBuffer stringBuffer = new StringBuffer();
 
 
-            stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVED_AMOUNT,STATUS,PAYMENT_TYPE) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'valid','Card')");
+            if(branchname.equals("mirpur")){
+
+                stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVED_AMOUNT,PAYMENT_TYPE,PHONE) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'Card',"+phone+")");
+
+                ResultSet productid_gardianl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='PARENT'");
+                while(productid_gardianl.next())
+                    productid_gardian=productid_gardianl.getInt(1);
+
+            }else if(branchname.equals("wari")){
+
+                stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVE_AMOUNT,PAYMENT_TYPE,PHONE_NUMBER) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'Card',"+phone+")");
+
+                ResultSet productid_gardianl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='GUARDIAN'");
+                while(productid_gardianl.next())
+                    productid_gardian=productid_gardianl.getInt(1);
+            }
+            else if(branchname.equals("uttara")){
+
+                            stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVE_AMOUNT,PAYMENT_TYPE,PHONE_NUMBER) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'Card',"+phone+")");
+
+                        ResultSet productid_gardianl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='GUARDIAN'");
+                        while(productid_gardianl.next())
+                            productid_gardian=productid_gardianl.getInt(1);
+                        }
+
 
             ResultSet rs=stmt.executeQuery(" select  MAX(ORDER_ID) from  TICKET_ORDERS ");
 
@@ -280,13 +325,11 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             while(productid_in.next())
                 productid_infant=productid_in.getInt(1);
 
-            ResultSet productid_kidsl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='CHILDREN'");
+            ResultSet productid_kidsl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME  ='CHILDREN'");
             while(productid_kidsl.next())
                 productid_kids=productid_kidsl.getInt(1);
 
-            ResultSet productid_gardianl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='PARENT'");
-            while(productid_gardianl.next())
-                productid_gardian=productid_gardianl.getInt(1);
+
 
             ResultSet productid_socksl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='SOCKS'");
             while(productid_socksl.next())
@@ -319,7 +362,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
 
             startActivity(new Intent(getApplicationContext(),QrcodeActivity.class).putExtra("totalammount",Total).putExtra("branchname",branchname)
                     .putExtra("infant",infant_ticket).putExtra("kids",kids_ticket).putExtra("gardian",gardian_ticket).putExtra("socks",socks_ticket)
-                    .putExtra("orderid",orderid_maxvalue).putExtra("transectionid",gatawayname));
+                    .putExtra("orderid",orderid_maxvalue).putExtra("transectionid",gatawayname).putExtra("phone",phone));
             finish();
 
 
@@ -395,7 +438,84 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
     }
 
     public static Connection createConnection() throws ClassNotFoundException, SQLException {
+
+
         return createConnection(DEFAULT_DRIVER, DEFAULT_URL, DEFAULT_USERNAME, DEFAULT_PASSWORD);
+
+    }
+
+
+    private  String getphone(DatabaseReference mDatabase){
+
+
+
+
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.child("phone").exists()){
+
+
+                    phone=dataSnapshot.child("phone").getValue().toString();
+                    Log.d(TAG, "onDataChange: -------------------------phone "+phone);
+
+
+                }else {
+                    Toast.makeText(PaymentActivity.this, "db problem", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return phone;
+    }
+
+
+    public void dialogbox_phonenumber(){
+        AlertDialog.Builder albuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.phonenumber_dialog,null);
+        albuilder.setView(view);
+        final AlertDialog dialog = albuilder.create();
+        if(!isFinishing()){
+            dialog.show();
+        }
+
+        Button btn_continiue = view.findViewById(R.id.btn_continiue);
+        final EditText edtphone=view.findViewById(R.id.idPhone);
+
+        btn_continiue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                phone=edtphone.getText().toString();
+
+                if(phone.length()<10){
+                    Toast.makeText(PaymentActivity.this, "Please Enter valid phonenumber", Toast.LENGTH_SHORT).show();
+                }else if(phone!=null && phone.length()>10){
+
+                    mUser= FirebaseAuth.getInstance().getCurrentUser();
+                    String mUserid=mUser.getUid();
+                    mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(mUserid);
+                    mDatabase.child("phone").setValue(phone).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                dialog.dismiss();
+                                Toast.makeText(PaymentActivity.this, "Thank you", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
 

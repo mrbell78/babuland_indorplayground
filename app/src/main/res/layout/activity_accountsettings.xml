@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#393838"
-    tools:context=".activity.AccountSettingsActivity"
+    tools:context="com.example.babuland1.activity.AccountSettingsActivity"
 
 
     >
@@ -182,7 +182,7 @@
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:id="@+id/editlayout"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:background="@android:color/white"
         android:padding="15dp"
         android:layout_marginTop="15dp"
@@ -378,7 +378,7 @@
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:id="@+id/viewlayout"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:padding="10dp"
         android:background="#393838"
 

@@ -1,6 +1,7 @@
 package com.example.babuland1.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,14 +12,12 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.babuland1.R;
 import com.google.zxing.WriterException;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
-import androidmads.library.qrgenearator.QRGSaver;
 
 public class TicketfromListviewActivity extends AppCompatActivity {
 
@@ -36,10 +35,16 @@ public class TicketfromListviewActivity extends AppCompatActivity {
 
 
 
+    Toolbar mToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticketfrom_listview);
+
+        mToolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("My Ticket");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         qrimage=findViewById(R.id.imgqr);
         tv_orderid=findViewById(R.id.orderid_id);
@@ -53,13 +58,16 @@ public class TicketfromListviewActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         int qrcodevalue = intent.getIntExtra("orderid",0);
-        qrcodegenaretorfromadapter(Integer.toString(qrcodevalue));
+
 
 
         String time = intent.getStringExtra("time");
-        String status= intent.getStringExtra("status");
+        String status= intent.getStringExtra("validity");
         int total =intent.getIntExtra("total",0);
-        String branchname = intent.getStringExtra("branch");
+        String branchname = intent.getStringExtra("branch_adp");
+        String userkey_childname = intent.getStringExtra("itemkey");
+
+        qrcodegenaretorfromadapter(Integer.toString(qrcodevalue)+"\n"+userkey_childname);
 
 
         tv_status.setText(status);

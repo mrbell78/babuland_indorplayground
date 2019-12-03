@@ -16,7 +16,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -34,11 +33,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 import com.example.babuland1.activity.AccountSettingsActivity;
 import com.example.babuland1.activity.MyFreeTicketActivity;
 import com.example.babuland1.activity.MyeTicketActivity;
 import com.example.babuland1.activity.Qr_cameraopenerActivity;
-
 import com.example.babuland1.activity.ReviewActivity;
 import com.example.babuland1.activity.WelcomeActivity;
 import com.example.babuland1.fragment.FirstFragment;
@@ -47,8 +47,8 @@ import com.example.babuland1.fragment.Secondragment;
 import com.example.babuland1.fragment.Thirdragment;
 import com.example.babuland1.utils.BroadcastService;
 import com.example.babuland1.utils.DbHelper;
-import com.example.babuland1.utils.Exampleservice;
 
+import com.example.babuland1.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -265,18 +265,20 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
         super.onStart();
            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+           //String userid_local = currentUser.getUid();
           // String userid=currentUser.getUid();
-           if(currentUser!=null){
+           if(currentUser==null){
                //sendToAccountSettings();
                //finish();
                //Toast.makeText(this, "u can stay here for developoing purpose", Toast.LENGTH_SHORT).show();
-           }else{
-             sendTologin();
+               sendTologin();
+               Log.d(TAG, "onStart: ================user_locla "+ currentUser);
+
            }
     }
 
     private void sendTologin() {
-        startActivity(new Intent(getApplicationContext(),WelcomeActivity.class));
+        startActivity(new Intent(getApplicationContext(), WelcomeActivity.class));
         finish();
     }
 
@@ -441,7 +443,6 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
     private void sendToMyFreeTicket() {
         startActivity(new Intent(getApplicationContext(), MyFreeTicketActivity.class));
-
     }
 
     private void shareapp() {

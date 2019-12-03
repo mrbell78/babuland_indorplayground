@@ -4,35 +4,210 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.BabulandpointsActivity">
+    tools:context="com.example.babuland1.activity.BabulandpointsActivity">
     <include layout="@layout/maintoolbar"
         android:id="@+id/pointsid"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="something \n will be\n there"
 
-        />
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+     android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_below="@+id/pointsid"
-        android:layout_marginTop="54dp"
-        android:src="@drawable/horizontal"
-        android:scaleType="fitXY"
+      android:gravity="center"
 
-        />
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_below="@+id/pointsid"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/point_progressbar"
-        android:progress="65"
-        />
+      >
+
+
+      <androidx.cardview.widget.CardView
+          android:layout_width="match_parent"
+          android:layout_height="180dp"
+
+          android:layout_marginTop="20dp"
+          android:id="@+id/account_progress_area"
+
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="5dp"
+
+          android:elevation="10dp"
+
+          >
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_gravity="center"
+              >
+
+
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="My Account Progress"
+                  android:layout_gravity="center"
+                  android:layout_marginTop="20dp"
+                  android:textStyle="bold"
+                  android:textSize="20dp"
+
+                  />
+
+              <FrameLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/framelayout"
+                  >
+
+
+                  <ProgressBar
+                      android:id="@+id/myprogressbar"
+                      style="@android:style/Widget.ProgressBar.Horizontal"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:max="100"
+                      android:progress="30"
+                      android:secondaryProgress="0"
+                      android:progressDrawable="@drawable/prograsebar_drawable_design"
+                      android:layout_below="@+id/stampView"
+                      android:layout_marginStart="20dp"
+                      android:layout_marginEnd="20dp"
+                      android:visibility="visible"
+                      android:layout_marginTop="10dp"
+
+
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_below="@+id/myprogressbar"
+                      android:layout_marginTop="5dp"
+                      android:layout_centerHorizontal="true"
+                      android:textStyle="bold"
+                      android:textSize="19sp"
+                      android:textAlignment="center"
+                      android:text="0%"
+                      android:textColor="@android:color/white"
+                      android:id="@+id/tv_percentage"
+                      android:layout_gravity="center"
+
+                      />
+
+              </FrameLayout>
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Get Extra benefit by progressing your profile"
+                  android:textSize="17sp"
+                  android:layout_gravity="center"
+                  android:textColor="@android:color/holo_red_dark"
+                  android:layout_marginTop="15dp"
+
+
+                  />
+
+          </LinearLayout>
+
+      </androidx.cardview.widget.CardView>
+
+      <androidx.cardview.widget.CardView
+          android:layout_width="match_parent"
+          android:layout_height="180dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="5dp"
+          android:layout_marginTop="20dp"
+          android:elevation="10dp"
+
+
+
+          >
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_gravity="center"
+              >
+
+
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="My Babuland Points"
+                  android:layout_gravity="center"
+                  android:layout_marginTop="20dp"
+                  android:textSize="20dp"
+                  android:textStyle="bold"
+                  />
+
+              <FrameLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/stampView"
+                  android:id="@+id/framelayout2"
+
+                  >
+
+
+                  <ProgressBar
+                      android:id="@+id/myprogressbar_points"
+                      style="@android:style/Widget.ProgressBar.Horizontal"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:max="500"
+                      android:progress="76"
+                      android:secondaryProgress="0"
+                      android:progressDrawable="@drawable/progressbar_forpoints"
+                      android:layout_below="@+id/stampView"
+                      android:layout_marginStart="20dp"
+                      android:layout_marginEnd="20dp"
+                      android:visibility="visible"
+                      android:layout_marginTop="15dp"
+
+
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_below="@+id/myprogressbar"
+                      android:layout_centerHorizontal="true"
+                      android:layout_marginTop="7dp"
+                      android:textStyle="bold"
+                      android:textSize="19sp"
+                      android:textAlignment="center"
+                      android:text="76 points"
+                      android:textColor="@android:color/white"
+                      android:id="@+id/tv_blandpoints"
+                      android:layout_gravity="center"
+
+
+                      />
+
+              </FrameLayout>
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:text="Get 500 points and win a socks free"
+                  android:textStyle="italic"
+                  android:textSize="17sp"
+                  android:layout_marginTop="15dp"
+                  android:textColor="@android:color/holo_red_light"
+                  />
+
+          </LinearLayout>
+
+      </androidx.cardview.widget.CardView>
+
+  </LinearLayout>
+
 </RelativeLayout>

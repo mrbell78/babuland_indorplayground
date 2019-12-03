@@ -3,6 +3,7 @@ package com.example.babuland1.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -23,21 +24,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.babuland1.R;
 import com.example.babuland1.model.Model_childlist;
-import com.example.babuland1.model.Model_leaderboard;
+import com.example.babuland1.R;
 import com.example.babuland1.utils.Dbhelper_childprofile;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -47,12 +45,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -117,6 +111,9 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
 
     DatabaseReference chilDatabase;
 
+    int progressvalue;
+    Toolbar mToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +144,18 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
         imgProfile=findViewById(R.id.child_image);
         addchildimg=findViewById(R.id.addnewimg);
         mStorage= FirebaseStorage.getInstance().getReference();
+
+        mToolbar=findViewById(R.id.toolbar);
+
+        setSupportActionBar(mToolbar);
+        //db=new DbHelper_freeTicket(this);
+        getSupportActionBar().setTitle("My Children list");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        progressvalue=intent.getIntExtra("progress",0);
+
+
 
         addchildimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +203,7 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
             mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(userId);
             chilDatabase=FirebaseDatabase.getInstance().getReference().child("Childdb").child(userId);
 
-            mDatabase.addValueEventListener(new ValueEventListener() {
+      /*      mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     progress =dataSnapshot.child("progressvalue").getValue(Integer.class);
@@ -207,13 +216,20 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });
+            });*/
 
 
 
 
         }else{
             Log.d("firebase data pulling", "onCreate: ----------------------------------------------------------------------------firebase user ---------------------------------------------------"+userId);
+        }
+
+        if(progressvalue!=0){
+
+            mWaveLoadingView.setProgressValue(progressvalue);
+            mWaveLoadingView.setCenterTitle(progressvalue+"%");
+
         }
 
         spinner=findViewById(R.id.profilng_spiner);
@@ -249,6 +265,8 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
             public void onClick(View view) {
 
 
+                String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                final String random_timephone=phone+currentTime;
 
                 name=edt_childname.getText().toString();
                 school_class=edt_class.getText().toString();
@@ -290,10 +308,10 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
                       mdialog.show();
 
                       mUser=FirebaseAuth.getInstance().getCurrentUser();
-                      final String useridlocal=mUser.getUid();
+                      String useridlocal=mUser.getUid();
 
                       chilDatabase=FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
-
+                      useridlocal=random_timephone;
 
                       final StorageReference filepath = mStorage.child("Childimages").child(useridlocal+".jpg");
 
@@ -316,8 +334,7 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
                                       childata.put("school",Schoolname);
                                       childata.put("pre_branch",preferedBranch);
                                       childata.put("child_image",imgeuri.toString());
-                                      String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-                                      String random_timephone=phone+currentTime;
+
                                       db.insertdata_childpro(random_timephone);
                                       chilDatabase.child(random_timephone).updateChildren(childata).addOnCompleteListener(new OnCompleteListener<Void>() {
                                           @Override
@@ -326,6 +343,8 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
                                               addchildimg.setVisibility(View.VISIBLE);
                                               selectimg.setVisibility(View.INVISIBLE);
                                               rcvview.setVisibility(View.VISIBLE);
+                                              edtview.setVisibility(View.INVISIBLE);
+                                              imgeuri=null;
                                               Toast.makeText(Profiling_moreActivity.this, "upload successful", Toast.LENGTH_SHORT).show();
                                               mdialog.dismiss();
                                           }
@@ -504,7 +523,7 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
 
     }
 
-    private void dialogbox_phonenumber(){
+    public void dialogbox_phonenumber(){
         AlertDialog.Builder albuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.phonenumber_dialog,null);
         albuilder.setView(view);

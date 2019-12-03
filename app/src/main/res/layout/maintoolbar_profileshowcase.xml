@@ -33,7 +33,7 @@
                <ImageView
                    android:layout_width="match_parent"
                    android:layout_height="?attr/actionBarSize"
-                   android:src="@drawable/bbl"
+                   android:src="@drawable/babulandlogo"
                    android:scaleType="fitCenter"
                    />
 

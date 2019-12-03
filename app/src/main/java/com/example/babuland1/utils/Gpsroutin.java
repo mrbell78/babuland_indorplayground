@@ -1,12 +1,9 @@
 package com.example.babuland1.utils;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.IntentSender;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;

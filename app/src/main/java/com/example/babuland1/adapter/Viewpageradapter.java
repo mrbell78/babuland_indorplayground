@@ -1,12 +1,10 @@
 package com.example.babuland1.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,7 +30,7 @@ public class Viewpageradapter extends PagerAdapter {
             R.drawable.carride,
             R.drawable.rockclim,
             R.drawable.ridecrcl,
-            R.drawable.fragment6
+            R.drawable.ballpool
     };
     public String[] headline={
         "Ball ocean Fun Ocean","Enjoy Car City","Be strong and climb rock","ha ha fun is life","we are flying"

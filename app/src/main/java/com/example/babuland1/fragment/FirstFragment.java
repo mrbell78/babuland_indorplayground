@@ -1,24 +1,14 @@
 package com.example.babuland1.fragment;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.Shader;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,10 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,12 +31,7 @@ import android.widget.Toast;
 import com.example.babuland1.MainActivity;
 import com.example.babuland1.R;
 import com.example.babuland1.activity.MyFreeTicketActivity;
-import com.example.babuland1.activity.MyeTicketActivity;
 import com.example.babuland1.activity.Qr_cameraopenerActivity;
-import com.example.babuland1.activity.QrcodeActivity;
-import com.example.babuland1.activity.TicketfromListviewActivity;
-import com.example.babuland1.interfacee.NameChangedListener;
-import com.example.babuland1.utils.DbHelper;
 import com.example.babuland1.utils.DbHelper_freeTicket;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -62,13 +44,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -119,8 +99,10 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
 
     private Date currentTime;
     private String imagename;
-    private int count_ticketrdm=0;
+    private Integer count_ticketrdm=0;
     DbHelper_freeTicket db;
+
+    DatabaseReference Freeticketdb;
 
     SimpleDateFormat dateFormat;
     String formattedDate;
@@ -153,6 +135,9 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
         dateFormat = new SimpleDateFormat("dd-MMM-yy hh.mm.ss.S aa");
 
         btn_redmticket=view.findViewById(R.id.btn_redeemtk);
+        mCurrentUser= FirebaseAuth.getInstance().getCurrentUser();
+        Freeticketdb=FirebaseDatabase.getInstance().getReference().child("Freeticket").child(mCurrentUser.getUid());
+
 
         if(status.equals(true)){
             btn_redmticket.setOnClickListener(new View.OnClickListener() {
@@ -175,19 +160,41 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                             count_ticketrdm =  dataSnapshot.child("ticket_redeem").getValue(Integer.class) ;
                             mDatabaseref.child("ticket_redeem").setValue(count_ticketrdm=count_ticketrdm+1);
                             formattedDate = dateFormat.format(new Date()).toString();
-                            db.insertdata_free(formattedDate,0,123456789+count_ticketrdm,"free","any");
-                            tv_ticketrdm.setText(Integer.toString(count_ticketrdm)+" free ticket");
+                            //db.insertdata_free(formattedDate,0,123456789+count_ticketrdm,"free","any");
+
+                            String currentTime_rdm = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                            String phone = dataSnapshot.child("phone").getValue().toString();
+                            // db.insertdata_free(formattedDate,0,123456789+count_ticketrdm,"free","any");
 
 
+                            Map imagedatawiththum=  new HashMap();
+                            imagedatawiththum.put("status","Free ticket");
+                            imagedatawiththum.put("phone",phone);
+                            imagedatawiththum.put("total_amount",0);
+                            imagedatawiththum.put("branch","any");
+                            imagedatawiththum.put("time",formattedDate);
+                            imagedatawiththum.put("orderid",0);
+                            String childname=phone+currentTime_rdm;
 
-                            Intent intent = new Intent(getContext(), TicketfromListviewActivity.class);
 
-                            intent.putExtra("orderid",123456789+count_ticketrdm);
-                            intent.putExtra("time",formattedDate);
-                            intent.putExtra("total",0);
-                            intent.putExtra("status","free");
-                            intent.putExtra("branch","any");
-                            getContext().startActivity(intent);
+                            Freeticketdb.child(childname).updateChildren(imagedatawiththum).addOnCompleteListener(new OnCompleteListener() {
+                                @Override
+                                public void onComplete(@NonNull Task task) {
+                                    if(task.isSuccessful()){
+                                        tv_ticketrdm.setText(Integer.toString(count_ticketrdm)+" free ticket");
+                                        mdialog.dismiss();
+
+                                        /*Intent intent = new Intent(getContext(), TicketfromListviewActivity.class);
+
+                                        intent.putExtra("orderid",123456789+count_ticketrdm);
+                                        intent.putExtra("time",formattedDate);
+                                        intent.putExtra("total",0);
+                                        intent.putExtra("status","Free ticket");
+                                        intent.putExtra("branch","any");
+                                        getContext().startActivity(intent);*/
+                                    }
+                                }
+                            });
 
                         }
 
@@ -230,8 +237,35 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                         count_ticketrdm =  dataSnapshot.child("ticket_redeem").getValue(Integer.class) ;
                         mDatabaseref.child("ticket_redeem").setValue(count_ticketrdm=count_ticketrdm+1);
                         formattedDate = dateFormat.format(new Date()).toString();
-                        db.insertdata_free(formattedDate,0,123456789+count_ticketrdm,"free","any");
-                        tv_ticketrdm.setText(Integer.toString(count_ticketrdm)+" free ticket");
+                        String currentTime_later = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                        String phone = dataSnapshot.child("phone").getValue().toString();
+                       // db.insertdata_free(formattedDate,0,123456789+count_ticketrdm,"free","any");
+
+
+                        Map imagedatawiththum=  new HashMap();
+                        imagedatawiththum.put("status","Free ticket");
+                        imagedatawiththum.put("phone",phone);
+                        imagedatawiththum.put("total_amount",0);
+                        imagedatawiththum.put("branch","any");
+                        imagedatawiththum.put("time",formattedDate);
+                        imagedatawiththum.put("orderid",123456789+count_ticketrdm);
+                        String childname=phone+currentTime_later;
+
+                        Freeticketdb.child(childname).updateChildren(imagedatawiththum).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                if(task.isSuccessful()){
+                                    tv_ticketrdm.setText(Integer.toString(count_ticketrdm)+" free ticket");
+                                    mdialog.dismiss();
+                                }
+                            }
+                        });
+
+
+
+
+
                     }
 
                     @Override
@@ -265,6 +299,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
         qrResult=getActivity().findViewById(R.id.qrResult);
         mCurrentUser= FirebaseAuth.getInstance().getCurrentUser();
         tv_ticketrdm=getActivity().findViewById(R.id.tv_ticketrdm);
+
 
 
 
@@ -871,6 +906,11 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                        pre_win.setVisibility(View.INVISIBLE);
                        layout_rdm.setVisibility(View.VISIBLE);
                        status = true;
+
+
+
+
+
                        Toast.makeText(getContext(), "totaltime " + mpp.getDuration(), Toast.LENGTH_SHORT).show();
                        Log.d(TAG, "onComplete: ---------------------------------------------------total animation sound time(mil)-----------------------------------------------" + mpp.getDuration());
                       finladatafromqr=null;

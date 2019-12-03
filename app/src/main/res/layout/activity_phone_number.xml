@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ChildprofileeditActivity">
+    tools:context="com.example.babuland1.activity.ChildprofileeditActivity">
 
     <include layout="@layout/maintoolbar"
         android:id="@+id/mainToolbar"/>
@@ -15,7 +15,7 @@
         android:layout_height="250dp"
         android:layout_below="@+id/mainToolbar"
         android:scaleType="fitXY"
-        android:src="@drawable/bday4"
+        android:src="@drawable/babuland"
         android:id="@+id/babypropicid"
         />
 

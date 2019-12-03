@@ -6,13 +6,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
@@ -24,25 +22,19 @@ import com.example.babuland1.R;
 import com.example.babuland1.utils.DbHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -77,11 +69,14 @@ public class QrcodeActivity extends AppCompatActivity {
     byte imageInByte[];
     StorageReference mStorage;
 
+    DatabaseReference Buyticketref;
+
     ProgressDialog mDialog;
 
     String passengerID;
     DatabaseReference ref;
     QRGEncoder qrgEncoder;
+
 
 
 
@@ -118,6 +113,7 @@ public class QrcodeActivity extends AppCompatActivity {
         if(mUser!=null){
             userId=mUser.getUid();
             mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+            Buyticketref=FirebaseDatabase.getInstance().getReference().child("Buyticket").child(userId);
         }else{
             Log.d("user", "onCreate: ----------------------------------------------------------------------------firebase user ---------------------------------------------------"+userId);
         }
@@ -157,11 +153,16 @@ public class QrcodeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int orderid_adapter = intent.getIntExtra("orderid",0);
 
-        Log.d("orderid_adapter", "onCreate: ------------------------------------- orderidadapter "+orderid_adapter);
+        uploadticket_info(Integer.toString(orderid_adapter));
+        mDialog.show();
+
+       /* Log.d("orderid_adapter", "onCreate: ------------------------------------- orderidadapter "+orderid_adapter);
         if(orderid_adapter!=0 )
             qrcodegenaretorfromadapter(String.valueOf(orderid_adapter));
         else
-            qrcodegenaretor(String.valueOf(orderid));
+            qrcodegenaretor(String.valueOf(orderid));*/
+
+
 
 
 
@@ -192,7 +193,7 @@ public class QrcodeActivity extends AppCompatActivity {
             try {
                 bitmap= qrgEncoder.encodeAsBitmap();
                 imageView.setImageBitmap(bitmap);
-                covertBitmaptobyte(bitmap);
+               // covertBitmaptobyte(bitmap);
                 mDialog.show();
 
 
@@ -226,7 +227,7 @@ public class QrcodeActivity extends AppCompatActivity {
             try {
                 bitmap= qrgEncoder.encodeAsBitmap();
                 imageView.setImageBitmap(bitmap);
-                covertBitmaptobyte(bitmap);
+                //covertBitmaptobyte(bitmap);
                 mDialog.show();
 
                 save = QRGSaver.save(savePath, imagename, bitmap, QRGContents.ImageType.IMAGE_JPEG);
@@ -238,7 +239,7 @@ public class QrcodeActivity extends AppCompatActivity {
         }
     }
 
-    private void covertBitmaptobyte(Bitmap bitmap) {
+/*    private void covertBitmaptobyte(Bitmap bitmap) {
 
         //imageView.setImageBitmap(bitmap);
 
@@ -263,7 +264,7 @@ public class QrcodeActivity extends AppCompatActivity {
                             qrimageuri=downloaduri;
 
                             if(task.isSuccessful()){
-                                uploadticket(downloaduri.toString());
+                                uploadticket_info(downloaduri.toString());
                             }
                         }
                     });
@@ -273,32 +274,46 @@ public class QrcodeActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
-    private void uploadticket(final String toString) {
+ /*   private void uploadticket(final String toString) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy hh.mm.ss. aa");
+        String formattedDate = dateFormat.format(new Date()).toString();
+        Intent intent =getIntent();
+        String phone = intent.getStringExtra("phone");
+        Integer totalamount = intent.getIntExtra("totalammount",0);
+        String Branch = intent.getStringExtra("branchname");
+        final Integer orderid = intent.getIntExtra("orderid",0);
+
 
         Log.d("uri", "onSuccess: -------------------------------------- "+toString);
         Map imagedatawiththum=  new HashMap();
-        imagedatawiththum.put("imageqr_name"+imagename,toString);
         imagedatawiththum.put("status","valid");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy hh.mm.ss. aa");
-        String formattedDate = dateFormat.format(new Date()).toString();
-         db.insertdata(formattedDate,totalamount,orderid,"valid",branchname);
+        imagedatawiththum.put("phone",phone);
+        imagedatawiththum.put("total_amount",totalamount);
+        imagedatawiththum.put("branch",Branch);
+        imagedatawiththum.put("time",formattedDate);
+        imagedatawiththum.put("orderid",orderid);
+        db.insertdata(formattedDate,totalamount,orderid,"valid",branchname);
 
          //status value will come frome firebase
+        String childname=phone+formattedDate;
 
 
-        mDatabase.updateChildren(imagedatawiththum).addOnCompleteListener(new OnCompleteListener() {
+        Buyticketref.child(childname).updateChildren(imagedatawiththum).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
                 if(task.isSuccessful()){
                     mDialog.dismiss();
-                    Picasso.with(QrcodeActivity.this).load(toString).into(imageView);
+                    //Picasso.with(QrcodeActivity.this).load(toString).into(imageView);
+
+
                 }
             }
         });
 
-    }
+    }*/
 
     private void settextview() {
 
@@ -336,5 +351,61 @@ public class QrcodeActivity extends AppCompatActivity {
         tv_orderid=findViewById(R.id.orderid);
         tv_totalamount=findViewById(R.id.totalamount);
         tv_gateway=findViewById(R.id.gateway);
+    }
+
+
+    private  void uploadticket_info(final String imageuri){
+
+        mUser= FirebaseAuth.getInstance().getCurrentUser();
+        if(mUser!=null){
+            userId=mUser.getUid();
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+            Buyticketref=FirebaseDatabase.getInstance().getReference().child("Buyticket").child(userId);
+
+
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy hh.mm.ss. aa");
+            String formattedDate = dateFormat.format(new Date()).toString();
+
+            String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+            Intent intent =getIntent();
+            String phone = intent.getStringExtra("phone");
+            Integer totalamount = intent.getIntExtra("totalammount",0);
+            String Branch = intent.getStringExtra("branchname");
+            final Integer orderid = intent.getIntExtra("orderid",0);
+
+            Map imagedatawiththum=  new HashMap();
+            imagedatawiththum.put("status","valid");
+            imagedatawiththum.put("phone",phone);
+            imagedatawiththum.put("total_amount",totalamount);
+            imagedatawiththum.put("branch",Branch);
+            imagedatawiththum.put("time",formattedDate);
+            imagedatawiththum.put("orderid",orderid);
+            String childname=phone+currentTime;
+            Buyticketref.child(childname).updateChildren(imagedatawiththum).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if(task.isSuccessful()){
+                        //Picasso.with(getApplicationContext()).load(imageuri).into(imageView);
+                       qrcodegenaretorfromadapter(Integer.toString(orderid));
+                        mDialog.dismiss();
+
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("reason", "onFailure: ----------------------------error "+e.getMessage());
+                }
+            });
+
+            /*qrcodegenaretorfromadapter(Integer.toString(orderid));
+            mDialog.dismiss();*/
+
+        }else{
+            Log.d("user", "onCreate: ----------------------------------------------------------------------------firebase user ---------------------------------------------------"+userId);
+        }
+
+
     }
 }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.babuland1.R;
-import com.example.babuland1.activity.AccountSettingsActivity;
 import com.example.babuland1.activity.LeaderboardActivity;
 import com.example.babuland1.activity.QuizresultActivity;
 import com.example.babuland1.utils.Question;
@@ -32,19 +30,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class Thirdragment extends Fragment {

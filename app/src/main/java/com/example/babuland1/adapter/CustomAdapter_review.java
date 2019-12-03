@@ -16,9 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.babuland1.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CustomAdapter_review extends RecyclerView.Adapter<CustomAdapter_review.Customclass> {
     private Context context;
     private int[]img;

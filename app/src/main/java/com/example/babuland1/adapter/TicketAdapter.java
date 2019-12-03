@@ -1,24 +1,6 @@
 package com.example.babuland1.adapter;
 
-import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.babuland1.R;
-import com.example.babuland1.activity.QrcodeActivity;
-import com.example.babuland1.activity.TicketfromListviewActivity;
-import com.example.babuland1.model.Model_ticket;
-
-import java.util.List;
-
-public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.Customlookclass> {
+/*public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.Customlookclass> {
 
 
     Context context;
@@ -85,4 +67,4 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.Customlook
             relativeListener=mView.findViewById(R.id.relativeListener);
         }
     }
-}
+}*/

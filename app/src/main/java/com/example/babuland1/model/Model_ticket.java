@@ -2,18 +2,33 @@ package com.example.babuland1.model;
 
 public class Model_ticket {
 
-    int total;
+    Integer total_amount;
     String time;
     String status;
-    int orderid;
-    String branchname;
+    Integer orderid;
+    String branch;
+    String phone;
 
-    public int getTotal() {
-        return total;
+
+    public Model_ticket() {
     }
 
-    public void setTotal(int total) {
-        this.total = total;
+    public Model_ticket(Integer total_amount, String time, String status, Integer orderid, String branch, String phone) {
+        this.total_amount = total_amount;
+        this.time = time;
+        this.status = status;
+        this.orderid = orderid;
+        this.branch = branch;
+        this.phone = phone;
+    }
+
+
+    public Integer getTotal_amount() {
+        return total_amount;
+    }
+
+    public void setTotal_amount(Integer total_amount) {
+        this.total_amount = total_amount;
     }
 
     public String getTime() {
@@ -32,19 +47,27 @@ public class Model_ticket {
         this.status = status;
     }
 
-    public int getOrderid() {
+    public Integer getOrderid() {
         return orderid;
     }
 
-    public void setOrderid(int orderid) {
+    public void setOrderid(Integer orderid) {
         this.orderid = orderid;
     }
 
-    public String getBranchname() {
-        return branchname;
+    public String getBranch() {
+        return branch;
     }
 
-    public void setBranchname(String branchname) {
-        this.branchname = branchname;
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

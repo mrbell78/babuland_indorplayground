@@ -42,7 +42,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/choumin"
+                        android:src="@drawable/babuland"
                         android:scaleType="centerCrop"
                         android:id="@+id/image"
                         />

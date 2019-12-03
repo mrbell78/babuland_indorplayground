@@ -2,20 +2,7 @@ package com.example.babuland1.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.StrictMode;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.babuland1.R;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class TestactivityActivity extends AppCompatActivity {
 

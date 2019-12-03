@@ -1,30 +1,21 @@
 package com.example.babuland1.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.SystemClock;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -32,12 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.babuland1.R;
+import com.example.babuland1.activity.BabulandpointsActivity;
 import com.example.babuland1.activity.FooditemActivity;
+import com.example.babuland1.activity.LoginActivity;
 import com.example.babuland1.activity.PaymentActivity;
 import com.example.babuland1.adapter.CustomAdapter;
-import com.example.babuland1.adapter.Viewpageradapter;
 import com.example.babuland1.adapter.Viewpageradapter_homeslider;
-import com.example.babuland1.utils.DbHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -129,6 +120,13 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
         babulandpoints_liniarid=getActivity().findViewById(R.id.babulandpoint_liniarid);
         tv_babulandpoints=getActivity().findViewById(R.id.babulandpoint_tvid);
 
+         babulandpoints_liniarid.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 startActivity(new Intent(getActivity(), BabulandpointsActivity.class));
+             }
+         });
+
 
         mUser= FirebaseAuth.getInstance().getCurrentUser();
         if(mUser!=null) {
@@ -139,13 +137,13 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot != null && dataSnapshot.child("BabulandPoints").exists()) {
-                        int databaspoint = dataSnapshot.child("BabulandPoints").getValue(Integer.class);
+                        Integer databaspoint = dataSnapshot.child("BabulandPoints").getValue(Integer.class);
 
                         tv_babulandpoints.setText("My Points "+ Integer.toString(databaspoint));
                                             }
                     else {
 
-                        Toast.makeText(getActivity(), "failed to pull data", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "failed to pull data", Toast.LENGTH_SHORT).show();
                                             }
                 }
 
@@ -196,13 +194,8 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
             public void onClick(View view) {
 
                 startActivity(new Intent(getActivity(),FooditemActivity.class));
-
-
             }
         });
-
-
-
     }
 
 /*    private void addDotindicator(int position) {
@@ -320,6 +313,8 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
         super.onStart();
         delay=2500;
         priod=3000;
+
+
     }
 
     private void dialogbox() {
@@ -536,6 +531,12 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
              }
         }
     }
+
+    private void sendTologin() {
+        startActivity(new Intent(getContext(), LoginActivity.class));
+        //getContext().finish();
+    }
+
 
 
 }

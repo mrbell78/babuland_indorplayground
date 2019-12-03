@@ -1,23 +1,14 @@
 package com.example.babuland1.activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,9 +22,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,14 +36,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -104,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_varyfycode = findViewById(R.id.phone_ok);
         //btn_loginfacebook=findViewById(R.id.btn_facebboklogin);
         loginButton = findViewById(R.id.btn_facebboklogin);
-        txtSignupbt = findViewById(R.id.login_signup);
+       // txtSignupbt = findViewById(R.id.login_signup);
         mAuth = FirebaseAuth.getInstance();
         mUser=mAuth.getCurrentUser();
         mdialog=new ProgressDialog(this);
@@ -118,8 +104,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 sendVarificationcode();
                 edt_number.setText("");
-                btn_continiue.setVisibility(View.INVISIBLE);
-                btn_varyfycode.setVisibility(View.VISIBLE);
+
                 mdialog.show();
 
 
@@ -141,12 +126,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        txtSignupbt.setOnClickListener(new View.OnClickListener() {
+      /*  txtSignupbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), RegistrationActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             }
-        });
+        });*/
 
   /*      mCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
@@ -257,7 +242,12 @@ public class LoginActivity extends AppCompatActivity {
                         String userId_tkrdm = CurrentUser.getUid();
                         mDatabaseref = FirebaseDatabase.getInstance().getReference().child("User").child(userId_tkrdm);
                         mDatabaseref.child("ticket_redeem").setValue(0);
-                        mDatabaseref.child("progressvalue").setValue(30);
+                        mDatabaseref.child("pic_up").setValue(30);
+                        mDatabaseref.child("name_up").setValue(0);
+                        mDatabaseref.child("number_up").setValue(0);
+                        mDatabaseref.child("dob_up").setValue(0);
+                        mDatabaseref.child("mail_up").setValue(0);
+                        mDatabaseref.child("address_up").setValue(0);
                         mDatabaseref.child("BabulandPoints").setValue(0);
                         mDatabaseref.child("nof_purchase_time").setValue(0);
                         mDatabaseref.child("progressvalue_stamp").setValue(0);
@@ -327,6 +317,9 @@ public class LoginActivity extends AppCompatActivity {
 
             codesent=s;
             Toast.makeText(LoginActivity.this, "code sent", Toast.LENGTH_SHORT).show();
+
+            btn_continiue.setVisibility(View.INVISIBLE);
+            btn_varyfycode.setVisibility(View.VISIBLE);
             mdialog.dismiss();
         }
     };
@@ -381,7 +374,12 @@ public class LoginActivity extends AppCompatActivity {
 
                                                if(task.isSuccessful()){
                                                    mDatabaseref.child("ticket_redeem").setValue(0);
-                                                   mDatabaseref.child("progressvalue").setValue(20);
+                                                   mDatabaseref.child("pic_up").setValue(30);
+                                                   mDatabaseref.child("name_up").setValue(0);
+                                                   mDatabaseref.child("number_up").setValue(0);
+                                                   mDatabaseref.child("dob_up").setValue(0);
+                                                   mDatabaseref.child("mail_up").setValue(0);
+                                                   mDatabaseref.child("address_up").setValue(0);
                                                    mDatabaseref.child("BabulandPoints").setValue(0);
                                                    mDatabaseref.child("nof_purchase_time").setValue(0);
                                                    mDatabaseref.child("progressvalue_stamp").setValue(0);

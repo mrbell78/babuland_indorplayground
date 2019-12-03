@@ -2,6 +2,7 @@ package com.example.babuland1.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.babuland1.R;
 import com.example.babuland1.model.Model_leaderboard;
+import com.example.babuland1.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,16 +33,22 @@ public class LeaderboardActivity extends AppCompatActivity {
     private FirebaseUser mUser;
     private String mUserid;
     private RecyclerView recyclerView;
+    Toolbar mToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
+        mToolbar=findViewById(R.id.toolbar);
+
+        setSupportActionBar(mToolbar);
+        //db=new DbHelper_freeTicket(this);
+        getSupportActionBar().setTitle("Leader board");
+
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mUserid=mUser.getUid();
         mDatabase= FirebaseDatabase.getInstance().getReference().child("Leaderboard");
         recyclerView=findViewById(R.id.recyclerview);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -86,8 +93,6 @@ public class LeaderboardActivity extends AppCompatActivity {
         ImageView img_status;
         public UserViewholder(@NonNull View itemView) {
             super(itemView);
-
-
             imageView=itemView.findViewById(R.id.image_profile);
             tv_name=itemView.findViewById(R.id.text_profile);
             img_status=itemView.findViewById(R.id.imgstatus);

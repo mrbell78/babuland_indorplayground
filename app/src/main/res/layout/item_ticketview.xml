@@ -27,6 +27,7 @@
                android:layout_height="100dp"
                android:src="@drawable/ticket"
                android:layout_gravity="center"
+               android:id="@+id/img_ticketlogo"
                />
            <LinearLayout
                android:layout_width="match_parent"

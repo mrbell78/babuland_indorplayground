@@ -28,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 public class ReviewActivity extends AppCompatActivity {
 
 
-    int []img={R.drawable.bathroom,R.drawable.foodquality,R.drawable.pga,R.drawable.clean};
+    int []img={R.drawable.foodquality,R.drawable.foodquality,R.drawable.pga,R.drawable.clean};
     String []name;
     RecyclerView recyclerView;
     Button btn_confirmReview;

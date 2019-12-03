@@ -23,7 +23,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -109,7 +108,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
         mToolbar=findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("EditProfile");
+        getSupportActionBar().setTitle(R.string.editprofile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         edt_name=findViewById(R.id.name_id_accountSettings);
@@ -129,7 +128,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         cardViewaddimage=findViewById(R.id.addimagee);
         Intent intent = getIntent();
         fbVarificationId=intent.getStringExtra("r_home");
-        Log.d(TAG, "onCreate: ----------------------------------------------------------------------------------------fb varificationcode-----------------------------"+fbVarificationId);
+       // Log.d(TAG, "onCreate: ----------------------------------------------------------------------------------------fb varificationcode-----------------------------"+fbVarificationId);
 
 
         btn_more=findViewById(R.id.btn_more);
@@ -142,7 +141,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
             userId=mUser.getUid();
             mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(userId);
         }else{
-            Log.d(TAG, "onCreate: ----------------------------------------------------------------------------firebase user ---------------------------------------------------"+userId);
+            //Log.d(TAG, "onCreate: ----------------------------------------------------------------------------firebase user ---------------------------------------------------"+userId);
         }
 
 
@@ -186,14 +185,14 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
                     String emaill = dataSnapshot.child("email").getValue().toString();
                     emailvlue=emaill;
-                    Log.d(TAG, "onDataChange: -----------------------------------------emailvalue "+emailvlue);
+                    //Log.d(TAG, "onDataChange: -----------------------------------------emailvalue "+emailvlue);
                     tv_email.setText(emailvlue);
                     email.setText(emailvlue);
 
 
                   Uri imlink= Uri.parse(dataSnapshot.child("image").getValue().toString());
                   imgeuri= imlink;
-                    Log.d(TAG, "onDataChange: --------------------------------------------------------------image uri= "+imgeuri);
+                   // Log.d(TAG, "onDataChange: --------------------------------------------------------------image uri= "+imgeuri);
 
                     File orginalImagefile =  new File(imgeuri.getPath());
 
@@ -206,25 +205,31 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                         ByteArrayOutputStream  bos  = new ByteArrayOutputStream();
                         thumb_bitmap.compress(Bitmap.CompressFormat.JPEG,100,bos);
                         thumbdata=bos.toByteArray();
-                        Log.d(TAG, "onDataChange: ---------------------------------------------------------------thumbdata "+ thumbdata);
+                       // Log.d(TAG, "onDataChange: ---------------------------------------------------------------thumbdata "+ thumbdata);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
                     Picasso.with(getApplicationContext()).load(imgeuri).into(cr_profileimage);
 
-                    int  progressvalueformdb = dataSnapshot.child("progressvalue").getValue(Integer.class);
+                    int  pic_up = dataSnapshot.child("pic_up").getValue(Integer.class);
+                    int  name_up = dataSnapshot.child("name_up").getValue(Integer.class);
+                    int  number_up = dataSnapshot.child("number_up").getValue(Integer.class);
+                    int dob_up = dataSnapshot.child("dob_up").getValue(Integer.class);
+                    int mail_up = dataSnapshot.child("mail_up").getValue(Integer.class);
+                    int address_up = dataSnapshot.child("address_up").getValue(Integer.class);
+                    int totalProgress= pic_up+name_up+number_up+dob_up+mail_up+address_up;
                     //int databaspoint = dataSnapshot.child("BabulandPoints").getValue(Integer.class);
 
-                    if(progressvalueformdb!=0){
-                        profilestatus=progressvalueformdb;
+                    if(totalProgress!=0){
+                        profilestatus=totalProgress;
                         progressBar.setProgress(profilestatus);
                         tv_profilestatus.setText(Integer.toString(profilestatus)+"%");
-                    }else {
+                    }/*else {
 
                         progressBar.setProgress(profilestatus);
                         tv_profilestatus.setText(progressvalueformdb+"%");
-                    }
+                    }*/
 
 
                     String addressl=dataSnapshot.child("address").getValue().toString();
@@ -243,6 +248,21 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                     Log.d(TAG, "onDataChange: --------------------------------------------------number "+numbervalue);
                     tv_mobile.setText(numbervalue);
                     edt_enternumber.setText(numbervalue);
+
+
+                    gendervalue=dataSnapshot.child("gender").getValue().toString();
+                    tv_gender.setText(gendervalue);
+
+                    dateOfbirdthglb=dataSnapshot.child("dateofbirdth").getValue().toString();
+                    tv_dataofbirdth.setText(dateofbirdth);
+
+
+                    emailvlue=dataSnapshot.child("email").getValue().toString();
+                    tv_email.setText(emailvlue);
+
+
+                    addressvalue=dataSnapshot.child("address").getValue().toString();
+                    tv_address.setText(addressvalue);
 
 
 
@@ -389,7 +409,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         btn_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AccountSettingsActivity.this,Profiling_moreActivity.class));
+                startActivity(new Intent(AccountSettingsActivity.this,Profiling_moreActivity.class).putExtra("progress",profilestatus));
             }
         });
 
@@ -454,11 +474,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
     private void saveProfile(){
 
+        mUser=FirebaseAuth.getInstance().getCurrentUser();
+        String useridlc=mUser.getUid();
+        mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(useridlc);
 
-
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
 
@@ -466,36 +485,46 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
                         prifilemap.put("phone",numbervalue);
                         numberprogress=20;
-                        profilestatus=profilestatus+numberprogress;
+                        prifilemap.put("number_up",numberprogress);
+                        //profilestatus=profilestatus+numberprogress;
                         tv_mobile.setText(numbervalue);
                         Log.d(TAG, "onDataChange: ---------------------------------------number inserted");
                     }
-                    else if(!dateOfbirdthglb.equals("default") && dateofbirdthprogress==0){
+                     if(!dateOfbirdthglb.equals("default") && dateofbirdthprogress==0){
                         dateofbirdthprogress=15;
                         prifilemap.put("dateofbirdth",dateOfbirdthglb);
-                        profilestatus+=dateofbirdthprogress;
+                        prifilemap.put("dob_up",dateofbirdthprogress);
+                       // profilestatus+=dateofbirdthprogress;
                         Log.d(TAG, "onDataChange: ----------------------------------------------dateofbirdthd inserted");
                         tv_dataofbirdth.setText(dateOfbirdthglb);
                     }
-                    else if(!emailvlue.equals("default") && emailprogress==0){
+                    if(!emailvlue.equals("default") && emailprogress==0){
                         emailprogress=10;
                       prifilemap.put("email",emailvlue);
-                        profilestatus+=emailprogress;
+                      prifilemap.put("mail_up",emailprogress);
+
+                        //profilestatus+=emailprogress;
                         Log.d(TAG, "onDataChange: ---------------------------------------------------email inserted");
                         tv_email.setText(emailvlue);
                     }
 
-                    else if(!gendervalue.equals("default") ){
+
+                    Log.d(TAG, "importatn: -------gendervalue "+gendervalue);
+                     if(!gendervalue.equals("default") ){
                         prifilemap.put("gender",gendervalue);
+                        genderprogress=5;
+                        prifilemap.put("gender_up",genderprogress);
+
                        // profilestatus+=12;
                         //Log.d(TAG, "onDataChange: ----------------------------------------------------------gender inserted");
 
                         tv_gender.setText(gendervalue);
                     }
-                    else if(!addressvalue.equals("default") && addressprogress==0){
+                     if(!addressvalue.equals("default") && addressprogress==0){
                         addressprogress=10;
                         prifilemap.put("address",addressvalue);
-                        profilestatus+=addressprogress;
+                        prifilemap.put("address_up",addressprogress);
+                        //profilestatus+=addressprogress;
                         Log.d(TAG, "onDataChange: -----------------------------------------------------------address inserted");
                         tv_address.setText(addressvalue);
                     }
@@ -503,30 +532,30 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
 
-            }
+                if(prifilemap!=null){
+                    mDatabase.updateChildren(prifilemap).addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            //mDatabase.child("name").setValue(name);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                            Log.d(TAG, "onComplete: ----------------------map "+ prifilemap);
 
 
-        if(prifilemap!=null){
-            mDatabase.updateChildren(prifilemap).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    mDatabase.child("name").setValue(name);
-                    mDatabase.child("progressvalue").setValue(profilestatus);
-
-                    mdialog.dismiss();
-                    Toast.makeText(AccountSettingsActivity.this, " upload successful", Toast.LENGTH_SHORT).show();
-                    editlayout.setVisibility(View.INVISIBLE);
-                    viewlayout.setVisibility(View.VISIBLE);
-                    pin_layout.setVisibility(View.INVISIBLE);
+                            mdialog.dismiss();
+                            Toast.makeText(AccountSettingsActivity.this, " upload successful", Toast.LENGTH_SHORT).show();
+                            editlayout.setVisibility(View.INVISIBLE);
+                            viewlayout.setVisibility(View.VISIBLE);
+                            // pin_layout.setVisibility(View.INVISIBLE);
+                        }
+                    });
                 }
-            });
-        }
+
+
+
+
+
+
+
 
 
 
@@ -570,7 +599,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                                                                  if(task.isSuccessful()){
                                                                      if(profilepicprogress==0){
                                                                          profilepicprogress=30;
-                                                                         mDatabase.child("progressvalue").setValue(profilepicprogress);
+                                                                         mDatabase.child("pic_up").setValue(profilepicprogress);
                                                                      }
                                                                      Toast.makeText(AccountSettingsActivity.this, "save successful", Toast.LENGTH_SHORT).show();
                                                                      saveimage.setVisibility(View.INVISIBLE);

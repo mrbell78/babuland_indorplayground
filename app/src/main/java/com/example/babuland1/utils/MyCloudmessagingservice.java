@@ -10,12 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.babuland1.R;
 import com.example.babuland1.activity.AccountSettingsActivity;
+import com.example.babuland1.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import static com.example.babuland1.utils.Mynotification.CHANEL_1_ID;
 
 
 public class MyCloudmessagingservice extends FirebaseMessagingService {
@@ -58,14 +56,14 @@ public class MyCloudmessagingservice extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,specialintent,0);
 
 
-        Notification notification = new NotificationCompat.Builder(this,CHANEL_1_ID)
-                .setSmallIcon(R.drawable.babuland)
+        Notification notification = new NotificationCompat.Builder(this, Mynotification.CHANEL_1_ID)
+                .setSmallIcon(R.drawable.babulandlogo)
                 .setContentTitle(from)
                 .setContentText(body)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
-                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.babuland))
+                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.babulandlogo))
                 .build();
 
         notificationManagerCompat.notify(1,notification);
