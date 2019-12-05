@@ -28,7 +28,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@drawable/nhossen"
+                android:src="@drawable/babuland"
                 app:civ_border_width="1dp"
                 app:civ_border_color="#D81B60"
                 android:layout_marginTop="2dp"

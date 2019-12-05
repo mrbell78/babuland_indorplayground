@@ -1,4 +1,4 @@
-package com.example.babuland1;
+package com.babuland.babuland1;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.babuland1", appContext.getPackageName());
+        assertEquals("com.babuland.babuland1", appContext.getPackageName());
     }
 }

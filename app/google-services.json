@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:154407399184:android:33dce8fe2a7c107b16ff95",
+        "mobilesdk_app_id": "1:154407399184:android:c8031c313f6f541416ff95",
         "android_client_info": {
-          "package_name": "com.example.babuland1"
+          "package_name": "com.babuland.babuland1"
         }
       },
       "oauth_client": [
         {
-          "client_id": "154407399184-mbveajutpppficrqpjvdk3f6ankhgdie.apps.googleusercontent.com",
+          "client_id": "154407399184-okk9qgpt67rh773ma2faaeg21hja34o1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.babuland1",
+            "package_name": "com.babuland.babuland1",
             "certificate_hash": "29e58483eba79e5717d6f6a58f743a7cee70ca14"
           }
         },

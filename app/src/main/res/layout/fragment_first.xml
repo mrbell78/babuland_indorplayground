@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.babuland1.fragment.FirstFragment">
+    tools:context="com.babuland.babuland1.fragment.FirstFragment">
 
 
 
@@ -27,7 +27,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/nhossen"
+                android:src="@drawable/babuland"
                 app:civ_border_width="1dp"
                 app:civ_border_color="#fff"
                 android:id="@+id/first_cirimage"
@@ -92,7 +92,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         android:id="@+id/qrcodeScaner"
-        android:src="@drawable/qrcode"
+        android:src="@drawable/ticket_rugul"
         android:background="@drawable/qrcodeborder"
         android:visibility="invisible"
         />

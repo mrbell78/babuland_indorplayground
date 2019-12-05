@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.babuland1.activity.Profiling_moreActivity">
+    tools:context="com.babuland.babuland1.activity.Profiling_moreActivity">
 
     <include layout="@layout/maintoolbar"
         android:id="@+id/profilingtoolbar"/>
@@ -122,7 +122,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/child"
+                android:src="@drawable/babuland"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:id="@+id/child_image"

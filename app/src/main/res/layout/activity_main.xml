@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerlayout"
-    tools:context="com.example.babuland1.MainActivity">
+    tools:context="com.babuland.babuland1.MainActivity">
 
 
 

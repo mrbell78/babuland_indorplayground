@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context="com.example.babuland1.activity.LoginActivity">
+    tools:context="com.babuland.babuland1.activity.LoginActivity">
 
 
     <include layout="@layout/maintoolbar"

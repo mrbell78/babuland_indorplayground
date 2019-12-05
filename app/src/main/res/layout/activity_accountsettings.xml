@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#393838"
-    tools:context="com.example.babuland1.activity.AccountSettingsActivity"
-
+    tools:context="com.babuland.babuland1.activity.AccountSettingsActivity"
 
     >
     <include layout="@layout/maintoolbar"
@@ -16,7 +15,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/nhossen"
+        android:src="@drawable/babuland"
         android:id="@+id/cr_account_imagesettings"
         android:clickable="true"
         app:civ_border_color="#2196F3"

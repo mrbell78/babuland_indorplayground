@@ -25,7 +25,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:src="@drawable/child"
+            android:src="@drawable/babuland"
             android:id="@+id/childpicimg"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"

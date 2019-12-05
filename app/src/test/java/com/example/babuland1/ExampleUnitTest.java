@@ -1,4 +1,4 @@
-package com.example.babuland1;
+package com.babuland.babuland1;
 
 import org.junit.Test;
 
