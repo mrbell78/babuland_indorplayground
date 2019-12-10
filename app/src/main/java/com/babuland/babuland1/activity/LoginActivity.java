@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +23,9 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,6 +45,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String imagekey="bell";
     public static final String emailkey="email";
 
+    String number;
 
 
     private FirebaseAuth mAuth;
@@ -75,9 +81,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+       // accessToken = AccessToken.getCurrentAccessToken();
         setContentView(R.layout.activity_login);
-
-
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -95,22 +102,33 @@ public class LoginActivity extends AppCompatActivity {
         mUser=mAuth.getCurrentUser();
         mdialog=new ProgressDialog(this);
         mdialog.setTitle("Login");
-        mdialog.setMessage("Please wait.....a second... :)");
+        mdialog.setMessage("Please wait.......:)");
 
 
+           // number=edt_number.getText().toString();
+            btn_continiue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "onClick: -------------------number length "+ edt_number.getText().toString().length());
 
-        btn_continiue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendVarificationcode();
-                edt_number.setText("");
+                    if(!TextUtils.isEmpty(edt_number.getText().toString()) && edt_number.getText().toString().length()==11){
+                        sendVarificationcode();
+                        edt_number.setHint("Enter pin");
+                        edt_number.setText("");
+                        mdialog.show();
+                    }
 
-                mdialog.show();
+                    else if(TextUtils.isEmpty(edt_number.getText().toString())) {
 
+                        edt_number.setError("number is empty!!");
+                        Toast.makeText(LoginActivity.this, "Please Enter valid number", Toast.LENGTH_SHORT).show();
+                    }else if (edt_number.getText().toString().length()<=10 || edt_number.getText().toString().length()>=11 || edt_number.getText().toString().length()!=11 ){
+                        edt_number.setError("enter 11 digit number without +88");
+                        Toast.makeText(LoginActivity.this, "enter 11 digit number without +88", Toast.LENGTH_SHORT).show();
+                    }
 
-          }
-        });
-
+                }
+            });
         btn_varyfycode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,7 +182,27 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         //loginButton = findViewById(R.id.login_withfb);
-        loginButton.setReadPermissions("email", "public_profile");
+
+        //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email","public_profile"));
+      /*  LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });*/
+    loginButton.setReadPermissions("email", "public_profile");
         //loginButton.setPermissions("email","public_profile");
 
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -182,7 +220,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
+                Log.d("error_facebook", "facebook:onError", error);
                 // ...
             }
         });
@@ -214,15 +252,14 @@ public class LoginActivity extends AppCompatActivity {
                 mDatabaseref = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
                 Map<String, String> userfield = new HashMap<>();
                 userfield.put("name", fullname);
-                userfield.put("email", "default");
-                userfield.put("phone", "default");
+                userfield.put("email", "Email");
+                userfield.put("phone", "Number");
                 userfield.put("password", "default");
                 userfield.put("image", profileimage);
                 userfield.put("thumb_nail", "default");
-                userfield.put("gender","default");
-                userfield.put("dateofbirdth","default");
-                userfield.put("address","default");
-
+                userfield.put("gender","Gender");
+                userfield.put("dateofbirdth","Date of Birth");
+                userfield.put("address","Your Address");
                 userfield.put("qrdata","nurhossen");
                 userfield.put("count1","avail");
                 userfield.put("count2","avail");
@@ -235,8 +272,9 @@ public class LoginActivity extends AppCompatActivity {
                 userfield.put("count9","avail");
                 userfield.put("count10","avail");
                 userfield.put("comment", "not comment yet");
-
                 userfield.put("userid",uniqid);
+
+
                 mDatabaseref.setValue(userfield).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -349,15 +387,15 @@ public class LoginActivity extends AppCompatActivity {
                                    }else{
                                        Toast.makeText(LoginActivity.this, "new user", Toast.LENGTH_SHORT).show();
                                        Map<String, String> userfield = new HashMap<>();
-                                       userfield.put("name", "default");
-                                       userfield.put("email", "default");
+                                       userfield.put("name", "Name");
+                                       userfield.put("email", "Email");
                                        userfield.put("phone", phonenumber);
                                        userfield.put("password", "default");
                                        userfield.put("image", "default");
                                        userfield.put("thumb_nail", "default");
-                                       userfield.put("gender","default");
-                                       userfield.put("dateofbirdth","default");
-                                       userfield.put("address","default");
+                                       userfield.put("gender","Gender");
+                                       userfield.put("dateofbirdth","Date of Birth");
+                                       userfield.put("address","Your Address");
                                        userfield.put("qrdata","nurhossen");
                                        userfield.put("count1","avail");
                                        userfield.put("count2","avail");
@@ -448,5 +486,9 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+
+
 
 }

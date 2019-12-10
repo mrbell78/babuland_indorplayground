@@ -13,6 +13,7 @@
         android:layout_height="60dp"
         app:cardCornerRadius="30dp"
         android:layout_gravity="center"
+        android:id="@+id/profileid"
         >
         <ImageView
             android:layout_width="match_parent"

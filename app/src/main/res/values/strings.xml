@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Babuland</string>
-    <string name="facebook_app_id">2408380726099956</string>
+    <string name="facebook_app_id">2408380726099956 </string>
     <string name="fb_login_protocol_scheme">fb2408380726099956</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -47,7 +47,6 @@
         <item>300tk</item>
         <item>130tk</item>
 
-
     </string-array>
 
     <string-array name="name">
@@ -61,5 +60,6 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="editprofile">Edit Profile</string>
+    <string name="ticket_info">This Qrcode is your ticket. Please Scan this qrcode at babuland POS pointer in your respective branch</string>
 
 </resources>

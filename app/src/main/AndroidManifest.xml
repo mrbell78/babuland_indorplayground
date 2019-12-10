@@ -4,7 +4,6 @@
     package="com.babuland.babuland1">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,16 +11,24 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.location.network" />
-    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.location.network" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
-    <uses-feature android:name="android.hardware.camera2" />
-    <uses-feature android:name="android.hardware.camera2.autofocus" />
+    <uses-feature android:name="android.hardware.camera2"  android:required="false"/>
+    <uses-feature android:name="android.hardware.camera2.autofocus" android:required="false" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" >
+    </supports-screens>
 
     <application
         android:name="com.babuland.babuland1.utils.Myapp"
@@ -31,27 +38,56 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.babuland.babuland1.activity.ChildprofileeditActivity"></activity>
-        <activity android:name="com.babuland.babuland1.activity.LeaderboardActivity" />
+        <activity android:name="com.babuland.babuland1.activity.ChildprofileeditActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.babuland.babuland1.activity.LeaderboardActivity" android:screenOrientation="portrait" />
         <activity
             android:name="com.babuland.babuland1.activity.MyFreeTicketActivity"
-            android:parentActivityName="com.babuland.babuland1.MainActivity" />
-        <activity android:name="com.babuland.babuland1.activity.TicketfromListviewActivity" android:parentActivityName="com.babuland.babuland1.MainActivity" />
-        <activity android:name="com.babuland.babuland1.activity.Profiling_moreActivity" android:parentActivityName="com.babuland.babuland1.activity.AccountSettingsActivity" />
-        <activity android:name="com.babuland.babuland1.activity.FooditemActivity" android:parentActivityName="com.babuland.babuland1.MainActivity"/>
-        <activity android:name="com.babuland.babuland1.activity.BabulandpointsActivity"  android:parentActivityName="com.babuland.babuland1.MainActivity"/>
-        <activity android:name="com.babuland.babuland1.activity.QuizresultActivity" />
-        <activity android:name="com.babuland.babuland1.activity.TicketfailedActivity" />
-        <activity android:name="com.babuland.babuland1.activity.TestactivityActivity" />
+            android:parentActivityName="com.babuland.babuland1.MainActivity"
+            android:screenOrientation="portrait"
+
+            />
+        <activity android:name="com.babuland.babuland1.activity.TicketfromListviewActivity"
+            android:parentActivityName="com.babuland.babuland1.MainActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.babuland.babuland1.activity.Profiling_moreActivity"
+            android:parentActivityName="com.babuland.babuland1.activity.AccountSettingsActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.babuland.babuland1.activity.FooditemActivity"
+            android:parentActivityName="com.babuland.babuland1.MainActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.babuland.babuland1.activity.BabulandpointsActivity"
+            android:parentActivityName="com.babuland.babuland1.MainActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.babuland.babuland1.activity.QuizresultActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.babuland.babuland1.activity.TicketfailedActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.babuland.babuland1.activity.TestactivityActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name="com.babuland.babuland1.activity.MyeTicketActivity"
             android:parentActivityName="com.babuland.babuland1.MainActivity" />
         <activity
             android:name="com.babuland.babuland1.activity.QrcodeActivity"
-            android:parentActivityName="com.babuland.babuland1.MainActivity" />
-        <activity android:name="com.babuland.babuland1.activity.ReviewActivity" />
-        <activity android:name="com.babuland.babuland1.activity.PaymentActivity" />
-        <activity android:name="com.babuland.babuland1.activity.MapActivity" />
+            android:parentActivityName="com.babuland.babuland1.MainActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.babuland.babuland1.activity.ReviewActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.babuland.babuland1.activity.PaymentActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.babuland.babuland1.activity.MapActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name="com.babuland.babuland1.activity.WelcomeanimActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,7 +95,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.babuland.babuland1.activity.Qr_cameraopenerActivity" />
+        <activity android:name="com.babuland.babuland1.activity.Qr_cameraopenerActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name="com.babuland.babuland1.activity.AccountSettingsActivity"
             android:parentActivityName="com.babuland.babuland1.MainActivity" />
@@ -70,8 +108,12 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name="com.babuland.babuland1.activity.LoginActivity"
+
+            android:screenOrientation="portrait"
             android:parentActivityName="com.babuland.babuland1.activity.WelcomeActivity" />
         <activity android:name="com.babuland.babuland1.MainActivity" />
+
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -90,10 +132,11 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
@@ -108,10 +151,6 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
-        <meta-data
-            android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_vl0vggjDMcFHGs" />
     </application>
 
 </manifest>

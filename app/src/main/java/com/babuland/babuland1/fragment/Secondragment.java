@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,8 @@ public class Secondragment extends Fragment implements View.OnClickListener, OnM
     int firsttimeshow=0;
 
 
+
+
     public Secondragment() {
         // Required empty public constructor
     }
@@ -103,6 +106,8 @@ public class Secondragment extends Fragment implements View.OnClickListener, OnM
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
         View view =inflater.inflate(R.layout.fragment_secondragment, container, false);
 
         return view;
@@ -145,7 +150,7 @@ public class Secondragment extends Fragment implements View.OnClickListener, OnM
        /* startActivity(new Intent(getActivity(), MapActivity.class));*/
 
 
-
+/*
         if(Build.VERSION.SDK_INT>=23){
             if(ActivityCompat.checkSelfPermission(getActivity(),Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED &&
 
@@ -153,7 +158,7 @@ public class Secondragment extends Fragment implements View.OnClickListener, OnM
             ){
                 ActivityCompat.requestPermissions(getActivity(),permision,RC_PERMISSION);
             }
-        }
+        }*/
 
     }
 
@@ -210,7 +215,7 @@ public class Secondragment extends Fragment implements View.OnClickListener, OnM
             newMarker.setTitle("My position");
             oldMarker=newMarker;
             if(firsttimeshow==0){
-                cameraUpdate= CameraUpdateFactory.newLatLngZoom(ll,12);
+                cameraUpdate= CameraUpdateFactory.newLatLngZoom(ll,11);
                 gMap.animateCamera(cameraUpdate);
                 firsttimeshow=1;
             }
@@ -236,14 +241,19 @@ public class Secondragment extends Fragment implements View.OnClickListener, OnM
     public void getThisDevicelocation(){
 
 
+
         if(Build.VERSION.SDK_INT>=23){
             if(ActivityCompat.checkSelfPermission(getActivity(),Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED &&
 
                     ActivityCompat.checkSelfPermission(getActivity(),Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED
             ){
                 ActivityCompat.requestPermissions(getActivity(),permision,RC_PERMISSION);
+                firsttimeshow=0;
+
+
             }
         }
+
 
         gpsroutin=new Gpsroutin((AppCompatActivity) getActivity());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -265,7 +275,7 @@ public class Secondragment extends Fragment implements View.OnClickListener, OnM
         mirpurMarker= gMapmirpur.addMarker(new MarkerOptions().position(mirpur));//.title("babuland mirpur")).showInfoWindow();
         mirpurMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         mirpurMarker.setTitle("Babuland Mirpur");
-        mirpurMarker.showInfoWindow();
+        //mirpurMarker.showInfoWindow();
     }
 
     Response.Listener<JSONObject>jsonObjectlistener = new Response.Listener<JSONObject>() {
@@ -413,5 +423,10 @@ public class Secondragment extends Fragment implements View.OnClickListener, OnM
 
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("on destroy", "onDestroy: -------------------------------on destroy is clicked");
+        firsttimeshow=0;
+    }
 }

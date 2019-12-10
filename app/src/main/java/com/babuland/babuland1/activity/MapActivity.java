@@ -306,6 +306,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     ActivityCompat.checkSelfPermission(MapActivity.this,Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED
             ){
                 ActivityCompat.requestPermissions(MapActivity.this,permision,RC_PERMISSION);
+
+                gpsroutin=new Gpsroutin(this);
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapActivity.this);
+
+                fusedLocationProviderClient.requestLocationUpdates(gpsroutin.getmLocationreq(),locationCallback, Looper.myLooper());
+
+
+
+                LatLng uttara = new LatLng(23.8742693,90.397924);
+                uttaraMarker= gMaputtara.addMarker(new MarkerOptions().position(uttara));//.title("babuland mirpur")).showInfoWindow();
+                uttaraMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                uttaraMarker.setTitle("Babuland Uttara");
+
+                LatLng wari = new LatLng(23.7195281,90.397924);
+                wariMarker= gMapwari.addMarker(new MarkerOptions().position(wari));//.title("babuland mirpur")).showInfoWindow();
+                wariMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                wariMarker.setTitle("Babuland Wari");
+
+                LatLng mirpur = new LatLng(23.8047339,90.3614061);
+                mirpurMarker= gMapmirpur.addMarker(new MarkerOptions().position(mirpur));//.title("babuland mirpur")).showInfoWindow();
+                mirpurMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                mirpurMarker.setTitle("Babuland Mirpur");
+                mirpurMarker.showInfoWindow();
             }
         }
 

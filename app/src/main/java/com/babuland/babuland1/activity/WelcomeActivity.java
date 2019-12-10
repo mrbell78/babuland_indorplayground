@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -114,12 +115,17 @@ public class WelcomeActivity extends AppCompatActivity {
                     else if(mViewpager.getCurrentItem()==3)
                         mViewpager.setCurrentItem(4);
                     else if(mViewpager.getCurrentItem()==4)
-                        mViewpager.setCurrentItem(5);
-                    Log.d(TAG, "run: --------------------------------------------------------------------getCurrentposition-------------------------"+mViewpager.getCurrentItem());
-
-                    if(mViewpager.getCurrentItem()==4){
+                    {
+                        SystemClock.sleep(100);
                         mViewpager.setCurrentItem(0,true);
+                        Log.d(TAG, "run: --------------------------------------------------------------------getCurrentposition-------------------------"+mViewpager.getCurrentItem());
                     }
+
+                   /* if(mViewpager.getCurrentItem()==5){
+                        Log.d(TAG, "run: --------------------------------------------------------------------getCurrentposition-------------------------"+mViewpager.getCurrentItem());
+                        SystemClock.sleep(100);
+                        mViewpager.setCurrentItem(0,true);
+                    }*/
                 }
             });
         }

@@ -56,11 +56,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="20dp"
         android:id="@+id/btn_layout"
         android:gravity="center"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+
+
         >
 
         <Button
@@ -72,6 +74,7 @@
             android:background="@color/colorAccent"
             android:textAllCaps="false"
             android:id="@+id/btn_mirpur"
+
             />
 
         <Button
@@ -81,8 +84,8 @@
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:background="#4CAF50"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:textAllCaps="false"
             android:id="@+id/btn_uttara"
             />
@@ -93,24 +96,25 @@
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:background="#FFC107"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:textAllCaps="false"
             android:id="@+id/btn_wari"
-
             />
 
-        <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/btn_cirbackground"
-            android:src="@drawable/ic_my_location"
-            android:id="@+id/btn_location"
-            />
+
 
 
     </LinearLayout>
 
 
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_cirbackground"
+        android:src="@drawable/ic_my_location"
+        android:id="@+id/btn_location"
+        android:layout_margin="20dp"
+        />
 
 </RelativeLayout>

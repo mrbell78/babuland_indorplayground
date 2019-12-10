@@ -49,7 +49,7 @@ public class QrcodeActivity extends AppCompatActivity {
     DatabaseReference mDatabase;
     String name;
     ImageView imageView;
-    String savePath = Environment.getExternalStorageDirectory().getPath() + "/QRCode/";
+    //String savePath = Environment.getExternalStorageDirectory().getPath() + "/QRCode/";
     Toolbar mToolbar;
     TextView tv_branchname,tv_name,tv_infant,tv_kids,tv_gardian,tv_socks,tv_orderid,tv_gateway,tv_totalamount;
 
@@ -196,10 +196,6 @@ public class QrcodeActivity extends AppCompatActivity {
                // covertBitmaptobyte(bitmap);
                 mDialog.show();
 
-
-                save = QRGSaver.save(savePath, imagename, bitmap, QRGContents.ImageType.IMAGE_JPEG);
-                result = save ? "Saved" : "Image Not Saved";
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -229,10 +225,6 @@ public class QrcodeActivity extends AppCompatActivity {
                 imageView.setImageBitmap(bitmap);
                 //covertBitmaptobyte(bitmap);
                 mDialog.show();
-
-                save = QRGSaver.save(savePath, imagename, bitmap, QRGContents.ImageType.IMAGE_JPEG);
-                result = save ? "Saved" : "Image Not Saved";
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }

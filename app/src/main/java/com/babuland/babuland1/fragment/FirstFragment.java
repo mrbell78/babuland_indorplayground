@@ -295,8 +295,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
         tv_percentage=getActivity().findViewById(R.id.tv_percentage);
         name=getActivity().findViewById(R.id.name_id);
         number=getActivity().findViewById(R.id.number_id);
-        qrCodeScaner=getActivity().findViewById(R.id.qrcodeScaner);
-        qrResult=getActivity().findViewById(R.id.qrResult);
+
         mCurrentUser= FirebaseAuth.getInstance().getCurrentUser();
         tv_ticketrdm=getActivity().findViewById(R.id.tv_ticketrdm);
 
@@ -906,11 +905,6 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                        pre_win.setVisibility(View.INVISIBLE);
                        layout_rdm.setVisibility(View.VISIBLE);
                        status = true;
-
-
-
-
-
                        Toast.makeText(getContext(), "totaltime " + mpp.getDuration(), Toast.LENGTH_SHORT).show();
                        Log.d(TAG, "onComplete: ---------------------------------------------------total animation sound time(mil)-----------------------------------------------" + mpp.getDuration());
                       finladatafromqr=null;

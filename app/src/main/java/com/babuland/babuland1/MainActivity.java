@@ -176,9 +176,15 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                             Log.d(TAG, "onDataChange: -----------------------------------------------service started again "+ isMyServiceRunning(BroadcastService.class));
                             startService(new Intent(MainActivity.this, BroadcastService.class));
                         }
-                        header_name.setText(name);
+                        header_name.setText(name_fromfirebase);
                         header_number.setText(phone);
                         Picasso.with(MainActivity.this).load(imageuri).into(header_proimg);
+                        header_proimg.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(getApplicationContext(),AccountSettingsActivity.class));
+                            }
+                        });
                     }
                 }
 

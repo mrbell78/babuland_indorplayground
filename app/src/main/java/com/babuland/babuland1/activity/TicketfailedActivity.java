@@ -23,6 +23,6 @@ public class TicketfailedActivity extends AppCompatActivity {
 
         int orderid=intent.getIntExtra("orderid",0);
 
-        tv_orderid.setText("452315781434tsl44");
+        tv_orderid.setText(orderid);
     }
 }

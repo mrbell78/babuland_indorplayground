@@ -303,6 +303,7 @@ public class ForthFragment extends Fragment  implements View.OnClickListener {
                 Count_socks++;
                 tv_minus_socks.setText(Integer.toString(Count_socks));
                 break;
+
                 default:return;
         }
 

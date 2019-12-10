@@ -88,9 +88,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     userfield.put("password",password);
                     userfield.put("image","default");
                     userfield.put("thumb_nail","default");
-                    userfield.put("gender","default");
-                    userfield.put("dateofbirdth","default");
-                    userfield.put("address","default");
+                    userfield.put("gender","Gender");
+                    userfield.put("dateofbirdth","Date of Birth");
+                    userfield.put("address","Your Address");
                     userfield.put("qrdata","nurhossen");
                     userfield.put("count1","avail");
                     userfield.put("count2","avail");

@@ -12,9 +12,9 @@
     android:id="@+id/toolbar_qrcode"/>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_qrcode"
-        android:text="This Qrcode is your ticket. Please Scan this qrcode at babuland POS pointer in your respective  branch"
+        android:text="@string/ticket_info"
         android:textAlignment="center"
         android:gravity="center"
         android:textSize="18sp"
@@ -31,6 +31,7 @@
         android:id="@+id/imgqr"
         android:src="@drawable/jouce2"
         android:scaleType="centerCrop"
+        android:layout_marginTop="5dp"
 
         />
 

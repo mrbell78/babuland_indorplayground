@@ -370,7 +370,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             Log.d("errorsql", "onCreate: ------------------------------------------------------"+e.getMessage());
-            startActivity(new Intent(getApplicationContext(),TicketfailedActivity.class).putExtra("orderid",orderid_maxvalue));
+            startActivity(new Intent(getApplicationContext(),TicketfailedActivity.class).putExtra("orderid",gatawayname));
 
 
             finish();
@@ -379,7 +379,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             e.printStackTrace();
             Log.d("sql exception", "onCreate: ----------------------------------------------------database error---------------------------"+e.getMessage());
             Toast.makeText(this, "error  "+e.getMessage(), Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(),TicketfailedActivity.class).putExtra("orderid",orderid_maxvalue));
+            startActivity(new Intent(getApplicationContext(),TicketfailedActivity.class).putExtra("orderid",gatawayname));
         }
     }
 
@@ -422,11 +422,16 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
 
     @Override
     public void transactionFail(String s) {
+        Toast.makeText(this, "transaction failed", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "------------------transactionFailed due to  "+s);
 
     }
 
     @Override
     public void merchantValidationError(String s) {
+
+        Log.d(TAG, "merchantValidationError: -----------merchant validation error "+ s);
+        Toast.makeText(this, "merchant account error ", Toast.LENGTH_SHORT).show();
 
     }
 

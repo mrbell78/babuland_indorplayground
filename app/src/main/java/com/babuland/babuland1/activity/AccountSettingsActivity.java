@@ -455,7 +455,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                     edt_name.setError("your name pleaes");
                     email.setError("your email ");
                    // gender.setError("Enter gender please");
-                    dateofBirdth.setError("your date of birdth");
+                    dateofBirdth.setError("your date of birth");
 
                 }
 
@@ -481,7 +481,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
 
-                    if(!numbervalue.equals("default") && numberprogress==0){
+                    if(!numbervalue.equals("Number") && numberprogress==0){
 
                         prifilemap.put("phone",numbervalue);
                         numberprogress=20;
@@ -490,7 +490,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                         tv_mobile.setText(numbervalue);
                         Log.d(TAG, "onDataChange: ---------------------------------------number inserted");
                     }
-                     if(!dateOfbirdthglb.equals("default") && dateofbirdthprogress==0){
+                     if(!dateOfbirdthglb.equals("Date of Birth") && dateofbirdthprogress==0){
                         dateofbirdthprogress=15;
                         prifilemap.put("dateofbirdth",dateOfbirdthglb);
                         prifilemap.put("dob_up",dateofbirdthprogress);
@@ -498,7 +498,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                         Log.d(TAG, "onDataChange: ----------------------------------------------dateofbirdthd inserted");
                         tv_dataofbirdth.setText(dateOfbirdthglb);
                     }
-                    if(!emailvlue.equals("default") && emailprogress==0){
+                    if(!emailvlue.equals("Email") && emailprogress==0){
                         emailprogress=10;
                       prifilemap.put("email",emailvlue);
                       prifilemap.put("mail_up",emailprogress);
@@ -510,7 +510,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
                     Log.d(TAG, "importatn: -------gendervalue "+gendervalue);
-                     if(!gendervalue.equals("default") ){
+                     if(!gendervalue.equals("Gender") ){
                         prifilemap.put("gender",gendervalue);
                         genderprogress=5;
                         prifilemap.put("gender_up",genderprogress);
@@ -520,7 +520,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
                         tv_gender.setText(gendervalue);
                     }
-                     if(!addressvalue.equals("default") && addressprogress==0){
+                     if(!addressvalue.equals("Your address") && addressprogress==0){
                         addressprogress=10;
                         prifilemap.put("address",addressvalue);
                         prifilemap.put("address_up",addressprogress);

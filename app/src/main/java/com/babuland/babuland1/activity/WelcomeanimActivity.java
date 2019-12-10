@@ -100,7 +100,6 @@ public class WelcomeanimActivity extends AppCompatActivity {
                 }
             }
         };
-
         timer.start();
     }
 }
