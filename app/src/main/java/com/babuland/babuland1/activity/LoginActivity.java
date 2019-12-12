@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(!TextUtils.isEmpty(edt_number.getText().toString()) && edt_number.getText().toString().length()==11){
                         sendVarificationcode();
-                        edt_number.setHint("Enter pin");
+
                         edt_number.setText("");
                         mdialog.show();
                     }
@@ -354,14 +354,14 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            super.onCodeSent(s, forceResendingToken);
+            //super.onCodeSent(s, forceResendingToken);
 
             codesent=s;
             Toast.makeText(LoginActivity.this, "code sent", Toast.LENGTH_SHORT).show();
 
             btn_continiue.setVisibility(View.INVISIBLE);
             btn_varyfycode.setVisibility(View.VISIBLE);
-            mdialog.dismiss();
+            edt_number.setHint("Enter pin");
         }
     };
 

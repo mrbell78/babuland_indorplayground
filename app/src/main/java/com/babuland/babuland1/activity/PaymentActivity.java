@@ -220,9 +220,13 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             }
         });
 
+        //old store id
 
-        sslCommerzInitialization = new SSLCommerzInitialization("babul5dc25b039d6e8",
+       /* sslCommerzInitialization = new SSLCommerzInitialization("babul5dc25b039d6e8",
                 "babul5dc25b039d6e8@ssl", Total, CurrencyType.BDT,
+                "123456789098765", "food", SdkType.TESTBOX);*/
+        sslCommerzInitialization = new SSLCommerzInitialization("babul5df0bda12386c",
+                "babul5df0bda12386c@ssl", Total, CurrencyType.BDT,
                 "123456789098765", "food", SdkType.TESTBOX);
 
         customerInfoInitializer = new CustomerInfoInitializer("reza", "rubel12131103078@gmail.com",

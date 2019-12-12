@@ -13,8 +13,8 @@
     <me.itangqi.waveloadingview.WaveLoadingView
         android:layout_below="@+id/profilingtoolbar"
         android:id="@+id/waveLoadingView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         app:wlv_borderColor="@color/colorAccent"
         app:wlv_borderWidth="3dp"
         app:wlv_progressValue="40"
@@ -30,7 +30,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp"
-        app:wlv_waveColor="@color/colorAccent"/>
+        app:wlv_waveColor="@color/colorAccent"
+        android:visibility="visible"
+        />
 
 
 
@@ -38,9 +40,10 @@
 
   <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:layout_below="@+id/waveLoadingView"
-      android:layout_marginTop="10dp"
+
+
       android:orientation="vertical"
       android:visibility="visible"
       android:id="@+id/childrcvview"
@@ -48,29 +51,29 @@
 
       <androidx.recyclerview.widget.RecyclerView
           android:layout_width="match_parent"
-          android:layout_height="350dp"
+          android:layout_height="200dp"
           android:padding="15dp"
           android:id="@+id/childrcv"
           android:layout_marginBottom="15dp"
           >
       </androidx.recyclerview.widget.RecyclerView>
 
-
-      <Button
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="Add new Child"
-          android:textAllCaps="false"
-          android:textColor="@android:color/white"
-          android:background="@color/colorPrimary"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
-          android:id="@+id/btn_addchild"
-
-          />
-
-
   </LinearLayout>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add new Child"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/btn_addchild"
+        android:layout_below="@+id/childrcvview"
+        android:layout_marginTop="30dp"
+        />
 
 
 
@@ -103,11 +106,10 @@
         app:cardElevation="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/waveLoadingView"
+        android:layout_below="@+id/profilingtoolbar"
         android:visibility="invisible"
-
         android:id="@+id/chil_edtview"
+        android:layout_marginTop="10dp"
 
         >
 
@@ -171,13 +173,8 @@
                 app:cardElevation="15dp"
                 android:elevation="20dp"
                 android:id="@+id/save"
-                android:visibility="invisible"
-
+                android:visibility="visible"
                 app:cardBackgroundColor="#D81B60"
-
-
-
-
                 >
                 <TextView
                     android:layout_width="match_parent"
@@ -306,14 +303,15 @@
                     android:textSize="17sp"
                     android:textStyle="bold"
                     android:layout_marginLeft="15dp"
+                    android:padding="5dp"
                     />
 
                 <Spinner
                     android:id="@+id/profilng_spiner"
-                    android:layout_width="0dp" android:layout_weight="1.5"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
-                    android:padding="15dp"
                     android:textAlignment="center"
                     >
                 </Spinner>
@@ -323,7 +321,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:textStyle="bold"
                 android:text="Save Change"
                 android:textAllCaps="false"

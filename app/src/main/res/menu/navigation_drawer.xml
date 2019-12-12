@@ -5,11 +5,11 @@
 
     <item android:id="@+id/eticket"
         android:title="My  Ticket"
-        android:icon="@drawable/tickets_ruhulnew"
+        android:icon="@drawable/ticket_final"
         />
     <item android:id="@+id/eticket_free"
         android:title="My  Free Ticket"
-        android:icon="@drawable/tickets_ruhulnew"
+        android:icon="@drawable/ticket_final"
         />
     <item android:id="@+id/review"
         android:title="Review us"

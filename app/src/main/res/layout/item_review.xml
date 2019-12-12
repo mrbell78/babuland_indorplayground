@@ -38,6 +38,7 @@
                     android:padding="3dp"
                     app:cardElevation="5dp"
 
+
                     >
                     <ImageView
                         android:layout_width="match_parent"
@@ -45,6 +46,7 @@
                         android:src="@drawable/babuland"
                         android:scaleType="centerCrop"
                         android:id="@+id/image"
+                        android:padding="10dp"
                         />
 
                 </androidx.cardview.widget.CardView>
@@ -55,6 +57,7 @@
                     android:numStars="5"
                     android:id="@+id/rating"
                     android:layout_marginLeft="5dp"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
                     />
 
             </LinearLayout>
@@ -75,6 +78,7 @@
                     android:textStyle="bold"
                     android:layout_marginLeft="40dp"
                     android:id="@+id/title"
+
                     />
               />
 

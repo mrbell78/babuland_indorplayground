@@ -5,17 +5,24 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.FragmentManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -49,6 +56,7 @@ import com.babuland.babuland1.utils.BroadcastService;
 import com.babuland.babuland1.utils.DbHelper;
 
 import com.babuland.babuland1.R;
+import com.babuland.babuland1.utils.Scheduling_quiz;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -66,6 +74,8 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -113,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     int  value;
     int firsttime;
 
+    public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
+    private final static String default_notification_channel_id = "default" ;
 
     DbHelper helper;
 
@@ -155,11 +167,17 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
 
 
+
+
+
+
+
         mUser=FirebaseAuth.getInstance().getCurrentUser();
         if(mUser!=null){
             userId=mUser.getUid();
             mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(userId);
 
+            scheduleNotification(getNotification("Dont miss out todays quiz"),100);
 
             //data fetch start
 
@@ -249,6 +267,24 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         if (savedInstanceState == null) {
             bottomNavigationView.setSelectedItemId(R.id.home);
 
+        }
+        String quizfragment = getIntent().getStringExtra("quizfragment");
+        if(quizfragment!=null){
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+            if(quizfragment.equals("qauiz")){
+
+                /*Thirdragment quizfrg = new Thirdragment();
+                fragmentTransaction.replace(R.id.hudai,quizfrg);
+                fragmentTransaction.commit();*/
+
+                bottomNavigationView.setSelectedItemId(R.id.quiz);
+
+
+
+
+            }
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -584,5 +620,58 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         return false;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(br);
+    }
+
+
+
+    private void scheduleNotification (Notification notification , int delay) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY,18);
+        calendar.set(Calendar.MINUTE,14);
+        calendar.set(Calendar.SECOND,10);
+
+        Intent notificationIntent = new Intent( this, Scheduling_quiz. class ) ;
+        notificationIntent.putExtra(Scheduling_quiz. NOTIFICATION_ID , 1 ) ;
+        notificationIntent.putExtra(Scheduling_quiz. NOTIFICATION , notification) ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
+        //long futureInMillis = SystemClock. elapsedRealtime () + delay ;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        assert alarmManager != null;
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+
+
+        //alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis , pendingIntent);
+
+    }
+
+    private Notification getNotification (String content) {
+
+        Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.notification_babuland);
+
+
+
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        intent.putExtra("quizfragment","qauiz");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder( this, default_notification_channel_id ) ;
+        builder.setContentTitle( "Scheduled Notification" ) ;
+        builder.setContentIntent(pendingIntent);
+        builder.setContentText(content) ;
+        builder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
+        builder.setAutoCancel( true ) ;
+        builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
+        builder.setSound(soundUri);
+
+        return builder.build() ;
+    }
 
 }

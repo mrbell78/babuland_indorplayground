@@ -159,10 +159,22 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
         progressvalue=intent.getIntExtra("progress",0);
 
 
+        mUser= FirebaseAuth.getInstance().getCurrentUser();
+        String mUserid=mUser.getUid();
+        mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(mUserid);
+
+
+        phone=getphone(mDatabase);
+        mDatabase.keepSynced(true);
+
+
 
         addchildimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mWaveLoadingView.setVisibility(View.INVISIBLE);
+
                 if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
                     if(ContextCompat.checkSelfPermission(Profiling_moreActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
                         ActivityCompat.requestPermissions(Profiling_moreActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
@@ -271,12 +283,7 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
                 String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
                 final String random_timephone=phone+currentTime;
 
-                mUser= FirebaseAuth.getInstance().getCurrentUser();
-                String mUserid=mUser.getUid();
-                mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(mUserid);
 
-
-                phone=getphone(mDatabase);
 
 
 
@@ -308,7 +315,7 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
                 }
 
 
-                if(phone!=null && !phone.equals("default")){
+                if(phone!=null && !phone.equals("Number")){
 
 
                   if(imgeuri!=null){
@@ -359,6 +366,7 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
                                               imgeuri=null;
                                               Toast.makeText(Profiling_moreActivity.this, "upload successful", Toast.LENGTH_SHORT).show();
                                               mdialog.dismiss();
+                                              mWaveLoadingView.setVisibility(View.VISIBLE);
                                           }
                                       }).addOnFailureListener(new OnFailureListener() {
                                           @Override
