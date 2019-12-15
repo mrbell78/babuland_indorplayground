@@ -3,11 +3,17 @@ package com.babuland.babuland1.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +25,7 @@ import android.widget.Toast;
 
 import com.babuland.babuland1.MainActivity;
 import com.babuland.babuland1.R;
+import com.babuland.babuland1.utils.Scheduling_quiz;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -47,9 +54,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -75,6 +85,8 @@ public class LoginActivity extends AppCompatActivity {
     String number;
 
 
+    public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
+    private final static String default_notification_channel_id = "default" ;
     private FirebaseAuth mAuth;
     private static final String TAG = "LoginActivity";
 
@@ -291,6 +303,13 @@ public class LoginActivity extends AppCompatActivity {
                         mDatabaseref.child("BabulandPoints").setValue(0);
                         mDatabaseref.child("nof_purchase_time").setValue(0);
                         mDatabaseref.child("progressvalue_stamp").setValue(0);
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.HOUR_OF_DAY,12);
+                        calendar.set(Calendar.MINUTE,40);
+                        calendar.set(Calendar.SECOND,0);
+
+                        scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
                     }
                 });
 
@@ -424,6 +443,14 @@ public class LoginActivity extends AppCompatActivity {
                                                    mDatabaseref.child("BabulandPoints").setValue(0);
                                                    mDatabaseref.child("nof_purchase_time").setValue(0);
                                                    mDatabaseref.child("progressvalue_stamp").setValue(0);
+
+                                                   Calendar calendar = Calendar.getInstance();
+                                                   calendar.set(Calendar.HOUR_OF_DAY,12);
+                                                   calendar.set(Calendar.MINUTE,35);
+                                                   calendar.set(Calendar.SECOND,0);
+
+                                                   scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
+
                                                }
                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                                mdialog.dismiss();
@@ -485,6 +512,51 @@ public class LoginActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+
+
+
+    private void scheduleNotification (Notification notification , int delay, Calendar calendar) {
+
+
+
+        Intent notificationIntent = new Intent( this, Scheduling_quiz. class ) ;
+        notificationIntent.putExtra(Scheduling_quiz. NOTIFICATION_ID , 1 ) ;
+        notificationIntent.putExtra(Scheduling_quiz. NOTIFICATION , notification) ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
+        //long futureInMillis = SystemClock. elapsedRealtime () + delay ;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        assert alarmManager != null;
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+
+
+        //alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis , pendingIntent);
+
+    }
+
+    private Notification getNotification (String content) {
+
+        Uri soundUri =  Uri.parse(String.valueOf(R.raw.notification_babuland));
+
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        intent.putExtra("quizfragment","qauiz");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder( this, default_notification_channel_id ) ;
+        builder.setContentTitle( "Scheduled Notification" ) ;
+        builder.setContentIntent(pendingIntent);
+        builder.setContentText(content) ;
+        builder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
+        builder.setAutoCancel( true ) ;
+        builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
+        builder.setSound(soundUri);
+
+        Notification notification = builder.build();
+
+        return notification ;
     }
 
 

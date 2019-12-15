@@ -23,7 +23,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -32,16 +34,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-
+import com.babuland.babuland1.activity.AboutBabulandActivity;
 import com.babuland.babuland1.activity.AccountSettingsActivity;
 import com.babuland.babuland1.activity.MyFreeTicketActivity;
 import com.babuland.babuland1.activity.MyeTicketActivity;
@@ -123,10 +127,12 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     int  value;
     int firsttime;
 
-    public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
-    private final static String default_notification_channel_id = "default" ;
+
 
     DbHelper helper;
+
+    public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
+    private final static String default_notification_channel_id = "default" ;
 
 
     @Override
@@ -177,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
             userId=mUser.getUid();
             mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(userId);
 
-            scheduleNotification(getNotification("Dont miss out todays quiz"),100);
+
 
             //data fetch start
 
@@ -317,6 +323,10 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                Log.d(TAG, "onStart: ================user_locla "+ currentUser);
 
            }
+
+
+
+
     }
 
     private void sendTologin() {
@@ -343,6 +353,9 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
             case R.id.logout:
                 logout();
                 return true;
+            case R.id.aboutus:
+                sendTobabuland();
+                return true;
 
             case R.id.setting:
                 sendToAccountSettings();
@@ -351,6 +364,14 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                 return false;
 
         }
+    }
+
+    private void sendTobabuland() {
+        MediaPlayer mp =  MediaPlayer.create(this,R.raw.notification_babuland);
+        mp.start();
+
+
+        startActivity(new Intent(getApplicationContext(), AboutBabulandActivity.class));
     }
 
     private void sendToMyeTicket() {
@@ -476,11 +497,21 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
             case R.id.refer:
                 referFriend();
                 break;
+            case R.id.cservice:
+                openDialar();
+                break;
                 default:
                     bottomNavigationView.setSelectedItemId(R.id.home);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
        return true;
+    }
+
+    private void openDialar() {
+
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:+8801313 428 423"));
+        startActivity(intent);
     }
 
     private void sendToMyFreeTicket() {
@@ -506,7 +537,95 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
         Button btn_ok=view.findViewById(R.id.btn_dialogbox_main_ok);
         Button btn_cancel=view.findViewById(R.id.btn_dialogbox_main_cancel);
+        final Button btn_washroom=view.findViewById(R.id.btn_washroom);
+        Button btn_pga=view.findViewById(R.id.btn_pgaservice);
+        Button btn_food=view.findViewById(R.id.foodquality);
+        Button btn_hygin=view.findViewById(R.id.hygin);
+        final LinearLayout llayout = view.findViewById(R.id.noteview);
+
         final EditText edt_comment=view.findViewById(R.id.edt_comment);
+
+        btn_washroom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                );
+                params.setMargins(0, 15, 0, 0);
+                llayout.setLayoutParams(params);
+/*
+                llayout.setVisibility(View.VISIBLE);
+                llayout.setAlpha(0.0f);
+
+// Start the animation
+                llayout.animate()
+                        .translationY(llayout.getHeight())
+                        .alpha(1.5f)
+                        .setListener(null);*/
+
+
+                llayout.setVisibility(View.VISIBLE);
+                TranslateAnimation animation = new TranslateAnimation(0,0,llayout.getHeight(),0);
+                animation.setDuration(500);
+                llayout.startAnimation(animation);
+                edt_comment.setHint("Will you please highlights the issues regarding wash room");
+            }
+        });
+        btn_pga.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(0, 15, 0, 0);
+                llayout.setLayoutParams(params);
+                llayout.setVisibility(View.VISIBLE);
+                TranslateAnimation animation = new TranslateAnimation(0,0,llayout.getHeight(),0);
+                animation.setDuration(500);
+                llayout.startAnimation(animation);
+                edt_comment.setHint("Please tell us your experience with pga");
+            }
+        });
+        btn_food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(0, 15, 0, 0);
+                llayout.setLayoutParams(params);
+                llayout.setVisibility(View.VISIBLE);
+                TranslateAnimation animation = new TranslateAnimation(0,0,llayout.getHeight(),0);
+                animation.setDuration(500);
+                llayout.startAnimation(animation);
+                edt_comment.setHint("what was our food quality? U can tell us your choice");
+            }
+        });
+        btn_hygin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(0, 15, 0, 0);
+                llayout.setLayoutParams(params);
+                llayout.setVisibility(View.VISIBLE);
+                TranslateAnimation animation = new TranslateAnimation(0,0,llayout.getHeight(),0);
+                animation.setDuration(500);
+                llayout.startAnimation(animation);
+                edt_comment.setHint("Sanitation issue? Please tell us");
+            }
+        });
+
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -523,6 +642,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                             if(task.isSuccessful()){
                                 Toast.makeText(MainActivity.this, "Thank you", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
+                                llayout.setVisibility(View.INVISIBLE);
                             }else{
                                 Toast.makeText(MainActivity.this, "some thing went wrong", Toast.LENGTH_SHORT).show();
                             }
@@ -601,12 +721,12 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         }
     };
 
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
         registerReceiver(br, new IntentFilter(BroadcastService.COUNTDOWN_BR));
         Log.i(TAG, "Registered broacast receiver");
-    }
+    }*/
 
 
 
@@ -620,21 +740,16 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         return false;
     }
 
-    @Override
+   /* @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(br);
-    }
+    }*/
 
 
+    private void scheduleNotification (Notification notification , int delay,Calendar calendar) {
 
-    private void scheduleNotification (Notification notification , int delay) {
 
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(Calendar.HOUR_OF_DAY,18);
-        calendar.set(Calendar.MINUTE,14);
-        calendar.set(Calendar.SECOND,10);
 
         Intent notificationIntent = new Intent( this, Scheduling_quiz. class ) ;
         notificationIntent.putExtra(Scheduling_quiz. NOTIFICATION_ID , 1 ) ;
@@ -654,9 +769,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
     private Notification getNotification (String content) {
 
-        Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.notification_babuland);
-
-
+        Uri soundUri =  Uri.parse(String.valueOf(R.raw.notification_babuland));
 
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         intent.putExtra("quizfragment","qauiz");
@@ -671,7 +784,9 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
         builder.setSound(soundUri);
 
-        return builder.build() ;
+        Notification notification = builder.build();
+
+        return notification ;
     }
 
 }
