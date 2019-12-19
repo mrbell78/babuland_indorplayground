@@ -470,9 +470,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
-            case R.id.review:
-                startActivity(new Intent(getApplicationContext(), ReviewActivity.class));
-                break;
+
             case R.id.branch:
                 bottomNavigationView.setSelectedItemId(R.id.explore);
                 Toast.makeText(this, "branch is selected", Toast.LENGTH_SHORT).show();
@@ -536,6 +534,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         Button btn_pga=view.findViewById(R.id.btn_pgaservice);
         Button btn_food=view.findViewById(R.id.foodquality);
         Button btn_hygin=view.findViewById(R.id.hygin);
+        Button btn_others=view.findViewById(R.id.other);
         final LinearLayout llayout = view.findViewById(R.id.noteview);
 
         final EditText edt_comment=view.findViewById(R.id.edt_comment);
@@ -618,6 +617,25 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                 animation.setDuration(500);
                 llayout.startAnimation(animation);
                 edt_comment.setHint("Sanitation issue? Please tell us");
+            }
+        });
+
+        btn_others.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(0, 15, 0, 0);
+                llayout.setLayoutParams(params);
+                llayout.setVisibility(View.VISIBLE);
+                TranslateAnimation animation = new TranslateAnimation(0,0,llayout.getHeight(),0);
+                animation.setDuration(500);
+                llayout.startAnimation(animation);
+                edt_comment.setHint("Say anything about us");
             }
         });
 

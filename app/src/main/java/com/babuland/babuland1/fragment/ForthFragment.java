@@ -184,13 +184,13 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
         adapter_branch=ArrayAdapter.createFromResource(getActivity(),R.array.branch_prefered,android.R.layout.simple_list_item_1);
         adapter_branch.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+/*
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .detectAll()
                 .penaltyLog()
                 .build();
 
-        StrictMode.setThreadPolicy(policy);
+        StrictMode.setThreadPolicy(policy);*/
 
         tv_buyticket=getActivity().findViewById(R.id.buyticket_tv);
         mdialog=new ProgressDialog(getActivity());

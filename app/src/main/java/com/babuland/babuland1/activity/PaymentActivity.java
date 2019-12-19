@@ -277,8 +277,8 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             public void run() {
                 try {
                     if(BuildConfig.DEBUG) {
-                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                        StrictMode.setThreadPolicy(policy);
+                        /*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);*/
                     }
                 }catch (Exception e){
 

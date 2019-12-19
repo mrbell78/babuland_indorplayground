@@ -11,10 +11,7 @@
         android:title="My  Free Ticket"
         android:icon="@drawable/ticket_final"
         />
-    <item android:id="@+id/review"
-        android:title="Review us"
-        android:icon="@drawable/ic_rate_review"
-        />
+
     <item android:icon="@drawable/ic_usb"
         android:id="@+id/branch"
         android:title="Our Branches"/>
