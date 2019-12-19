@@ -158,11 +158,50 @@
 
            <LinearLayout
                android:layout_width="match_parent"
+               android:layout_height="60dp"
+
+               android:orientation="horizontal"
+               android:layout_marginLeft="40dp"
+               android:layout_marginRight="20dp"
+
+               >
+
+
+               <Button
+                   android:layout_width="match_parent"
+                   android:layout_weight="1"
+                   android:layout_height="wrap_content"
+                   android:text="Others"
+                   android:textAlignment="center"
+                   android:textSize="15sp"
+                   android:background="@drawable/background_dialogdbtn"
+                   android:textAllCaps="false"
+                   android:layout_marginRight="30dp"
+                   android:elevation="10dp"
+                   android:textColor="@android:color/white"
+                   android:id="@+id/other"
+                   />
+
+
+
+
+
+
+
+
+
+
+
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:orientation="vertical"
                android:visibility="invisible"
                android:id="@+id/noteview"
-               android:layout_marginTop="-150dp"
+               android:layout_marginTop="-140dp"
 
                >
 
