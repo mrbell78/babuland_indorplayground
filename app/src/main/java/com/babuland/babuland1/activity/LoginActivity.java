@@ -285,6 +285,7 @@ public class LoginActivity extends AppCompatActivity {
                 userfield.put("availfreeTicket","avail_free");
                 userfield.put("childrenName","Child name");
                 userfield.put("spousename","Spouse name");
+                userfield.put("status_quz","inactive");
 
 
                 mDatabaseref.setValue(userfield).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -305,8 +306,8 @@ public class LoginActivity extends AppCompatActivity {
                         mDatabaseref.child("progressvalue_stamp").setValue(0);
 
                         Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.HOUR_OF_DAY,21);
-                        calendar.set(Calendar.MINUTE,10);
+                        calendar.set(Calendar.HOUR_OF_DAY,14);
+                        calendar.set(Calendar.MINUTE,24);
                         calendar.set(Calendar.SECOND,5);
 
                         scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
@@ -430,6 +431,7 @@ public class LoginActivity extends AppCompatActivity {
                                        userfield.put("childrenName","Child name");
                                        userfield.put("comment", "not comment yet");
                                        userfield.put("spousename","Spouse name");
+                                       userfield.put("status_quz","inactive");
 
                                        mDatabaseref.setValue(userfield).addOnCompleteListener(new OnCompleteListener<Void>() {
                                            @Override
@@ -449,8 +451,8 @@ public class LoginActivity extends AppCompatActivity {
                                                    mDatabaseref.child("progressvalue_stamp").setValue(0);
 
                                                    Calendar calendar = Calendar.getInstance();
-                                                   calendar.set(Calendar.HOUR_OF_DAY,21);
-                                                   calendar.set(Calendar.MINUTE,10);
+                                                   calendar.set(Calendar.HOUR_OF_DAY,14);
+                                                   calendar.set(Calendar.MINUTE,24);
                                                    calendar.set(Calendar.SECOND,5);
 
                                                    scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);

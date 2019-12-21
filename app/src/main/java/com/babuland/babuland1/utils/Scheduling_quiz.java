@@ -7,6 +7,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import static com.babuland.babuland1.MainActivity.NOTIFICATION_CHANNEL_ID;
 
 public class Scheduling_quiz extends BroadcastReceiver {
@@ -16,6 +21,10 @@ public class Scheduling_quiz extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+
+        FirebaseUser mUser;
+        DatabaseReference mDatabase;
+        String userId;
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context. NOTIFICATION_SERVICE ) ;
         Notification notification = intent.getParcelableExtra( NOTIFICATION ) ;
@@ -28,6 +37,14 @@ public class Scheduling_quiz extends BroadcastReceiver {
         int id = intent.getIntExtra( NOTIFICATION_ID , 0 ) ;
         assert notificationManager != null;
         notificationManager.notify(id , notification) ;
+
+        mUser= FirebaseAuth.getInstance().getCurrentUser();
+        if(mUser!=null) {
+            userId = mUser.getUid();
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+
+            mDatabase.child("status_quz").setValue("active");
+        }
 
 
     }

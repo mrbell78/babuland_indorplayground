@@ -70,6 +70,7 @@ public class Thirdragment extends Fragment {
 
     String quzname;
     String answer;
+    String staus_quiz;
 
 
    ;
@@ -187,6 +188,27 @@ public class Thirdragment extends Fragment {
 
                     name = dataSnapshot.child("name").getValue().toString();
                     image=dataSnapshot.child("image").getValue().toString();
+                    staus_quiz=dataSnapshot.child("status_quz").getValue().toString();
+
+                    if(staus_quiz.equals("active")){
+                        Updatequestion();
+                        startCountdown();
+                    }else {
+
+                        btn_a.setEnabled(false);
+                        btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_b.setEnabled(false);
+                        btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_c.setEnabled(false);
+                        btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_d.setEnabled(false);
+                        btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
+
+                        tv_correctans.setVisibility(View.VISIBLE);
+                        tv_anserstatus.setVisibility(View.VISIBLE);
+                        tv_time.setVisibility(View.INVISIBLE);
+                        tv_anserstatus.setText("Quiz will start at 2.24pm");
+                    }
 
                 }
             }
@@ -197,8 +219,9 @@ public class Thirdragment extends Fragment {
             }
         });
 
-        Updatequestion();
-        startCountdown();
+
+
+
 
 
         btn_next.setOnClickListener(new View.OnClickListener() {
@@ -209,18 +232,21 @@ public class Thirdragment extends Fragment {
             }
         });
 
-
-     /*   Intent scheduling_active = new Intent( getContext(), Scheduled_Fragment. class ) ;
+        /*Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,21);
+        calendar.set(Calendar.MINUTE,10);
+        calendar.set(Calendar.SECOND,5);
+        Intent scheduling_active = new Intent( getContext(), Scheduled_Fragment. class ) ;
         scheduling_active.putExtra("status","sleep") ;
-        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , scheduling_active , PendingIntent. FLAG_UPDATE_CURRENT ) ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( getContext(), 0 , scheduling_active , PendingIntent. FLAG_UPDATE_CURRENT ) ;
         //long futureInMillis = SystemClock. elapsedRealtime () + delay ;
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context. ALARM_SERVICE ) ;
         assert alarmManager != null;
 
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 */
-
     }
+
 
 
 
