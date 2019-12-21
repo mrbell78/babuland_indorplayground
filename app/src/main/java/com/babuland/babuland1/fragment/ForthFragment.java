@@ -4,7 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.os.StrictMode;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,7 +32,6 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-
 
 import com.babuland.babuland1.R;
 import com.babuland.babuland1.activity.BabulandpointsActivity;
@@ -161,8 +160,11 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
 
         mCurrentUser= FirebaseAuth.getInstance().getCurrentUser();
-        Freeticketdb=FirebaseDatabase.getInstance().getReference().child("Freeticket").child(mCurrentUser.getUid());
+       if(mCurrentUser!=null){
 
+           Freeticketdb=FirebaseDatabase.getInstance().getReference().child("Freeticket").child(mCurrentUser.getUid());
+
+       }
 
 
         View view=inflater.inflate(R.layout.fragment_forth, container, false);
@@ -184,13 +186,12 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
         adapter_branch=ArrayAdapter.createFromResource(getActivity(),R.array.branch_prefered,android.R.layout.simple_list_item_1);
         adapter_branch.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-/*
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .detectAll()
                 .penaltyLog()
                 .build();
 
-        StrictMode.setThreadPolicy(policy);*/
+        StrictMode.setThreadPolicy(policy);
 
         tv_buyticket=getActivity().findViewById(R.id.buyticket_tv);
         mdialog=new ProgressDialog(getActivity());
@@ -321,9 +322,9 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
         if(TextUtils.isEmpty(name) || childname==null){
             Toast.makeText(getContext(), "new user", Toast.LENGTH_SHORT).show();
-            edt_name.setError("fill up this filed");
+            edt_name.setError("Enter Name");
             email_view.setError("Enter email");
-            spousename_view.setError("fill up this filed");
+            spousename_view.setError("Enter spouse name");
             dob_view.setError("fill up  this filed");
 
 
@@ -396,7 +397,10 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
         switch (view.getId()){
             case R.id.byTicket:
-                dailogbox_getfreeTicket();
+                if(tv_buyticket.getText().toString().equals("Buy Ticket"))
+                    dialogbox();
+                else
+                    dailogbox_getfreeTicket();
 
                 break;
             case R.id.btn_minus_infant:
@@ -710,7 +714,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                     freeticket_getdata.put("spousename",spousename);
                     freeticket_getdata.put("email",email);
                     freeticket_getdata.put("pre_branch",pre_branch);
-                    freeticket_getdata.put("childrenNumber",childnumber);
+                    freeticket_getdata.put("childrenName",childnumber);
 
                     if(!TextUtils.isEmpty(edt_name.getText().toString()) && !TextUtils.isEmpty(edt_number.getText().toString()) && !TextUtils.isEmpty(dob) &&
 
@@ -775,7 +779,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                         String number=dataSnapshot.child("phone").getValue().toString();
                         edt_number.setText(number);
                         //child number
-                        String childnumber=dataSnapshot.child("childrenNumber").getValue().toString();
+                        String childnumber=dataSnapshot.child("childrenName").getValue().toString();
                         childnumber_view.setText(childnumber);
 
                         //dob
@@ -791,9 +795,6 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                         gender=genderlocal;
 
 
-                        //pre_branch
-                        String branchpre= dataSnapshot.child("pre_branch").getValue().toString();
-                        pre_branch=branchpre;
 
                         mdialog.dismiss();
                     }

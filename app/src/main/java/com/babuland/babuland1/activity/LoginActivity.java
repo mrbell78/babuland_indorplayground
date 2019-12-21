@@ -1,10 +1,5 @@
 package com.babuland.babuland1.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -23,6 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+
 import com.babuland.babuland1.MainActivity;
 import com.babuland.babuland1.R;
 import com.babuland.babuland1.utils.Scheduling_quiz;
@@ -32,7 +32,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,8 +51,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -285,6 +282,9 @@ public class LoginActivity extends AppCompatActivity {
                 userfield.put("count10","avail");
                 userfield.put("comment", "not comment yet");
                 userfield.put("userid",uniqid);
+                userfield.put("availfreeTicket","avail_free");
+                userfield.put("childrenName","Child name");
+                userfield.put("spousename","Spouse name");
 
 
                 mDatabaseref.setValue(userfield).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -305,9 +305,9 @@ public class LoginActivity extends AppCompatActivity {
                         mDatabaseref.child("progressvalue_stamp").setValue(0);
 
                         Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.HOUR_OF_DAY,12);
-                        calendar.set(Calendar.MINUTE,40);
-                        calendar.set(Calendar.SECOND,0);
+                        calendar.set(Calendar.HOUR_OF_DAY,21);
+                        calendar.set(Calendar.MINUTE,10);
+                        calendar.set(Calendar.SECOND,5);
 
                         scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
                     }
@@ -426,6 +426,10 @@ public class LoginActivity extends AppCompatActivity {
                                        userfield.put("count8","avail");
                                        userfield.put("count9","avail");
                                        userfield.put("count10","avail");
+                                       userfield.put("availfreeTicket","avail_free");
+                                       userfield.put("childrenName","Child name");
+                                       userfield.put("comment", "not comment yet");
+                                       userfield.put("spousename","Spouse name");
 
                                        mDatabaseref.setValue(userfield).addOnCompleteListener(new OnCompleteListener<Void>() {
                                            @Override
@@ -445,9 +449,9 @@ public class LoginActivity extends AppCompatActivity {
                                                    mDatabaseref.child("progressvalue_stamp").setValue(0);
 
                                                    Calendar calendar = Calendar.getInstance();
-                                                   calendar.set(Calendar.HOUR_OF_DAY,12);
-                                                   calendar.set(Calendar.MINUTE,35);
-                                                   calendar.set(Calendar.SECOND,0);
+                                                   calendar.set(Calendar.HOUR_OF_DAY,21);
+                                                   calendar.set(Calendar.MINUTE,10);
+                                                   calendar.set(Calendar.SECOND,5);
 
                                                    scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
 

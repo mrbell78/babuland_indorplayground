@@ -4,11 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
@@ -22,10 +17,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.babuland.babuland1.R;
 import com.babuland.babuland1.activity.LeaderboardActivity;
 import com.babuland.babuland1.activity.QuizresultActivity;
 import com.babuland.babuland1.utils.Question;
-import com.babuland.babuland1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,7 +75,7 @@ public class Thirdragment extends Fragment {
    ;
 
 
-    private static final long START_TIME_INMILIS=20000;
+    private static final long START_TIME_INMILIS=3*60*60*1000;
     TextView timer;
     Button btn_start,btn_restart;
 
@@ -209,6 +208,18 @@ public class Thirdragment extends Fragment {
 
             }
         });
+
+
+     /*   Intent scheduling_active = new Intent( getContext(), Scheduled_Fragment. class ) ;
+        scheduling_active.putExtra("status","sleep") ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , scheduling_active , PendingIntent. FLAG_UPDATE_CURRENT ) ;
+        //long futureInMillis = SystemClock. elapsedRealtime () + delay ;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        assert alarmManager != null;
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+*/
+
     }
 
 
@@ -678,16 +689,23 @@ public class Thirdragment extends Fragment {
 
     private void UpdateCountdowntext() {
 
-        int minitues = (int) ((mTimerinleft_inmils/1000)/60);
-        int seconds = (int) ((mTimerinleft_inmils/1000)%60);
+        /*int minitues = (int) ((mTimerinleft_inmils/1000)/60);
+        int seconds = (int) ((mTimerinleft_inmils/1000)%60);*/
 
-        if(seconds<5){
+       // long secondss= TimeUnit.MICROSECONDS.toSeconds(mTimerinleft_inmils);
+
+        int secondss = (int) (mTimerinleft_inmils / 1000) % 60 ;
+        int minutes = (int) ((mTimerinleft_inmils / (1000*60)) % 60);
+        int hours   = (int) ((mTimerinleft_inmils / (1000*60*60)) % 24);
+
+
+        if(secondss<5){
 
             tv_time.setTextColor(Color.parseColor("#bb2124"));
         }else {
             tv_time.setTextColor(Color.parseColor("#43A047"));
         }
-        String timerformated= String.format(Locale.getDefault(),"%02d:%02d",minitues,seconds);
+        String timerformated= String.format(Locale.getDefault(),"%02d:%02d:%02d",hours,minutes,secondss);
 
         tv_time.setText(timerformated);
     }

@@ -165,14 +165,6 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
         header_proimg=navHeaderView.findViewById(R.id.header_proimg);
 
-
-
-
-
-
-
-
-
         mUser=FirebaseAuth.getInstance().getCurrentUser();
         if(mUser!=null){
             userId=mUser.getUid();
