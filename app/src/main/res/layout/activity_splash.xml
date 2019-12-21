@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom|center"
-    tools:context="com.babuland.babuland1.activity.WelcomeActivity">
+    tools:context="com.babuland.babuland.activity.WelcomeActivity">
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
