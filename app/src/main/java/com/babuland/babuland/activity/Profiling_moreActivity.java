@@ -1,15 +1,5 @@
 package com.babuland.babuland.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -34,9 +24,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.babuland.babuland.R;
 import com.babuland.babuland.model.Model_childlist;
 import com.babuland.babuland.utils.Dbhelper_childprofile;
-import com.babuland.babuland.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -190,12 +190,6 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
                 }
             }
         });
-
-
-
-
-
-
 
         tv_dateofBirdth.setOnClickListener(new View.OnClickListener() {
             @Override

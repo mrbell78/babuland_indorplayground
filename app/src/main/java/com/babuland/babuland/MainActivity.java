@@ -58,6 +58,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -137,9 +138,12 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(null);
         bottomNavigationView=findViewById(R.id.manin_bottomnavigationview);
+        bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
         frameLayout=findViewById(R.id.main_framlayout);
         navigationView=findViewById(R.id.navigatgationview);
         navigationView.setNavigationItemSelectedListener(this);
+
+
 
 
         Intent intent = getIntent();
@@ -223,6 +227,13 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         Intent i =getIntent();
         finaldatafromcamera=i.getStringExtra("dataofqr");
         identity=i.getStringExtra("identity");
+
+        Calendar calendar_stop= Calendar.getInstance();
+        calendar_stop.set(Calendar.HOUR_OF_DAY,15);
+        calendar_stop.set(Calendar.MINUTE,40);
+        calendar_stop.set(Calendar.SECOND,1);
+
+
 
 
         //Toast.makeText(this, "inMainactivity "+finaldatafromcamera, Toast.LENGTH_SHORT).show();
@@ -308,7 +319,6 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                //Toast.makeText(this, "u can stay here for developoing purpose", Toast.LENGTH_SHORT).show();
                sendTologin();
                Log.d(TAG, "onStart: ================user_locla "+ currentUser);
-
            }
 
 

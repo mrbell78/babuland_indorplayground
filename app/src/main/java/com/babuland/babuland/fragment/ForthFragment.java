@@ -404,6 +404,8 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                 else
                     dailogbox_getfreeTicket();
 
+
+
                 break;
             case R.id.btn_minus_infant:
                 if(Count_infat>0){
@@ -706,23 +708,26 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
 
 
-                    Map freeticket_getdata = new HashMap();
 
-                    freeticket_getdata.put("name",name);
-                    freeticket_getdata.put("phone",phone);
-                    freeticket_getdata.put("availfreeTicket","avail_expired");
-                    freeticket_getdata.put("dateofbirdth",dob);
-                    freeticket_getdata.put("gender",gender);
-                    freeticket_getdata.put("spousename",spousename);
-                    freeticket_getdata.put("email",email);
-                    freeticket_getdata.put("pre_branch",pre_branch);
-                    freeticket_getdata.put("childrenName",childnumber);
 
                     if(!TextUtils.isEmpty(edt_name.getText().toString()) && !TextUtils.isEmpty(edt_number.getText().toString()) && !TextUtils.isEmpty(dob) &&
 
                             !TextUtils.isEmpty(gender) && !TextUtils.isEmpty(spousename_view.getText().toString()) && !TextUtils.isEmpty(email_view.getText().toString())
 
                     ){
+
+
+                        Map freeticket_getdata = new HashMap();
+
+                        freeticket_getdata.put("name",edt_name.getText().toString());
+                        freeticket_getdata.put("phone",edt_number.getText().toString());
+                        freeticket_getdata.put("availfreeTicket","avail_expired");
+                        freeticket_getdata.put("dateofbirdth",dob);
+                        freeticket_getdata.put("gender",gender);
+                        freeticket_getdata.put("spousename",spousename_view.getText().toString());
+                        freeticket_getdata.put("email",email_view.getText().toString());
+                        freeticket_getdata.put("pre_branch",pre_branch);
+                        freeticket_getdata.put("childrenName",childnumber);
 
                         mDatabase.updateChildren(freeticket_getdata).addOnCompleteListener(new OnCompleteListener() {
                             @Override

@@ -178,7 +178,7 @@
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:id="@+id/editlayout"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:background="@android:color/white"
         android:layout_marginTop="3dp"
         >
@@ -344,7 +344,7 @@
           <Button
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="Edit more and earn"
+              android:text="My Child Profile"
               android:background="#039BE5"
               android:textStyle="bold"
               android:textColor="@android:color/white"
@@ -369,7 +369,7 @@
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:id="@+id/viewlayout"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:background="#393838"
         android:layout_marginTop="5dp"
 

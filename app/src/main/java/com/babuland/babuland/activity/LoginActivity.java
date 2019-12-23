@@ -25,6 +25,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.babuland.babuland.MainActivity;
 import com.babuland.babuland.R;
+import com.babuland.babuland.utils.ScheduledQuiz_stop;
 import com.babuland.babuland.utils.Scheduling_quiz;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -305,12 +306,19 @@ public class LoginActivity extends AppCompatActivity {
                         mDatabaseref.child("nof_purchase_time").setValue(0);
                         mDatabaseref.child("progressvalue_stamp").setValue(0);
 
+
+                        Calendar calendar_stop= Calendar.getInstance();
+                        calendar_stop.set(Calendar.HOUR_OF_DAY,15);
+                        calendar_stop.set(Calendar.MINUTE,50);
+                        calendar_stop.set(Calendar.SECOND,1);
+
                         Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.HOUR_OF_DAY,21);
-                        calendar.set(Calendar.MINUTE,01);
+                        calendar.set(Calendar.HOUR_OF_DAY,15);
+                        calendar.set(Calendar.MINUTE,45);
                         calendar.set(Calendar.SECOND,5);
 
                         scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
+                        scheduliedquiz_stop(calendar_stop);
                     }
                 });
 
@@ -319,6 +327,18 @@ public class LoginActivity extends AppCompatActivity {
                 mdialog.dismiss();
                 finish();
         }
+    }
+
+    private void scheduliedquiz_stop(Calendar calendar_stop) {
+
+        Intent notificationIntent = new Intent( this, ScheduledQuiz_stop. class ) ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
+        //long futureInMillis = SystemClock. elapsedRealtime () + delay ;
+        AlarmManager alarmManagerr = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        assert alarmManagerr != null;
+
+        alarmManagerr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar_stop.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
     }
 
     @Override
@@ -450,13 +470,18 @@ public class LoginActivity extends AppCompatActivity {
                                                    mDatabaseref.child("nof_purchase_time").setValue(0);
                                                    mDatabaseref.child("progressvalue_stamp").setValue(0);
 
+                                                   Calendar calendar_stop= Calendar.getInstance();
+                                                   calendar_stop.set(Calendar.HOUR_OF_DAY,15);
+                                                   calendar_stop.set(Calendar.MINUTE,50);
+                                                   calendar_stop.set(Calendar.SECOND,1);
+
                                                    Calendar calendar = Calendar.getInstance();
-                                                   calendar.set(Calendar.HOUR_OF_DAY,21);
-                                                   calendar.set(Calendar.MINUTE,01);
+                                                   calendar.set(Calendar.HOUR_OF_DAY,15);
+                                                   calendar.set(Calendar.MINUTE,45);
                                                    calendar.set(Calendar.SECOND,5);
 
                                                    scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
-
+                                                   scheduliedquiz_stop(calendar_stop);
                                                }
                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                                mdialog.dismiss();

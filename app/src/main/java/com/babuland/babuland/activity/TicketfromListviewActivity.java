@@ -32,9 +32,6 @@ public class TicketfromListviewActivity extends AppCompatActivity {
     String savePath = Environment.getExternalStorageDirectory().getPath() + "/QRCode/";
 
 
-
-
-
     Toolbar mToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
