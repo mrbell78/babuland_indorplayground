@@ -50,8 +50,10 @@ import com.babuland.babuland.fragment.FirstFragment;
 import com.babuland.babuland.fragment.ForthFragment;
 import com.babuland.babuland.fragment.Secondragment;
 import com.babuland.babuland.fragment.Thirdragment;
+import com.babuland.babuland.model.Timesetter;
 import com.babuland.babuland.utils.BroadcastService;
 import com.babuland.babuland.utils.DbHelper;
+import com.babuland.babuland.utils.ScheduledQuiz_stop;
 import com.babuland.babuland.utils.Scheduling_quiz;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -73,6 +75,8 @@ import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -120,6 +124,11 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     int  value;
     int firsttime;
 
+    DatabaseReference admindatabase;
+    Integer startTime,endTime;
+    String quiznumber;
+    String concent;
+
 
 
     DbHelper helper;
@@ -142,6 +151,98 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         frameLayout=findViewById(R.id.main_framlayout);
         navigationView=findViewById(R.id.navigatgationview);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+
+        admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
+        admindatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("editmode").exists()){
+
+                    concent=dataSnapshot.child("editmode").getValue().toString();
+
+
+
+
+
+                    Log.d(TAG, "onCreate: ---------concent value "+concent);
+                    Log.d(TAG, "onCreate: ------------before edit statrt "+ startTime);
+                    Log.d(TAG, "onCreate: ------------before edit end "+ endTime);
+
+
+
+                    if(concent.equals("yes")){
+
+                        admindatabase.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                                if(dataSnapshot.child("Qtimestart").exists() &&  dataSnapshot.child("Qtimeend").exists()){
+
+                                    startTime=dataSnapshot.child("Qtimestart").getValue(Integer.class);
+                                    endTime=dataSnapshot.child("Qtimeend").getValue(Integer.class);
+
+
+
+                                    Log.d(TAG, "onCreate: ------------inmainactivity statrt "+ startTime);
+                                    Log.d(TAG, "onCreate: ------------inmainactivity end "+ endTime);
+
+
+
+                                    Calendar calendar = Calendar.getInstance();
+                                    calendar.set(Calendar.HOUR_OF_DAY,startTime);
+                                    calendar.set(Calendar.MINUTE,0);
+                                    calendar.set(Calendar.SECOND,0);
+
+
+                                    Calendar calendar_stop= Calendar.getInstance();
+                                    calendar_stop.set(Calendar.HOUR_OF_DAY,endTime);
+                                    calendar_stop.set(Calendar.MINUTE,0);
+                                    calendar_stop.set(Calendar.SECOND,0);
+
+
+
+
+
+                                    scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
+                                    scheduliedquiz_stop(calendar_stop);
+
+                                    admindatabase.child("editmode").setValue("no");
+
+                                }else {
+                                    Log.d(TAG, "onDataChange: ---------no data found");
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
+                    }
+
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
 
 
 
@@ -228,10 +329,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         finaldatafromcamera=i.getStringExtra("dataofqr");
         identity=i.getStringExtra("identity");
 
-        Calendar calendar_stop= Calendar.getInstance();
-        calendar_stop.set(Calendar.HOUR_OF_DAY,15);
-        calendar_stop.set(Calendar.MINUTE,40);
-        calendar_stop.set(Calendar.SECOND,1);
+
 
 
 
@@ -801,6 +899,18 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         Notification notification = builder.build();
 
         return notification ;
+    }
+
+    private void scheduliedquiz_stop(Calendar calendar_stop) {
+
+        Intent notificationIntent = new Intent( this, ScheduledQuiz_stop. class ) ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
+        //long futureInMillis = SystemClock. elapsedRealtime () + delay ;
+        AlarmManager alarmManagerr = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        assert alarmManagerr != null;
+
+        alarmManagerr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar_stop.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
     }
 
 }

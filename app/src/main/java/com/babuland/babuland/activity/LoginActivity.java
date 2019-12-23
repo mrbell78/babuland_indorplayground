@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private Toolbar mToolbar;
     private String phonenumber;
-    private DatabaseReference mDatabaseref;
+    private DatabaseReference mDatabaseref,admindatabase;
     private SharedPreferences sharedPreferences;
     private FirebaseUser mUser;
     private ProgressDialog mdialog;
@@ -87,6 +87,10 @@ public class LoginActivity extends AppCompatActivity {
     private final static String default_notification_channel_id = "default" ;
     private FirebaseAuth mAuth;
     private static final String TAG = "LoginActivity";
+
+    Integer startTime;
+    Integer endTime;
+    String quiznumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +117,52 @@ public class LoginActivity extends AppCompatActivity {
         mdialog=new ProgressDialog(this);
         mdialog.setTitle("Login");
         mdialog.setMessage("Please wait.......:)");
+
+
+        admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
+
+        Map<String ,String > adminpanel = new HashMap<>();
+        adminpanel.put("quiznumber","1");
+        adminpanel.put("editmode","no");
+        admindatabase.setValue(adminpanel).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful()){
+                    admindatabase.child("Qtimestart").setValue(21);
+                    admindatabase.child("Qtimeend").setValue(23);
+
+
+                    admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
+                    admindatabase.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.child("quiznumber").exists() && dataSnapshot.child("Qtimestart").exists()
+
+                                    && dataSnapshot.child("Qtimeend").exists()
+                            ){
+                                startTime=dataSnapshot.child("Qtimestart").getValue(Integer.class);
+                                endTime=dataSnapshot.child("Qtimeend").getValue(Integer.class);
+                                quiznumber = dataSnapshot.child("quiznumber").getValue().toString();
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                }
+
+            }
+        });
+
+
+
 
 
            // number=edt_number.getText().toString();
@@ -260,6 +310,8 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
                 String userId = mCurrentUser.getUid();
                 mDatabaseref = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+
+
                 Map<String, String> userfield = new HashMap<>();
                 userfield.put("name", fullname);
                 userfield.put("email", "Email");
@@ -305,17 +357,34 @@ public class LoginActivity extends AppCompatActivity {
                         mDatabaseref.child("BabulandPoints").setValue(0);
                         mDatabaseref.child("nof_purchase_time").setValue(0);
                         mDatabaseref.child("progressvalue_stamp").setValue(0);
+                        int startquiz;
+                        int endquiz;
+                        if(startTime!=null && endTime!=null){
 
+                            startquiz=startTime;
+                            endquiz =endTime;
+
+                        }else {
+                            startquiz=21;
+                            endquiz=23;
+                        }
+
+
+                        Log.d(TAG, "onDataChange: -----------------------starttime "+startquiz);
+                        Log.d(TAG, "onDataChange: ---------------------------endtime " + endquiz);
+                        Log.d(TAG, "onDataChange: ------------------------------quiznumber "+quiznumber);
 
                         Calendar calendar_stop= Calendar.getInstance();
-                        calendar_stop.set(Calendar.HOUR_OF_DAY,15);
-                        calendar_stop.set(Calendar.MINUTE,50);
-                        calendar_stop.set(Calendar.SECOND,1);
+                        calendar_stop.set(Calendar.HOUR_OF_DAY,endquiz);
+                        calendar_stop.set(Calendar.MINUTE,55);
+                        calendar_stop.set(Calendar.SECOND,0);
 
                         Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.HOUR_OF_DAY,15);
-                        calendar.set(Calendar.MINUTE,45);
-                        calendar.set(Calendar.SECOND,5);
+                        calendar.set(Calendar.HOUR_OF_DAY,startquiz);
+                        calendar.set(Calendar.MINUTE,52);
+                        calendar.set(Calendar.SECOND,0);
+
+
 
                         scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
                         scheduliedquiz_stop(calendar_stop);
@@ -470,15 +539,27 @@ public class LoginActivity extends AppCompatActivity {
                                                    mDatabaseref.child("nof_purchase_time").setValue(0);
                                                    mDatabaseref.child("progressvalue_stamp").setValue(0);
 
+                                                   int startquiz;
+                                                   int endquiz;
+                                                   if(startTime!=null && endTime!=null){
+
+                                                       startquiz=startTime;
+                                                       endquiz =endTime;
+
+                                                   }else {
+                                                       startquiz=21;
+                                                       endquiz=23;
+                                                   }
+
                                                    Calendar calendar_stop= Calendar.getInstance();
-                                                   calendar_stop.set(Calendar.HOUR_OF_DAY,15);
-                                                   calendar_stop.set(Calendar.MINUTE,50);
-                                                   calendar_stop.set(Calendar.SECOND,1);
+                                                   calendar_stop.set(Calendar.HOUR_OF_DAY,endquiz);
+                                                   calendar_stop.set(Calendar.MINUTE,0);
+                                                   calendar_stop.set(Calendar.SECOND,0);
 
                                                    Calendar calendar = Calendar.getInstance();
-                                                   calendar.set(Calendar.HOUR_OF_DAY,15);
-                                                   calendar.set(Calendar.MINUTE,45);
-                                                   calendar.set(Calendar.SECOND,5);
+                                                   calendar.set(Calendar.HOUR_OF_DAY,startquiz);
+                                                   calendar.set(Calendar.MINUTE,0);
+                                                   calendar.set(Calendar.SECOND,0);
 
                                                    scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
                                                    scheduliedquiz_stop(calendar_stop);

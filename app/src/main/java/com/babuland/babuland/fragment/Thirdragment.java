@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,8 +54,9 @@ public class Thirdragment extends Fragment {
     DatabaseReference Userinfodb;
 
     DatabaseReference quizparticipant;
+    DatabaseReference admindatabase;
 
-    int total=1;
+    int total=0;
     int correct=0;
     int wrong =0;
 
@@ -73,6 +73,7 @@ public class Thirdragment extends Fragment {
     String quzname;
     String answer;
     String staus_quiz;
+    String quiznumber;
 
 
    ;
@@ -113,7 +114,7 @@ public class Thirdragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
-         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+         //prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
 
         // use a default value using new Date()
@@ -136,6 +137,8 @@ public class Thirdragment extends Fragment {
          mUserid=mUser.getUid();
 
          Userinfodb=FirebaseDatabase.getInstance().getReference().child("User").child(mUserid);
+         //mdatabase= FirebaseDatabase.getInstance().getReference().child("Quiz").child("Questions");
+
 
          quizparticipant=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
          quizparticipant.addValueEventListener(new ValueEventListener() {
@@ -181,13 +184,6 @@ public class Thirdragment extends Fragment {
                          tv_time.setVisibility(View.VISIBLE);
                          tv_correctans.setVisibility(View.INVISIBLE);
                          tv_anserstatus.setVisibility(View.INVISIBLE);
-
-                         String wrong_saveanser = prefs.getString("wrongforCorrectans","You did not participate yet");
-                                 if(wrong_saveanser!=null){
-                                     tv_correctans.setText("Correct answer "+wrong_saveanser);
-                                 }
-
-
                      }
                  }
 
@@ -226,13 +222,34 @@ public class Thirdragment extends Fragment {
                         btn_d.setEnabled(false);
                         btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
 
+
+
+                        admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
+                        admindatabase.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.child("quiznumber").exists()){
+                                    String quiznumber_semiglobal=dataSnapshot.child("quiznumber").getValue().toString();
+                                    //quiznumber_semiglobal[1] =quiznumber_local;
+                                    getquiznumber_pre_exicute(quiznumber_semiglobal);
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
                         tv_correctans.setVisibility(View.VISIBLE);
                         tv_anserstatus.setVisibility(View.VISIBLE);
                         tv_time.setVisibility(View.INVISIBLE);
                         tv_anserstatus.setText("Quiz will start at 9:00pm");
                         tv_correctans.setText("Correct answer "+answer);
-
-
                     }
 
                 }
@@ -275,43 +292,67 @@ public class Thirdragment extends Fragment {
 
 
 
+
+
     private void Updatequestion() {
 
+        admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
+        admindatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("quiznumber").exists()){
+                    String quiznumber_semiglobal=dataSnapshot.child("quiznumber").getValue().toString();
+                    //quiznumber_semiglobal[1] =quiznumber_local;
+                    allwork(quiznumber_semiglobal);
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
 
-        if(total>7){
-            //open result activity
-            startActivity(new Intent(getActivity(), QuizresultActivity.class).putExtra("total",total).putExtra("correctans",correct));
-            total=1;
-        }else{
-
-            mdatabase= FirebaseDatabase.getInstance().getReference().child("Quiz").child("Questions").child(String.valueOf(total));
-            total++;
-            mdatabase.keepSynced(true);
-            mdatabase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-
-                    final Question question =  dataSnapshot.getValue(Question.class);
-                    tv_question.setText(question.getQuestions());
-                    btn_a.setText(question.getOption1());
-                    btn_b.setText(question.getOption2());
-                    btn_c.setText(question.getOption3());
-                    btn_d.setText(question.getOption4());
-                    btn_a.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+    }
 
 
-                            if(btn_a.getText().toString().equals(question.getAnswer())){
-                                btn_a.setBackgroundColor(Color.parseColor("#22bb33"));
-                                MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
-                                mediaPlayer.start();
-                                //restartCountdown();
+    private void allwork(String quiznumber){
 
 
-                                correct=1;
+
+
+
+        mdatabase= FirebaseDatabase.getInstance().getReference().child("Quiz").child("Questions").child( quiznumber);
+
+        //total++;
+        mdatabase.keepSynced(true);
+        mdatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+
+                final Question question =  dataSnapshot.getValue(Question.class);
+                tv_question.setText(question.getQuestions());
+                btn_a.setText(question.getOption1());
+                btn_b.setText(question.getOption2());
+                btn_c.setText(question.getOption3());
+                btn_d.setText(question.getOption4());
+                btn_a.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                        if(btn_a.getText().toString().equals(question.getAnswer())){
+                            btn_a.setBackgroundColor(Color.parseColor("#22bb33"));
+                            MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
+                            mediaPlayer.start();
+                            //restartCountdown();
+
+
+                            correct=1;
 
                               /*  Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
@@ -323,25 +364,80 @@ public class Thirdragment extends Fragment {
                                     }
                                 },1000);*/
 
-                                if(correct!=0){
+                            if(correct!=0){
 
-                                    btn_a.setEnabled(false);
-                                    btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_b.setEnabled(false);
-                                    btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_c.setEnabled(false);
-                                    btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_d.setEnabled(false);
-                                    btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    tv_correctans.setVisibility(View.VISIBLE);
-                                    tv_anserstatus.setVisibility(View.VISIBLE);
-                                    tv_time.setVisibility(View.INVISIBLE);
+                                btn_a.setEnabled(false);
+                                btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_b.setEnabled(false);
+                                btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_c.setEnabled(false);
+                                btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_d.setEnabled(false);
+                                btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                tv_correctans.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setVisibility(View.VISIBLE);
+                                tv_time.setVisibility(View.INVISIBLE);
 
 
-                                    tv_anserstatus.setText("You answered this question & its correct");
-                                    tv_correctans.setText("Correct Answer  "+answer);
-                                    tv_correctans.setVisibility(View.VISIBLE);
-                                    tv_anserstatus.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setText("You answered this question & its correct");
+                                tv_correctans.setText("Correct Answer  "+answer);
+                                tv_correctans.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setVisibility(View.VISIBLE);
+
+                                FirebaseUser mUserfrg;
+                                DatabaseReference mDatabase;
+                                String userId;
+                                mUserfrg= FirebaseAuth.getInstance().getCurrentUser();
+                                if(mUserfrg!=null) {
+                                    userId = mUserfrg.getUid();
+                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+
+                                    mDatabase.child("status_quz").setValue("inactive");
+                                }
+
+
+                                Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
+                                Map participant = new HashMap();
+
+                                participant.put("name",name);
+                                participant.put("image",image);
+                                participant.put("answer",question.getAnswer());
+                                Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+
+                            }
+
+
+                        }else {
+                            correct=0;
+                            MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
+                            mediaPlayer.start();
+                            Toast.makeText(getContext(), "Incorrect answer ", Toast.LENGTH_SHORT).show();
+                            wrong=wrong+1;
+                            btn_a.setBackgroundColor(Color.RED);
+                            linearLayoutshake.startAnimation(animation);
+
+                            if(btn_b.getText().toString().equals(question.getAnswer())){
+                                btn_b.setBackgroundColor(Color.GREEN);
+                            }else if(btn_c.getText().toString().equals(question.getAnswer())){
+                                btn_c.setBackgroundColor(Color.GREEN);
+                            }else if(btn_d.getText().toString().equals(question.getAnswer())){
+                                btn_d.setBackgroundColor(Color.GREEN);
+                            }
+
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    btn_a.setBackgroundColor(Color.parseColor("#F57C00"));
+                                    btn_b.setBackgroundColor(Color.parseColor("#F57C00"));
+                                    btn_c.setBackgroundColor(Color.parseColor("#F57C00"));
+                                    btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
 
                                     FirebaseUser mUserfrg;
                                     DatabaseReference mDatabase;
@@ -352,86 +448,31 @@ public class Thirdragment extends Fragment {
                                         mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
 
                                         mDatabase.child("status_quz").setValue("inactive");
+
+
+                                        tv_correctans.setText("Correct Answer  "+question.getAnswer());
+                                        tv_correctans.setVisibility(View.VISIBLE);
+                                        //prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
+
                                     }
-
-
-                                    Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
-                                    Map participant = new HashMap();
-
-                                    participant.put("name",name);
-                                    participant.put("image",image);
-                                    participant.put("answer",question.getAnswer());
-                                    Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-
-
+                                    //Updatequestion();
                                 }
-
-
-                            }else {
-                                correct=0;
-                                MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
-                                mediaPlayer.start();
-                                Toast.makeText(getContext(), "Incorrect answer ", Toast.LENGTH_SHORT).show();
-                                wrong=wrong+1;
-                                btn_a.setBackgroundColor(Color.RED);
-                                linearLayoutshake.startAnimation(animation);
-
-                                if(btn_b.getText().toString().equals(question.getAnswer())){
-                                    btn_b.setBackgroundColor(Color.GREEN);
-                                }else if(btn_c.getText().toString().equals(question.getAnswer())){
-                                    btn_c.setBackgroundColor(Color.GREEN);
-                                }else if(btn_d.getText().toString().equals(question.getAnswer())){
-                                    btn_d.setBackgroundColor(Color.GREEN);
-                                }
-
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        btn_a.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        btn_b.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        btn_c.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
-
-                                        FirebaseUser mUserfrg;
-                                        DatabaseReference mDatabase;
-                                        String userId;
-                                        mUserfrg= FirebaseAuth.getInstance().getCurrentUser();
-                                        if(mUserfrg!=null) {
-                                            userId = mUserfrg.getUid();
-                                            mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
-
-                                            mDatabase.child("status_quz").setValue("inactive");
-
-
-                                            tv_correctans.setText("Correct Answer  "+question.getAnswer());
-                                            tv_correctans.setVisibility(View.VISIBLE);
-                                            //prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
-
-                                        }
-                                        //Updatequestion();
-                                    }
-                                },1000);
-                            }
+                            },1000);
                         }
-                    });
+                    }
+                });
 
 
-                    btn_b.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                btn_b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                            btn_b.setBackgroundColor(Color.parseColor("#22bb33"));
-                            //restartCountdown();
-                            if(btn_b.getText().toString().equals(question.getAnswer())){
+                        btn_b.setBackgroundColor(Color.parseColor("#22bb33"));
+                        //restartCountdown();
+                        if(btn_b.getText().toString().equals(question.getAnswer())){
 
-                                MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
-                                mediaPlayer.start();
+                            MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
+                            mediaPlayer.start();
 
                             /*    Userinfodb.addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -452,7 +493,7 @@ public class Thirdragment extends Fragment {
                                 });*/
 
 
-                                correct=1;
+                            correct=1;
                            /*     Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     @Override
@@ -469,26 +510,77 @@ public class Thirdragment extends Fragment {
                                     }
                                 },1000);*/
 
-                                if(correct!=0){
+                            if(correct!=0){
 
 
-                                    btn_a.setEnabled(false);
-                                    btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_b.setEnabled(false);
-                                    btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_c.setEnabled(false);
-                                    btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_d.setEnabled(false);
-                                    btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    tv_correctans.setVisibility(View.VISIBLE);
-                                    tv_anserstatus.setVisibility(View.VISIBLE);
-                                    tv_time.setVisibility(View.INVISIBLE);
+                                btn_a.setEnabled(false);
+                                btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_b.setEnabled(false);
+                                btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_c.setEnabled(false);
+                                btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_d.setEnabled(false);
+                                btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                tv_correctans.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setVisibility(View.VISIBLE);
+                                tv_time.setVisibility(View.INVISIBLE);
 
-                                    tv_anserstatus.setText("You answered this question & its correct");
-                                    tv_correctans.setText("Correct Answer  "+answer);
-                                    tv_correctans.setVisibility(View.VISIBLE);
-                                    tv_anserstatus.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setText("You answered this question & its correct");
+                                tv_correctans.setText("Correct Answer  "+answer);
+                                tv_correctans.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setVisibility(View.VISIBLE);
 
+
+                                FirebaseUser mUserfrg;
+                                DatabaseReference mDatabase;
+                                String userId;
+                                mUserfrg= FirebaseAuth.getInstance().getCurrentUser();
+                                if(mUserfrg!=null) {
+                                    userId = mUserfrg.getUid();
+                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+
+                                    mDatabase.child("status_quz").setValue("inactive");
+                                }
+
+                                Log.d("tagiduser", "run: --------------------------------------------muserid "+mUserid);
+
+                                Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
+                                Map participant = new HashMap();
+
+                                participant.put("name",name);
+                                participant.put("image",image);
+                                participant.put("answer",question.getAnswer());
+                                Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }else {
+                            correct=0;
+
+                            MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
+                            mediaPlayer.start();
+                            linearLayoutshake.startAnimation(animation);
+                            wrong=wrong+1;
+                            btn_b.setBackgroundColor(Color.RED);
+                            if(btn_a.getText().toString().equals(question.getAnswer())){
+                                btn_a.setBackgroundColor(Color.GREEN);
+                            }else if(btn_c.getText().toString().equals(question.getAnswer())){
+                                btn_c.setBackgroundColor(Color.GREEN);
+                            }else if(btn_d.getText().toString().equals(question.getAnswer())){
+                                btn_d.setBackgroundColor(Color.GREEN);
+                            }
+
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    btn_a.setBackgroundColor(Color.parseColor("#F57C00"));
+                                    btn_b.setBackgroundColor(Color.parseColor("#F57C00"));
+                                    btn_c.setBackgroundColor(Color.parseColor("#F57C00"));
+                                    btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
 
                                     FirebaseUser mUserfrg;
                                     DatabaseReference mDatabase;
@@ -501,79 +593,28 @@ public class Thirdragment extends Fragment {
                                         mDatabase.child("status_quz").setValue("inactive");
                                     }
 
-                                    Log.d("tagiduser", "run: --------------------------------------------muserid "+mUserid);
 
-                                    Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
-                                    Map participant = new HashMap();
+                                    tv_correctans.setText("Correct Answer  "+question.getAnswer());
+                                    tv_correctans.setVisibility(View.VISIBLE);
+                                    // prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
 
-                                    participant.put("name",name);
-                                    participant.put("image",image);
-                                    participant.put("answer",question.getAnswer());
-                                    Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                    Updatequestion();
                                 }
-                            }else {
-                                correct=0;
-
-                                MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
-                                mediaPlayer.start();
-                                linearLayoutshake.startAnimation(animation);
-                                wrong=wrong+1;
-                                btn_b.setBackgroundColor(Color.RED);
-                                if(btn_a.getText().toString().equals(question.getAnswer())){
-                                    btn_a.setBackgroundColor(Color.GREEN);
-                                }else if(btn_c.getText().toString().equals(question.getAnswer())){
-                                    btn_c.setBackgroundColor(Color.GREEN);
-                                }else if(btn_d.getText().toString().equals(question.getAnswer())){
-                                    btn_d.setBackgroundColor(Color.GREEN);
-                                }
-
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        btn_a.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        btn_b.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        btn_c.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
-
-                                        FirebaseUser mUserfrg;
-                                        DatabaseReference mDatabase;
-                                        String userId;
-                                        mUserfrg= FirebaseAuth.getInstance().getCurrentUser();
-                                        if(mUserfrg!=null) {
-                                            userId = mUserfrg.getUid();
-                                            mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
-
-                                            mDatabase.child("status_quz").setValue("inactive");
-                                        }
+                            },1000);
 
 
-                                        tv_correctans.setText("Correct Answer  "+question.getAnswer());
-                                        tv_correctans.setVisibility(View.VISIBLE);
-                                        prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
-
-                                        Updatequestion();
-                                    }
-                                },1000);
-
-
-                            }
                         }
-                    });
+                    }
+                });
 
-                    btn_c.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //restartCountdown();
-                            if(btn_c.getText().toString().equals(question.getAnswer())){
-                                btn_c.setBackgroundColor(Color.parseColor("#22bb33"));
-                                MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
-                                mediaPlayer.start();
+                btn_c.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //restartCountdown();
+                        if(btn_c.getText().toString().equals(question.getAnswer())){
+                            btn_c.setBackgroundColor(Color.parseColor("#22bb33"));
+                            MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
+                            mediaPlayer.start();
 
 /*
 
@@ -597,7 +638,7 @@ public class Thirdragment extends Fragment {
                                 });
 */
 
-                                correct=1;
+                            correct=1;
                                 /*Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                                         @Override
@@ -612,25 +653,79 @@ public class Thirdragment extends Fragment {
                                         1000);*/
 
 
-                                if(correct!=0){
+                            if(correct!=0){
 
-                                    tv_anserstatus.setText("You answered this question & its correct");
-                                    tv_correctans.setText("Correct Answer  "+answer);
-                                    tv_correctans.setVisibility(View.VISIBLE);
-                                    tv_anserstatus.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setText("You answered this question & its correct");
+                                tv_correctans.setText("Correct Answer  "+answer);
+                                tv_correctans.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setVisibility(View.VISIBLE);
 
 
-                                    btn_a.setEnabled(false);
-                                    btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_b.setEnabled(false);
-                                    btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_c.setEnabled(false);
-                                    btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_d.setEnabled(false);
-                                    btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    tv_correctans.setVisibility(View.VISIBLE);
-                                    tv_anserstatus.setVisibility(View.VISIBLE);
-                                    tv_time.setVisibility(View.INVISIBLE);
+                                btn_a.setEnabled(false);
+                                btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_b.setEnabled(false);
+                                btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_c.setEnabled(false);
+                                btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_d.setEnabled(false);
+                                btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                tv_correctans.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setVisibility(View.VISIBLE);
+                                tv_time.setVisibility(View.INVISIBLE);
+
+                                FirebaseUser mUserfrg;
+                                DatabaseReference mDatabase;
+                                String userId;
+                                mUserfrg= FirebaseAuth.getInstance().getCurrentUser();
+                                if(mUserfrg!=null) {
+                                    userId = mUserfrg.getUid();
+                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+
+                                    mDatabase.child("status_quz").setValue("inactive");
+                                }
+
+
+
+                                Log.d("tagiduser", "run: --------------------------------------------muserid "+mUserid);
+                                Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
+                                Map participant = new HashMap();
+
+                                participant.put("name",name);
+                                participant.put("image",image);
+                                participant.put("answer",question.getAnswer());
+                                Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+
+
+                        }else {
+                            correct=0;
+                            MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
+                            mediaPlayer.start();
+                            linearLayoutshake.startAnimation(animation);
+                            wrong++;
+                            btn_c.setBackgroundColor(Color.RED);
+                            if(btn_b.getText().toString().equals(question.getAnswer())){
+                                btn_b.setBackgroundColor(Color.GREEN);
+                            }else if(btn_a.getText().toString().equals(question.getAnswer())){
+                                btn_a.setBackgroundColor(Color.GREEN);
+                            }else if(btn_d.getText().toString().equals(question.getAnswer())){
+                                btn_d.setBackgroundColor(Color.GREEN);
+                            }
+
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    btn_a.setBackgroundColor(Color.parseColor("#F57C00"));
+                                    btn_b.setBackgroundColor(Color.parseColor("#F57C00"));
+                                    btn_c.setBackgroundColor(Color.parseColor("#F57C00"));
+                                    btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
 
                                     FirebaseUser mUserfrg;
                                     DatabaseReference mDatabase;
@@ -641,85 +736,31 @@ public class Thirdragment extends Fragment {
                                         mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
 
                                         mDatabase.child("status_quz").setValue("inactive");
+
+                                        tv_correctans.setText("Correct Answer  "+question.getAnswer());
+                                        tv_correctans.setVisibility(View.VISIBLE);
+                                        //prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
                                     }
 
 
-
-                                    Log.d("tagiduser", "run: --------------------------------------------muserid "+mUserid);
-                                    Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
-                                    Map participant = new HashMap();
-
-                                    participant.put("name",name);
-                                    participant.put("image",image);
-                                    participant.put("answer",question.getAnswer());
-                                    Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                    //Updatequestion();
                                 }
 
+                            },1000);
 
-
-                            }else {
-                                correct=0;
-                                MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
-                                mediaPlayer.start();
-                                linearLayoutshake.startAnimation(animation);
-                                wrong++;
-                                btn_c.setBackgroundColor(Color.RED);
-                                if(btn_b.getText().toString().equals(question.getAnswer())){
-                                    btn_b.setBackgroundColor(Color.GREEN);
-                                }else if(btn_a.getText().toString().equals(question.getAnswer())){
-                                    btn_a.setBackgroundColor(Color.GREEN);
-                                }else if(btn_d.getText().toString().equals(question.getAnswer())){
-                                    btn_d.setBackgroundColor(Color.GREEN);
-                                }
-
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        btn_a.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        btn_b.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        btn_c.setBackgroundColor(Color.parseColor("#F57C00"));
-                                        btn_d.setBackgroundColor(Color.parseColor("#F57C00"));
-
-                                        FirebaseUser mUserfrg;
-                                        DatabaseReference mDatabase;
-                                        String userId;
-                                        mUserfrg= FirebaseAuth.getInstance().getCurrentUser();
-                                        if(mUserfrg!=null) {
-                                            userId = mUserfrg.getUid();
-                                            mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
-
-                                            mDatabase.child("status_quz").setValue("inactive");
-
-                                            tv_correctans.setText("Correct Answer  "+question.getAnswer());
-                                            tv_correctans.setVisibility(View.VISIBLE);
-                                            prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
-                                        }
-
-
-                                        //Updatequestion();
-                                    }
-
-                                },1000);
-
-                            }
                         }
-                    });
+                    }
+                });
 
 
-                    btn_d.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //restartCountdown();
-                            if(btn_d.getText().toString().equals(question.getAnswer())){
-                                btn_d.setBackgroundColor(Color.parseColor("#22bb33"));
-                                MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
-                                mediaPlayer.start();
+                btn_d.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //restartCountdown();
+                        if(btn_d.getText().toString().equals(question.getAnswer())){
+                            btn_d.setBackgroundColor(Color.parseColor("#22bb33"));
+                            MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.correctans);
+                            mediaPlayer.start();
 /*
                                 Userinfodb.addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -738,7 +779,7 @@ public class Thirdragment extends Fragment {
 
                                     }
                                 });*/
-                                correct=1;
+                            correct=1;
                             /*    Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     @Override
@@ -750,24 +791,74 @@ public class Thirdragment extends Fragment {
                                     }
                                 },1000);*/
 
-                                if(correct!=0){
+                            if(correct!=0){
 
-                                    tv_anserstatus.setText("You answered this question & its correct");
-                                    tv_correctans.setText("Correct Answer  "+answer);
-                                    tv_correctans.setVisibility(View.VISIBLE);
-                                    tv_anserstatus.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setText("You answered this question & its correct");
+                                tv_correctans.setText("Correct Answer  "+answer);
+                                tv_correctans.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setVisibility(View.VISIBLE);
 
-                                    btn_a.setEnabled(false);
+                                btn_a.setEnabled(false);
+                                btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_b.setEnabled(false);
+                                btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_c.setEnabled(false);
+                                btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                btn_d.setEnabled(false);
+                                btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                                tv_correctans.setVisibility(View.VISIBLE);
+                                tv_anserstatus.setVisibility(View.VISIBLE);
+                                tv_time.setVisibility(View.INVISIBLE);
+
+                                FirebaseUser mUserfrg;
+                                DatabaseReference mDatabase;
+                                String userId;
+                                mUserfrg= FirebaseAuth.getInstance().getCurrentUser();
+                                if(mUserfrg!=null) {
+                                    userId = mUserfrg.getUid();
+                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+
+                                    mDatabase.child("status_quz").setValue("inactive");
+                                }
+
+                                Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
+                                Map participant = new HashMap();
+
+                                participant.put("name",name);
+                                participant.put("image",image);
+                                participant.put("answer",question.getAnswer());
+
+                                Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                        }else {
+                            correct=0;
+                            MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
+                            mediaPlayer.start();
+                            linearLayoutshake.startAnimation(animation);
+                            wrong++;
+                            btn_d.setBackgroundColor(Color.RED);
+                            if(btn_b.getText().toString().equals(question.getAnswer())){
+                                btn_b.setBackgroundColor(Color.GREEN);
+                            }else if(btn_c.getText().toString().equals(question.getAnswer())){
+                                btn_c.setBackgroundColor(Color.GREEN);
+                            }else if(btn_a.getText().toString().equals(question.getAnswer())){
+                                btn_a.setBackgroundColor(Color.GREEN);
+                            }
+
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
                                     btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_b.setEnabled(false);
                                     btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_c.setEnabled(false);
                                     btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    btn_d.setEnabled(false);
                                     btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                    tv_correctans.setVisibility(View.VISIBLE);
-                                    tv_anserstatus.setVisibility(View.VISIBLE);
-                                    tv_time.setVisibility(View.INVISIBLE);
 
                                     FirebaseUser mUserfrg;
                                     DatabaseReference mDatabase;
@@ -778,78 +869,24 @@ public class Thirdragment extends Fragment {
                                         mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
 
                                         mDatabase.child("status_quz").setValue("inactive");
+                                        tv_correctans.setText("Correct Answer  "+question.getAnswer());
+                                        tv_correctans.setVisibility(View.VISIBLE);
+                                        //prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
                                     }
-
-                                    Leaderboard=FirebaseDatabase.getInstance().getReference().child("Leaderboard").child(mUserid);
-                                    Map participant = new HashMap();
-
-                                    participant.put("name",name);
-                                    participant.put("image",image);
-                                    participant.put("answer",question.getAnswer());
-
-                                    Leaderboard.setValue(participant).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(getContext(), "Correct answer", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                    //Updatequestion();
                                 }
-
-                            }else {
-                                correct=0;
-                                MediaPlayer mediaPlayer= MediaPlayer.create(getActivity(),R.raw.wrongans);
-                                mediaPlayer.start();
-                                linearLayoutshake.startAnimation(animation);
-                                wrong++;
-                                btn_d.setBackgroundColor(Color.RED);
-                                if(btn_b.getText().toString().equals(question.getAnswer())){
-                                    btn_b.setBackgroundColor(Color.GREEN);
-                                }else if(btn_c.getText().toString().equals(question.getAnswer())){
-                                    btn_c.setBackgroundColor(Color.GREEN);
-                                }else if(btn_a.getText().toString().equals(question.getAnswer())){
-                                    btn_a.setBackgroundColor(Color.GREEN);
-                                }
-
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                        btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                        btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                        btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-
-                                        FirebaseUser mUserfrg;
-                                        DatabaseReference mDatabase;
-                                        String userId;
-                                        mUserfrg= FirebaseAuth.getInstance().getCurrentUser();
-                                        if(mUserfrg!=null) {
-                                            userId = mUserfrg.getUid();
-                                            mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
-
-                                            mDatabase.child("status_quz").setValue("inactive");
-                                            tv_correctans.setText("Correct Answer  "+question.getAnswer());
-                                            tv_correctans.setVisibility(View.VISIBLE);
-                                            prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
-                                        }
-                                        //Updatequestion();
-                                    }
-                                },1000);
-                            }
+                            },1000);
                         }
-                    });
+                    }
+                });
 
-                }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
-        }
-
-
-
+            }
+        });
     }
 
 
@@ -934,4 +971,39 @@ public class Thirdragment extends Fragment {
 
         tv_time.setText(timerformated);
     }*/
+
+
+
+    private void getquiznumber_pre_exicute(String quiznumber){
+
+
+        mdatabase= FirebaseDatabase.getInstance().getReference().child("Quiz").child("Questions").child(quiznumber);
+        //  total++;
+        mdatabase.keepSynced(true);
+        mdatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()){
+
+                    Question questions = dataSnapshot.getValue(Question.class);
+                    tv_question.setText(questions.getQuestions());
+                    btn_a.setText(questions.getOption1());
+                    btn_b.setText(questions.getOption2());
+                    btn_c.setText(questions.getOption3());
+                    btn_d.setText(questions.getOption4());
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 }
