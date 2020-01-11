@@ -12,7 +12,7 @@ public class BroadcastService extends Service {
 
     private final static String TAG = "BroadcastService";
 
-    public static final String COUNTDOWN_BR = "com.babuland.babuland1.utils.countdown_br";
+    public static final String COUNTDOWN_BR = "com.babuland.babuland.utils.countdown_br";
     Intent bi = new Intent(COUNTDOWN_BR);
 
     CountDownTimer cdt = null;

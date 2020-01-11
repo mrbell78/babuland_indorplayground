@@ -81,6 +81,11 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
     String imageuri;
 
     //for insert data in db
+   /* public static final String DEFAULT_DRIVER="oracle.jdbc.driver.OracleDriver";
+    private static final String DEFAULT_URL = "jdbc:oracle:thin:@itlimpex.ddns.net:2121:xe";
+    private  static String  DEFAULT_USERNAME;
+    private static final String DEFAULT_PASSWORD = "servicepack3";*/
+
     public static final String DEFAULT_DRIVER="oracle.jdbc.driver.OracleDriver";
     private static final String DEFAULT_URL = "jdbc:oracle:thin:@itlimpex.ddns.net:2121:xe";
     private  static String  DEFAULT_USERNAME;
@@ -512,11 +517,9 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             @Override
             public void onClick(View view) {
                 phone=edtphone.getText().toString();
-
                 if(phone.length()<10){
                     Toast.makeText(PaymentActivity.this, "Please Enter valid phonenumber", Toast.LENGTH_SHORT).show();
                 }else if(phone!=null && phone.length()>10){
-
                     mUser= FirebaseAuth.getInstance().getCurrentUser();
                     String mUserid=mUser.getUid();
                     mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(mUserid);
@@ -524,11 +527,9 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
-
                                 mDatabase.child("number_up").setValue(20);
                                 dialog.dismiss();
                                 Toast.makeText(PaymentActivity.this, "Thank you", Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     });

@@ -31,7 +31,6 @@
                 android:title="Refer Friend and Earn"
                 android:icon="@drawable/ic_reply"
                 />
-
             <item
                 android:id="@+id/cservice"
                 android:title="Customer care"

@@ -400,93 +400,84 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
             userId= mCurrentUser.getUid();
             mDatabaseref = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
             mDatabaseref.keepSynced(true);
-            mDatabaseref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getValue()!=null) {
-                        String image = dataSnapshot.child("image").getValue().toString();
-                        if (isAdded()) {
-                            Picasso.with(getContext()).load(image).into(profileimage);
-                        }
-                        String namel = dataSnapshot.child("name").getValue().toString();
-                        name.setText(namel);
-                        String phonel = dataSnapshot.child("phone").getValue().toString();
-                        number.setText(phonel);
 
-                        qrcode_id = dataSnapshot.child("qrdata").getValue().toString();
-
-                        ticket1 = dataSnapshot.child("count1").getValue().toString();
-                        Log.d(TAG, "onDataChange: -----------------------------------ticket1 value-------------------------------------------" + ticket1);
-                        Log.d(TAG, "onDataChange: -------------------------------------qrcode id ---------------------------------------------" + qrcode_id);
-                        if (ticket1.equals("avail") && qrcode_id.equals("nurhossen")) {
-
-                            img_scan1.setEnabled(true);
-                            img_scan2.setEnabled(false);
-                            img_scan3.setEnabled(false);
-                            img_scan4.setEnabled(false);
-                            img_scan5.setEnabled(false);
-                            img_scan6.setEnabled(false);
-
-                            cd1.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-                        } else if (ticket1.equals("over")) {
-                            img_scan1.setEnabled(false);
-                            img_scan2.setEnabled(true);
+            if(isAdded()){
 
 
-                            img_scan3.setEnabled(false);
-                            img_scan4.setEnabled(false);
-                            img_scan5.setEnabled(false);
-                            img_scan6.setEnabled(false);
-                            cd1.setBackgroundColor(Color.parseColor("#d3d3d3"));
+                mDatabaseref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue()!=null) {
+                            String image = dataSnapshot.child("image").getValue().toString();
+                            if (isAdded()) {
+                                Picasso.with(getContext()).load(image).into(profileimage);
+                            }
+                            String namel = dataSnapshot.child("name").getValue().toString();
+                            name.setText(namel);
+                            String phonel = dataSnapshot.child("phone").getValue().toString();
+                            number.setText(phonel);
 
-                            ticket2 = dataSnapshot.child("count2").getValue().toString();
+                            qrcode_id = dataSnapshot.child("qrdata").getValue().toString();
 
-                            if (ticket2.equals("avail") && qrcode_id.equals("nurhossen")) {
+                            ticket1 = dataSnapshot.child("count1").getValue().toString();
+                            Log.d(TAG, "onDataChange: -----------------------------------ticket1 value-------------------------------------------" + ticket1);
+                            Log.d(TAG, "onDataChange: -------------------------------------qrcode id ---------------------------------------------" + qrcode_id);
+                            if (ticket1.equals("avail") && qrcode_id.equals("nurhossen")) {
+
+                                img_scan1.setEnabled(true);
+                                img_scan2.setEnabled(false);
+                                img_scan3.setEnabled(false);
+                                img_scan4.setEnabled(false);
+                                img_scan5.setEnabled(false);
+                                img_scan6.setEnabled(false);
+
+                                cd1.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+                            } else if (ticket1.equals("over")) {
                                 img_scan1.setEnabled(false);
                                 img_scan2.setEnabled(true);
+
 
                                 img_scan3.setEnabled(false);
                                 img_scan4.setEnabled(false);
                                 img_scan5.setEnabled(false);
                                 img_scan6.setEnabled(false);
-                                cd2.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                            } else if (ticket2.equals("over")) {
-                                img_scan1.setEnabled(false);
-                                img_scan2.setEnabled(false);
+                                cd1.setBackgroundColor(Color.parseColor("#d3d3d3"));
 
-                                img_scan3.setEnabled(true);
-                                img_scan4.setEnabled(false);
-                                img_scan5.setEnabled(false);
-                                img_scan6.setEnabled(false);
-                                cd2.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
+                                ticket2 = dataSnapshot.child("count2").getValue().toString();
 
-                                ticket3 = dataSnapshot.child("count3").getValue().toString();
+                                if (ticket2.equals("avail") && qrcode_id.equals("nurhossen")) {
+                                    img_scan1.setEnabled(false);
+                                    img_scan2.setEnabled(true);
 
-                                if (ticket3.equals("avail") && qrcode_id.equals("nurhossen")) {
+                                    img_scan3.setEnabled(false);
+                                    img_scan4.setEnabled(false);
+                                    img_scan5.setEnabled(false);
+                                    img_scan6.setEnabled(false);
+                                    cd2.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                } else if (ticket2.equals("over")) {
                                     img_scan1.setEnabled(false);
                                     img_scan2.setEnabled(false);
-
 
                                     img_scan3.setEnabled(true);
                                     img_scan4.setEnabled(false);
                                     img_scan5.setEnabled(false);
                                     img_scan6.setEnabled(false);
-                                    cd3.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                                } else if (ticket3.equals("over")) {
-                                    img_scan1.setEnabled(false);
-                                    img_scan2.setEnabled(false);
+                                    cd2.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
+
+                                    ticket3 = dataSnapshot.child("count3").getValue().toString();
+
+                                    if (ticket3.equals("avail") && qrcode_id.equals("nurhossen")) {
+                                        img_scan1.setEnabled(false);
+                                        img_scan2.setEnabled(false);
 
 
-                                    img_scan3.setEnabled(false);
-                                    img_scan4.setEnabled(true);
-                                    img_scan5.setEnabled(false);
-                                    img_scan6.setEnabled(false);
-                                    cd3.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
-
-                                    ticket4 = dataSnapshot.child("count4").getValue().toString();
-
-                                    if (ticket4.equals("avail") && qrcode_id.equals("nurhossen")) {
+                                        img_scan3.setEnabled(true);
+                                        img_scan4.setEnabled(false);
+                                        img_scan5.setEnabled(false);
+                                        img_scan6.setEnabled(false);
+                                        cd3.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                    } else if (ticket3.equals("over")) {
                                         img_scan1.setEnabled(false);
                                         img_scan2.setEnabled(false);
 
@@ -495,21 +486,21 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                                         img_scan4.setEnabled(true);
                                         img_scan5.setEnabled(false);
                                         img_scan6.setEnabled(false);
-                                        cd4.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                                    } else if (ticket4.equals("over")) {
-                                        img_scan1.setEnabled(false);
-                                        img_scan2.setEnabled(false);
+                                        cd3.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
+
+                                        ticket4 = dataSnapshot.child("count4").getValue().toString();
+
+                                        if (ticket4.equals("avail") && qrcode_id.equals("nurhossen")) {
+                                            img_scan1.setEnabled(false);
+                                            img_scan2.setEnabled(false);
 
 
-                                        img_scan3.setEnabled(false);
-                                        img_scan4.setEnabled(false);
-                                        img_scan5.setEnabled(true);
-                                        img_scan6.setEnabled(false);
-                                        cd4.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
-
-                                        ticket5 = dataSnapshot.child("count5").getValue().toString();
-
-                                        if (ticket5.equals("avail") && qrcode_id.equals("nurhossen")) {
+                                            img_scan3.setEnabled(false);
+                                            img_scan4.setEnabled(true);
+                                            img_scan5.setEnabled(false);
+                                            img_scan6.setEnabled(false);
+                                            cd4.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                        } else if (ticket4.equals("over")) {
                                             img_scan1.setEnabled(false);
                                             img_scan2.setEnabled(false);
 
@@ -518,103 +509,118 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
                                             img_scan4.setEnabled(false);
                                             img_scan5.setEnabled(true);
                                             img_scan6.setEnabled(false);
-                                            cd5.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                                        } else if (ticket5.equals("over")) {
-                                            img_scan1.setEnabled(false);
-                                            img_scan2.setEnabled(false);
+                                            cd4.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
 
+                                            ticket5 = dataSnapshot.child("count5").getValue().toString();
 
-                                            img_scan3.setEnabled(false);
-                                            img_scan4.setEnabled(false);
-                                            img_scan5.setEnabled(false);
-                                            img_scan6.setEnabled(true);
-                                            cd5.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
-
-                                            ticket6 = dataSnapshot.child("count6").getValue().toString();
-
-                                            if (ticket6.equals("avail") && qrcode_id.equals("nurhossen")) {
+                                            if (ticket5.equals("avail") && qrcode_id.equals("nurhossen")) {
                                                 img_scan1.setEnabled(false);
                                                 img_scan2.setEnabled(false);
+
+
+                                                img_scan3.setEnabled(false);
+                                                img_scan4.setEnabled(false);
+                                                img_scan5.setEnabled(true);
+                                                img_scan6.setEnabled(false);
+                                                cd5.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                            } else if (ticket5.equals("over")) {
+                                                img_scan1.setEnabled(false);
+                                                img_scan2.setEnabled(false);
+
+
                                                 img_scan3.setEnabled(false);
                                                 img_scan4.setEnabled(false);
                                                 img_scan5.setEnabled(false);
                                                 img_scan6.setEnabled(true);
-                                                cd6.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                                            } else if (ticket6.equals("over")) {
-                                                img_scan1.setEnabled(false);
-                                                img_scan2.setEnabled(false);
-                                                img_scan3.setEnabled(false);
-                                                img_scan4.setEnabled(false);
-                                                img_scan5.setEnabled(false);
-                                                img_scan6.setEnabled(false);
-                                                cd6.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
+                                                cd5.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
 
+                                                ticket6 = dataSnapshot.child("count6").getValue().toString();
+
+                                                if (ticket6.equals("avail") && qrcode_id.equals("nurhossen")) {
+                                                    img_scan1.setEnabled(false);
+                                                    img_scan2.setEnabled(false);
+                                                    img_scan3.setEnabled(false);
+                                                    img_scan4.setEnabled(false);
+                                                    img_scan5.setEnabled(false);
+                                                    img_scan6.setEnabled(true);
+                                                    cd6.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                                } else if (ticket6.equals("over")) {
+                                                    img_scan1.setEnabled(false);
+                                                    img_scan2.setEnabled(false);
+                                                    img_scan3.setEnabled(false);
+                                                    img_scan4.setEnabled(false);
+                                                    img_scan5.setEnabled(false);
+                                                    img_scan6.setEnabled(false);
+                                                    cd6.setCardBackgroundColor(Color.parseColor("#d3d3d3"));
+
+                                                }
                                             }
+
+
                                         }
 
 
                                     }
-
-
                                 }
+
+                            }
+
+                            count_ticketrdm =  dataSnapshot.child("ticket_redeem").getValue(Integer.class);
+                            if (count_ticketrdm != 0){
+                                tv_ticketrdm.setText(Integer.toString(count_ticketrdm) + "free ticket");
+                                tv_ticketrdm.setVisibility(View.VISIBLE);
+
+                                tv_ticketrdm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        startActivity(new Intent(getActivity().getApplicationContext(), MyFreeTicketActivity.class));
+                                    }
+                                });
+                            }
+                            progressvalue=dataSnapshot.child("progressvalue_stamp").getValue(Integer.class);
+                            if(progressvalue==17){
+                                v.setVisibility(View.VISIBLE);
+                                v.setProgress(17);
+                                tv_percentage.setText("17%");
+                            }
+                            else if(progressvalue==34){
+                                v.setVisibility(View.VISIBLE);
+                                v.setProgress(34);
+                                tv_percentage.setText("34%");
+                            }
+                            else if(progressvalue==51){
+                                v.setVisibility(View.VISIBLE);
+                                v.setProgress(51);
+                                tv_percentage.setText("50%");
+                            }
+                            else if(progressvalue==68){
+                                v.setVisibility(View.VISIBLE);
+                                v.setProgress(68);
+                                tv_percentage.setText("68%");
+                            }
+                            else if(progressvalue==85){
+                                v.setVisibility(View.VISIBLE);
+                                v.setProgress(85);
+                                tv_percentage.setText("85%");
+                            }
+                            else if(progressvalue==100){
+                                v.setVisibility(View.VISIBLE);
+                                v.setProgress(100);
+                                tv_percentage.setText("100%");
+                                layout_rdm.setVisibility(View.VISIBLE);
+                                pre_win.setVisibility(View.INVISIBLE);
                             }
 
                         }
-
-                        count_ticketrdm =  dataSnapshot.child("ticket_redeem").getValue(Integer.class);
-                        if (count_ticketrdm != 0){
-                        tv_ticketrdm.setText(Integer.toString(count_ticketrdm) + "free ticket");
-                        tv_ticketrdm.setVisibility(View.VISIBLE);
-
-                        tv_ticketrdm.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                startActivity(new Intent(getActivity().getApplicationContext(), MyFreeTicketActivity.class));
-                            }
-                        });
                     }
-                        progressvalue=dataSnapshot.child("progressvalue_stamp").getValue(Integer.class);
-                        if(progressvalue==17){
-                            v.setVisibility(View.VISIBLE);
-                            v.setProgress(17);
-                            tv_percentage.setText("17%");
-                        }
-                        else if(progressvalue==34){
-                            v.setVisibility(View.VISIBLE);
-                            v.setProgress(34);
-                            tv_percentage.setText("34%");
-                        }
-                        else if(progressvalue==51){
-                            v.setVisibility(View.VISIBLE);
-                            v.setProgress(51);
-                            tv_percentage.setText("50%");
-                        }
-                        else if(progressvalue==68){
-                            v.setVisibility(View.VISIBLE);
-                            v.setProgress(68);
-                            tv_percentage.setText("68%");
-                        }
-                        else if(progressvalue==85){
-                            v.setVisibility(View.VISIBLE);
-                            v.setProgress(85);
-                            tv_percentage.setText("85%");
-                        }
-                        else if(progressvalue==100){
-                            v.setVisibility(View.VISIBLE);
-                            v.setProgress(100);
-                            tv_percentage.setText("100%");
-                            layout_rdm.setVisibility(View.VISIBLE);
-                            pre_win.setVisibility(View.INVISIBLE);
-                        }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                }
+                });
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
+            }
         }
 
 

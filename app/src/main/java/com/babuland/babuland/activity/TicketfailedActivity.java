@@ -21,7 +21,7 @@ public class TicketfailedActivity extends AppCompatActivity {
 
         Intent intent =getIntent();
 
-        int orderid=intent.getIntExtra("orderid",0);
+        String orderid=intent.getStringExtra("orderid");
 
         tv_orderid.setText(orderid);
     }

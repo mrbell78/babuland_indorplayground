@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,8 +29,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.babuland.babuland.R;
+import com.babuland.babuland.adapter.Adapterlistview;
+import com.babuland.babuland.model.modelclass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -53,8 +58,11 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -73,7 +81,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     private Uri imgeuri;
     private String name,emailvlue,addressvalue,dateOfbirdthglb,gendervalue,numbervalue;
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase,chilDatabase;
     private FirebaseUser mUser;
     private Button btn_saveChange,foreditbtn;
     private ProgressDialog mdialog;
@@ -101,6 +109,21 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
     Button btn_more;
 
+    private TextView tv_dob_full;
+    private Spinner spinner_full;
+    private EditText childname_full,class_ful,school_full,parentname_full,spousename_full,number_full,email_full,address_full;
+    private Button btn_save_full;
+    Map fullmap = new HashMap();
+    private Button btn_addchild12,btn_addchild3;
+    private LinearLayout ll2,ll3;
+
+    int indexlist[]=new int[1];
+    RecyclerView recyclerView;
+    Adapterlistview adapeter;
+    Button btnadd,btnbinus;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +133,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.editprofile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        initializefullprofile();
+        btn_save_full=findViewById(R.id.save_full);
+
 
         edt_name=findViewById(R.id.name_id_accountSettings);
         email=findViewById(R.id.email_accountsettings);
@@ -470,6 +497,102 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 varyfycode();
             }
         });*/
+
+
+
+       btn_save_full.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               mUser=FirebaseAuth.getInstance().getCurrentUser();
+               String useridlc=mUser.getUid();
+               mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(useridlc);
+
+
+               mUser=FirebaseAuth.getInstance().getCurrentUser();
+               String useridlocal=mUser.getUid();
+               chilDatabase=FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
+
+               String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+               String random_timephone=number_full.getText().toString()+currentTime;
+
+               //childname_full,class_ful,school_full,parentname_full,spousename_full,number_full,email_full,address_full;
+
+               if(fullmap!=null && !TextUtils.isEmpty(random_timephone)){
+
+                   fullmap.put("child_name",childname_full.getText().toString());
+                   fullmap.put("class",class_ful.getText().toString());
+                   fullmap.put("school",school_full.getText().toString());
+                   fullmap.put("child_image","notset");
+                   fullmap.put("dob","notset");
+                   fullmap.put("pre_branch","notset");
+                   fullmap.put("child_gender","notset");
+                   chilDatabase.child(random_timephone).updateChildren(fullmap).addOnCompleteListener(new OnCompleteListener() {
+                       @Override
+                       public void onComplete(@NonNull Task task) {
+                           if(task.isSuccessful()){
+                               mUser=FirebaseAuth.getInstance().getCurrentUser();
+                               String useridlc=mUser.getUid();
+                               mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(useridlc);
+                               Map parent = new HashMap();
+                               parent.put("name",parentname_full.getText().toString());
+                               parent.put("spousename",spousename_full.getText().toString());
+                               parent.put("phone",number_full.getText().toString());
+                               parent.put("email",email_full.getText().toString());
+                               parent.put("address",address_full.getText().toString());
+                               mDatabase.updateChildren(parent);
+
+
+                           }
+                       }
+                   });
+               }
+
+
+
+           }
+       });
+
+        recyclerView=findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        indexlist[0]=1;
+        adapeter = new Adapterlistview(AccountSettingsActivity.this, modelclass.getobject());
+        recyclerView.smoothScrollToPosition(indexlist.length);
+        recyclerView.setAdapter(adapeter);
+
+      /*  btnadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                indexlist=new int[indexlist.length+1];
+                adapeter = new Adapterlistview(AccountSettingsActivity.this,modelclass.getobject());
+                recyclerView.smoothScrollToPosition(indexlist.length);
+                recyclerView.setAdapter(adapeter);
+                if(indexlist.length>1){
+                    btnbinus.setVisibility(View.VISIBLE);
+                }else {
+                    btnbinus.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
+
+        btnbinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(indexlist.length>1){
+                    indexlist=new int[indexlist.length-1];
+                    adapeter = new Adapterlistview(AccountSettingsActivity.this,Mod);
+                    recyclerView.smoothScrollToPosition(indexlist.length);
+                    recyclerView.setAdapter(adapeter);
+                }else {
+                    btnbinus.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });*/
+
+
+
+
     }
 
     private void saveProfile(){
@@ -754,4 +877,26 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                }
                 });
     }*/
+
+    private void initializefullprofile() {
+
+        tv_dob_full=findViewById(R.id.dateofbirth_full);
+        spinner_full=findViewById(R.id.genderchild_full);
+        childname_full=findViewById(R.id.childname_full);
+        class_ful=findViewById(R.id.class_full);
+        school_full=findViewById(R.id.schoolname_full);
+        parentname_full=findViewById(R.id.name_parent_full);
+        spousename_full=findViewById(R.id.spousename_full);
+        number_full=findViewById(R.id.number_full);
+        email_full=findViewById(R.id.email_full);
+        address_full=findViewById(R.id.address_full);
+
+
+        //ll2,ll3;
+
+        /*ll2=findViewById(R.id.liniarchild2);
+        ll3=findViewById(R.id.liniarchild3);*/
+
+    }
+
 }

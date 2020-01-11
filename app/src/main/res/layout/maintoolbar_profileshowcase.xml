@@ -30,11 +30,13 @@
                    app:civ_border_color="@color/colorPrimary"
                    android:focusableInTouchMode="true"
                    />-->
-               <ImageView
+               <TextView
                    android:layout_width="match_parent"
                    android:layout_height="?attr/actionBarSize"
-                   android:src="@drawable/babulandlogo"
-                   android:scaleType="fitCenter"
+                   android:text="Babuland"
+                   android:gravity="center"
+                   android:textSize="18sp"
+                   android:textColor="@android:color/white"
                    />
 
            </LinearLayout>

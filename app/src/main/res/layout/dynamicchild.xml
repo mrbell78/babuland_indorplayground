@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+
+
+    <!--first child-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="child1"
+            android:textSize="20sp"
+            android:textColor="@drawable/btn_confirm_background"
+            android:id="@+id/chldnumber"
+            />
+
+        <!--child name-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Child's Name"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter child name"
+                    android:inputType="text"
+                    android:id="@+id/childname_full"
+                    />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/default_childpp"
+                    android:scaleType="fitXY"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="#F10E0E"
+                    android:id="@+id/imgiview"
+                    android:layout_marginTop="-5dp"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:weightSum="2">
+
+
+            <!--child date of birth-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_gravity="center"
+
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Birth"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:drawableRight="@drawable/ic_date_range"
+                    android:drawablePadding="10dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Birth"
+                    android:inputType="text"
+                    android:textSize="15sp"
+                    android:id="@+id/dateofbirth_full"
+                    />
+            </LinearLayout>
+
+
+            <!--child gender-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="3dp"
+                android:gravity="center"
+
+
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gender"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+                <Spinner
+                    android:id="@+id/genderchild_full"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    >
+
+                </Spinner>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <!--child class-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Class"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter class"
+                android:inputType="text"
+                android:id="@+id/class_full"
+                />
+        </LinearLayout>
+
+
+        <!--child School-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="School"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter School name"
+                android:inputType="text"
+                android:id="@+id/schoolname_full"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="3dp"
+                    android:text="Add child"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/btn_confirm_background"
+                    android:textAllCaps="false"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/addchild1"
+                    android:layout_marginRight="10dp"
+                    />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="3dp"
+                    android:text="Remove child"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/background_alpha32"
+                    android:textAllCaps="false"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/removechild"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+
+        android:background="#FF0303"/>
+</LinearLayout>

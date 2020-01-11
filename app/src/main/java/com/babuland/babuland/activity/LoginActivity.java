@@ -1,5 +1,6 @@
 package com.babuland.babuland.activity;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -7,10 +8,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +57,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -118,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
         mdialog.setTitle("Login");
         mdialog.setMessage("Please wait.......:)");
 
-
+/*
         admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
 
         Map<String ,String > adminpanel = new HashMap<>();
@@ -159,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
 
 
 
@@ -203,6 +210,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 loginWithfb();
+                printKeyHash(LoginActivity.this);
             }
         });
 
@@ -339,6 +347,7 @@ public class LoginActivity extends AppCompatActivity {
                 userfield.put("childrenName","Child name");
                 userfield.put("spousename","Spouse name");
                 userfield.put("status_quz","inactive");
+                userfield.put("alrmstatus","false");
 
 
                 mDatabaseref.setValue(userfield).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -521,6 +530,7 @@ public class LoginActivity extends AppCompatActivity {
                                        userfield.put("comment", "not comment yet");
                                        userfield.put("spousename","Spouse name");
                                        userfield.put("status_quz","inactive");
+                                       userfield.put("alrmstatus","false");
 
                                        mDatabaseref.setValue(userfield).addOnCompleteListener(new OnCompleteListener<Void>() {
                                            @Override
@@ -666,6 +676,41 @@ public class LoginActivity extends AppCompatActivity {
         Notification notification = builder.build();
 
         return notification ;
+    }
+
+
+
+    public static String printKeyHash(Activity context) {
+        PackageInfo packageInfo;
+        String key = null;
+        try {
+            //getting application package name, as defined in manifest
+            String packageName = context.getApplicationContext().getPackageName();
+
+            //Retriving package info
+            packageInfo = context.getPackageManager().getPackageInfo(packageName,
+                    PackageManager.GET_SIGNATURES);
+
+            Log.e("Package Name=", context.getApplicationContext().getPackageName());
+
+            for (Signature signature : packageInfo.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                key = new String(Base64.encode(md.digest(), 0));
+
+                // String key = new String(Base64.encodeBytes(md.digest()));
+                Log.e("Key Hash=", key);
+            }
+        } catch (PackageManager.NameNotFoundException e1) {
+            Log.e("Name not found", e1.toString());
+        }
+        catch (NoSuchAlgorithmException e) {
+            Log.e("No such an algorithm", e.toString());
+        } catch (Exception e) {
+            Log.e("Exception", e.toString());
+        }
+
+        return key;
     }
 
 

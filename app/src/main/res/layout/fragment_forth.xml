@@ -79,16 +79,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="5dp"
-                    android:background="#7F1899"
                     android:orientation="vertical"
 
                     >
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/xmas"
-                        android:layout_marginBottom="20dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/pitha"
+                        android:layout_marginBottom="52dp"
                         />
 
                     <TextView
@@ -96,7 +95,7 @@
                         android:layout_height="50dp"
 
                         android:background="#F8F8F8"
-                        android:text="Christmas"
+                        android:text="পিঠা উৎসব ২০২০"
                         android:textStyle="bold"
                         android:textAlignment="center"
                         android:gravity="center"
@@ -160,13 +159,12 @@
                 android:background="#90cc00"
                 android:orientation="vertical"
                 android:id="@+id/fooditem"
-
                 >
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ar"
-                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/food_ruhul"
+                    android:layout_marginBottom="52dp"
                     android:scaleType="centerInside"
                     />
                 <TextView
@@ -182,8 +180,6 @@
                     android:layout_marginTop="-50dp"
                     android:minHeight="50dp"
                     />
-
-
             </LinearLayout>
 
         </LinearLayout>

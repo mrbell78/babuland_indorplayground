@@ -6,13 +6,322 @@
     android:layout_height="match_parent"
 
     >
-    <include layout="@layout/maintoolbar"/>
+
+
+
+   <!-- <include layout="@layout/maintoolbar"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        >
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              >
+              &lt;!&ndash;child name&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Child's Name"
+                      android:textSize="20sp"
+                      android:textStyle="bold"/>
+                  <EditText
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="Enter child name"
+                      android:inputType="text"
+                      />
+              </LinearLayout>
+
+              &lt;!&ndash;child date of birth&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Child's Date of Birth"
+                      android:textSize="20sp"
+                      android:textStyle="bold"
+                      android:drawableRight="@drawable/ic_date_range"
+                      android:drawablePadding="10dp"
+                      />
+                  <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="Date of Birth"
+                      android:inputType="text"
+                      android:textSize="20sp"
+                      />
+              </LinearLayout>
+
+
+
+              &lt;!&ndash;child gender&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Gender"
+                      android:textSize="20sp"
+                      android:textStyle="bold"/>
+                  <Spinner
+                      android:id="@+id/spiner_gender"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      >
+
+                  </Spinner>
+              </LinearLayout>
+
+
+
+
+              &lt;!&ndash;child class&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Class"
+                      android:textSize="20sp"
+                      android:textStyle="bold"/>
+                  <EditText
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="Enter child name"
+                      android:inputType="text"
+                      />
+              </LinearLayout>
+
+              &lt;!&ndash;child School&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="School"
+                      android:textSize="20sp"
+                      android:textStyle="bold"/>
+                  <EditText
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="Enter child name"
+                      android:inputType="text"
+                      />
+              </LinearLayout>
+
+
+              &lt;!&ndash;parent information&ndash;&gt;
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginTop="5dp"
+                  android:weightSum="2"
+                  >
+
+                  <RadioGroup
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:gravity="center"
+                      >
+
+                      <RadioButton
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="Mr."
+                          android:layout_marginRight="20dp"
+                          ></RadioButton>
+
+                      <RadioButton
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="Mrs."></RadioButton>
+
+                  </RadioGroup>
+
+              </LinearLayout>
+
+
+              &lt;!&ndash;parent name&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="10dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Your Name"
+                      android:textSize="20sp"
+                      android:textStyle="bold"/>
+                  <EditText
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="Enter your name"
+                      android:inputType="text"
+                      />
+              </LinearLayout>
+
+
+              &lt;!&ndash;spouse name&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="10dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Spouse Name"
+                      android:textSize="20sp"
+                      android:textStyle="bold"/>
+                  <EditText
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="Enter spouse name"
+                      android:inputType="text"
+                      />
+              </LinearLayout>
+
+
+              &lt;!&ndash;mobile number&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="10dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Mobile Number"
+                      android:textSize="20sp"
+                      android:textStyle="bold"/>
+                  <EditText
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="Enter mobile numer"
+                      android:inputType="phone"
+                      />
+              </LinearLayout>
+
+              &lt;!&ndash;email address&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="10dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Email Address"
+                      android:textSize="20sp"
+                      android:textStyle="bold"/>
+                  <EditText
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="Enter email address"
+                      android:inputType="textEmailAddress"
+                      />
+              </LinearLayout>
+
+              &lt;!&ndash;email address&ndash;&gt;
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="10dp"
+                  android:layout_marginLeft="3dp"
+                  android:layout_marginRight="3dp"
+                  >
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Address"
+                      android:textSize="20sp"
+                      android:textStyle="bold"/>
+                  <EditText
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="Enter your address"
+                      android:inputType="textMultiLine"
+                      />
+              </LinearLayout>
+
+
+          </LinearLayout>
+
+
+
+
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.core.widget.NestedScrollView>-->
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="6"
         android:layout_marginTop="10dp"
+        android:visibility="invisible"
         >
         <EditText
             android:layout_width="0dp"
@@ -37,14 +346,6 @@
     </LinearLayout>
 
 
-
-
-
-
-
-
-
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -55,7 +356,7 @@
         android:layout_below="@+id/profilingtoolbar"
         android:visibility="invisible"
         android:id="@+id/chil_edtview"
-        android:layout_marginTop="-300dp"
+        android:layout_marginTop="0dp"
 
         >
 

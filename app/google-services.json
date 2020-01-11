@@ -8,17 +8,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:154407399184:android:c8031c313f6f541416ff95",
+        "mobilesdk_app_id": "1:154407399184:android:0a6330ede1c2ab8016ff95",
         "android_client_info": {
           "package_name": "com.babuland.babuland"
         }
       },
       "oauth_client": [
         {
-          "client_id": "154407399184-okk9qgpt67rh773ma2faaeg21hja34o1.apps.googleusercontent.com",
+          "client_id": "154407399184-navcbgjbrllls2kmfd1kg92ta83qt349.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.babuland.babuland1",
+            "package_name": "com.babuland.babuland",
+            "certificate_hash": "d1ba0b278faabd619d650645476570e9b235ca4b"
+          }
+        },
+        {
+          "client_id": "154407399184-v6cm8eqj55spu0c2cg7uuk78f6i9rsen.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.babuland.babuland",
             "certificate_hash": "29e58483eba79e5717d6f6a58f743a7cee70ca14"
           }
         },

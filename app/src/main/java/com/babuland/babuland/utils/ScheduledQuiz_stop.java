@@ -29,7 +29,7 @@ public class ScheduledQuiz_stop extends BroadcastReceiver {
             mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
 
             mDatabase.child("status_quz").setValue("inactive");
-           /* admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
+            admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
 
             admindatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -40,37 +40,63 @@ public class ScheduledQuiz_stop extends BroadcastReceiver {
 
                         if(value.equals("1")){
                             value="2";
+                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                            mdatabase_broadcast.child("quiznumber").setValue(value);
+                            mdatabase_broadcast.child("update_quiznumber").setValue("1");
                         }else if(value.equals("2")){
                             value="3";
+                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                            mdatabase_broadcast.child("quiznumber").setValue(value);
+                            mdatabase_broadcast.child("update_quiznumber").setValue("2");
                         }
 
                         else if(value.equals("3")){
                             value="4";
+                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                            mdatabase_broadcast.child("quiznumber").setValue(value);
+                            mdatabase_broadcast.child("update_quiznumber").setValue("3");
                         }
 
                         else if(value.equals("4")){
                             value="5";
+                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                            mdatabase_broadcast.child("quiznumber").setValue(value);
+                            mdatabase_broadcast.child("update_quiznumber").setValue("4");
                         }
                         else if(value.equals("5")){
                             value="6";
+                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                            mdatabase_broadcast.child("quiznumber").setValue(value);
+                            mdatabase_broadcast.child("update_quiznumber").setValue("5");
                         }
                         else if(value.equals("6")){
                             value="7";
+
+                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                            mdatabase_broadcast.child("quiznumber").setValue(value);
+                            mdatabase_broadcast.child("update_quiznumber").setValue("6");
                         }
                         else if(value.equals("7")){
                             value="8";
+
+                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                            mdatabase_broadcast.child("quiznumber").setValue(value);
+                            mdatabase_broadcast.child("update_quiznumber").setValue("7");
                         }
                         else if(value.equals("8")){
                             value="9";
+
+                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                            mdatabase_broadcast.child("quiznumber").setValue(value);
+                            mdatabase_broadcast.child("update_quiznumber").setValue("8");
                         }
                         else if(value.equals("9")){
                             value="10";
+
+                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                            mdatabase_broadcast.child("quiznumber").setValue(value);
+                            mdatabase_broadcast.child("update_quiznumber").setValue("9");
                         }
-
-                        mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Quiz").child("Questions");
-                        mdatabase_broadcast.setValue(value);
-
-
 
                     }
                 }
@@ -79,7 +105,7 @@ public class ScheduledQuiz_stop extends BroadcastReceiver {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });*/
+            });
         }
     }
 }

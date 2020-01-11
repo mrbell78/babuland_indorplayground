@@ -1,12 +1,12 @@
 package com.babuland.babuland.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.babuland.babuland.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,7 +58,7 @@ public class BabulandpointsActivity extends AppCompatActivity {
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
+                    if(dataSnapshot.child("BabulandPoints").exists()){
 
                         int points = dataSnapshot.child("BabulandPoints").getValue(Integer.class);
 
@@ -72,9 +72,11 @@ public class BabulandpointsActivity extends AppCompatActivity {
                         int total_progress = picup+name_up+number_up+dob_up+mail_up+address_up;
 
 
+                        if(points>=0){
+                            tv_babulandpoints.setText(Integer.toString(points)+"Points");
+                            bland_progress.setProgress(points);
+                        }
 
-                        tv_babulandpoints.setText(Integer.toString(points)+"Points");
-                        bland_progress.setProgress(points);
 
                         account_progress.setProgress(total_progress);
                         tv_accountprogress.setText(Integer.toString(total_progress)+"%");

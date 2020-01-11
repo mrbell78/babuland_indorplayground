@@ -11,11 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -28,21 +25,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.babuland.babuland.R;
+import com.babuland.babuland.activity.AccountSettingsActivity;
 import com.babuland.babuland.activity.BabulandpointsActivity;
 import com.babuland.babuland.activity.FooditemActivity;
 import com.babuland.babuland.activity.LoginActivity;
 import com.babuland.babuland.activity.PaymentActivity;
-import com.babuland.babuland.activity.TicketfromListviewActivity;
 import com.babuland.babuland.adapter.CustomAdapter;
 import com.babuland.babuland.adapter.Viewpageradapter_homeslider;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -54,13 +48,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -131,6 +124,10 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
     private TextView tv_buyticket;
     private String name,phone,dob,gender,spousename,email,pre_branch,childnumber,childname;
 
+    private TextView tv_dob_full;
+    private Spinner spinner_full;
+    private EditText childname_full,class_ful,school_full,parentname_full,spousename_full,number_full,email_full,address_full;
+
 
     Boolean status_free=false;
 
@@ -177,6 +174,9 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+
         fooditem=getActivity().findViewById(R.id.fooditem);
         babulandpoints_liniarid=getActivity().findViewById(R.id.babulandpoint_liniarid);
         tv_babulandpoints=getActivity().findViewById(R.id.babulandpoint_tvid);
@@ -209,37 +209,40 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
             userId = mUser.getUid();
             mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
 
-            mDatabase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot != null && dataSnapshot.child("BabulandPoints").exists()) {
-                        Integer databaspoint = dataSnapshot.child("BabulandPoints").getValue(Integer.class);
+           if(isAdded()){
 
-                        String avilfreeticket= dataSnapshot.child("availfreeTicket").getValue().toString();
+               mDatabase.addValueEventListener(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                       if (dataSnapshot != null && dataSnapshot.child("BabulandPoints").exists()) {
+                           Integer databaspoint = dataSnapshot.child("BabulandPoints").getValue(Integer.class);
 
-                        if(avilfreeticket.equals("avail_free")){
-                            tv_buyticket.setText("Get Free Ticket");
-                            status_free=true;
+                           String avilfreeticket= dataSnapshot.child("availfreeTicket").getValue().toString();
 
-                        }else if(avilfreeticket.equals("avail_expired")){
-                            tv_buyticket.setText("Buy Ticket");
-                            status_free=false;
-                        }
+                           if(avilfreeticket.equals("avail_free")){
+                               tv_buyticket.setText("Get Free Ticket");
+                               status_free=true;
 
-                        tv_babulandpoints.setText("My Points "+ Integer.toString(databaspoint));
+                           }else if(avilfreeticket.equals("avail_expired")){
+                               tv_buyticket.setText("Buy Ticket");
+                               status_free=false;
+                           }
 
-                    }
-                    else {
+                           tv_babulandpoints.setText("My Points "+ Integer.toString(databaspoint));
 
-                        //Toast.makeText(getActivity(), "failed to pull data", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                       }
+                       else {
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                           //Toast.makeText(getActivity(), "failed to pull data", Toast.LENGTH_SHORT).show();
+                       }
+                   }
 
-                }
-            });
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                   }
+               });
+           }
         }
 
 
@@ -286,11 +289,9 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
         });
 
 
-
-
-
-
     }
+
+
 
     private void searchfromapexdb(Connection connection,String phone_local) throws SQLException {
 
@@ -315,6 +316,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
             Log.d("resultvalue", "searchfromapexdb: ----------------resultcode "+resultSet.next());
 
         }
+        ResultSet forfood=stmt.executeQuery("select PRODUCT_ID,PRODUCT_NAME,CATEGORY,PRODUCT_AVAIL,LIST_PRICE,BUYING_PRICE,VENDOR FROM DEMO_PRODUCT_INFO WHERE PRODUCT_AVAIL='Y' AND CATEGORY!='Ticket'");
 
         Log.d("name_apex", "searchfromapexdb: fullname  "+name);
         Log.d("name_apex", "searchfromapexdb: name  "+childname);
@@ -550,7 +552,11 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
     private void dailogbox_getfreeTicket(){
 
-        AlertDialog.Builder albuilder = new AlertDialog.Builder(getContext());
+
+
+        startActivity(new Intent(getContext(), AccountSettingsActivity.class));
+
+      /*  AlertDialog.Builder albuilder = new AlertDialog.Builder(getContext());
         final View view = getLayoutInflater().inflate(R.layout.freeticket_getinformation,null);
 
         albuilder.setView(view);
@@ -575,7 +581,6 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                     if(edt_number.getText().toString()!=null && edt_number.getText().toString().length()==11){
                         Connection connection = createConnection();
                         searchfromapexdb(connection,edt_number.getText().toString());
-
                         ViewGroup.MarginLayoutParams layoutParams =
                                 (ViewGroup.MarginLayoutParams) cardView.getLayoutParams();
 
@@ -599,7 +604,8 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
 
 
-                } catch (ClassNotFoundException e) {
+                }
+                catch (ClassNotFoundException e) {
                     e.printStackTrace();
                     Log.d("dberror", "onClick: --------------dberror "+e.getMessage());
                 } catch (SQLException e) {
@@ -671,7 +677,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-/*
+
       pre_branch_view.setAdapter(adapter_branch);
       pre_branch_view.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
@@ -684,7 +690,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
           public void onNothingSelected(AdapterView<?> parent) {
 
           }
-      });*/
+      });
 
 
 
@@ -764,7 +770,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                 }
 
             }
-        });
+        });*/
     }
 
     private void setinfo_dialog(final EditText edt_name, final EditText edt_number, final EditText childnumber_view, final TextView dob_view, final Spinner spinner_gender, final EditText spousename_view, EditText email_view, EditText childnumber_view1) {
@@ -971,6 +977,20 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
         //getContext().finish();
     }
 
+    public List resultSetToArrayList(ResultSet rs) throws SQLException {
+        ResultSetMetaData md = rs.getMetaData();
+        int columns = md.getColumnCount();
+        List<Map<String, Object>> list = new ArrayList<>();
+        while (rs.next()) {
+            Map<String, Object> row = new HashMap<>(columns);
+            for (int i = 1; i <= columns; ++i) {
+                row.put(md.getColumnName(i), rs.getObject(i));
+            }
+            list.add(row);
+        }
+
+        return list;
+    }
 
 
 
