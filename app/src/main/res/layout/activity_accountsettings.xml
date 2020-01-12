@@ -199,8 +199,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="350dp"
                     android:id="@+id/recyclerview"
-                    android:layoutAnimation="@anim/layout_animation"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
                     />
 

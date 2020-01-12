@@ -1,9 +1,12 @@
 package com.babuland.babuland.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,7 +46,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
 
         final modelclass current = img.get(position);
 
-        holder.tvchild.setText("child"+(position+1));
+
         String childname = holder.childname_full.getText().toString();
         String childob = holder.tv_dob_full.getText().toString();
         String childclass = holder.class_ful.getText().toString();
@@ -61,12 +64,26 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
 
                 holder.imageView.setImageResource(current.getImg());
                 img.add(position,current);
+                notifyItemInserted(img.size());
+                holder.tvchild.setText("child"+(position+1));
+
+                Animation animation = AnimationUtils.loadAnimation(context,R.anim.up_from_bottom);
+                holder.itemView.startAnimation(animation);
+                Log.d("poisition", "onClick: ------position"+position);
+
+
+
+
             }
         });
 
     }
 
-
+    @Override
+    public void onViewDetachedFromWindow(@NonNull customclass holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.itemView.clearAnimation();
+    }
 
     @Override
     public int getItemCount() {

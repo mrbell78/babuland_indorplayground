@@ -29,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -554,9 +555,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
         recyclerView=findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        indexlist[0]=1;
+
         adapeter = new Adapterlistview(AccountSettingsActivity.this, modelclass.getobject());
-        recyclerView.smoothScrollToPosition(indexlist.length);
+        recyclerView.smoothScrollToPosition(modelclass.getobject().size());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapeter);
 
       /*  btnadd.setOnClickListener(new View.OnClickListener() {
