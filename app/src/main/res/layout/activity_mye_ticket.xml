@@ -14,4 +14,39 @@
     android:layout_below="@+id/mytickettoolbar"
     android:id="@+id/ticketrecylerview"
     ></androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="you have no  ticket"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="Buy ticket"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textAlignment="center"
+            android:textColor="#0053F1"
+            android:background="@drawable/childrcvbackground"
+            android:padding="10dp"
+            />
+
+
+
+
+    </LinearLayout>
 </RelativeLayout>

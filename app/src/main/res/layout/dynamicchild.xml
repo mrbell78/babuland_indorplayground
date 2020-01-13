@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
     >
 
 
@@ -19,10 +20,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="child1"
-            android:textSize="20sp"
-            android:textColor="@drawable/btn_confirm_background"
+            android:text="Child"
+            android:textSize="15sp"
+            android:padding="3dp"
+            android:textColor="#FF5722"
+            android:background="@drawable/account_settingfrgbackground"
             android:id="@+id/chldnumber"
+
             />
 
         <!--child name-->
@@ -57,12 +61,14 @@
                     />
 
                 <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:src="@drawable/babulandlogo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/default_baby"
                     android:scaleType="fitXY"
                     android:id="@+id/imgiview"
-                    android:layout_marginTop="-5dp"
+
+
+
                     />
 
             </LinearLayout>
@@ -79,7 +85,7 @@
             <!--child date of birth-->
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1.5"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="5dp"
@@ -96,11 +102,12 @@
                     android:textStyle="bold"
                     android:drawableRight="@drawable/ic_date_range"
                     android:drawablePadding="10dp"
+                    android:id="@+id/dob_txt"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Date of Birth"
+                    android:text=""
                     android:inputType="text"
                     android:textSize="15sp"
                     android:id="@+id/dateofbirth_full"
@@ -111,7 +118,7 @@
             <!--child gender-->
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight=".5"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="5dp"
@@ -213,13 +220,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginTop="3dp"
-                    android:text="Remove child"
+                    android:text="Delete"
                     android:textColor="@android:color/white"
                     android:background="@drawable/background_alpha32"
                     android:textAllCaps="false"
                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/removechild"
+                    android:visibility="invisible"
                     />
 
             </LinearLayout>

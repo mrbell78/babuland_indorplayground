@@ -33,7 +33,7 @@ public class modelclass {
 
 
     private static int[] getImage(){
-        int [] image={R.drawable.babulandlogo};
+        int [] image={R.drawable.default_baby};
         return image;
     }
 }

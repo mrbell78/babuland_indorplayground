@@ -14,13 +14,17 @@
 
     <item android:icon="@drawable/ic_usb"
         android:id="@+id/branch"
-        android:title="Our Branches"/>
+        android:title="Our Branches"
+        />
     <item android:id="@+id/comment"
         android:title="Complaint/Suggestion"
         android:icon="@drawable/ic_comment"/>
+
     <item android:id="@+id/logout"
         android:title="Logout"
-        android:icon="@drawable/ic_account"/>
+        android:icon="@drawable/ic_account"
+        android:iconTint="#000000"
+        />
 
     <item android:title="Communicate">
 

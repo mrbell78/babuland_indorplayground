@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -59,11 +58,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -122,6 +118,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     RecyclerView recyclerView;
     Adapterlistview adapeter;
     Button btnadd,btnbinus;
+    LinearLayoutManager manager;
 
 
 
@@ -388,7 +385,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.gender,android.R.layout.simple_spinner_item);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.gender,android.R.layout.simple_spinner_item);
          adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
          spinner.setAdapter(adapter);
          spinner.setOnItemSelectedListener(this);
@@ -504,62 +501,56 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
        btn_save_full.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               mUser=FirebaseAuth.getInstance().getCurrentUser();
-               String useridlc=mUser.getUid();
-               mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(useridlc);
 
 
-               mUser=FirebaseAuth.getInstance().getCurrentUser();
-               String useridlocal=mUser.getUid();
-               chilDatabase=FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
+               if(!adapter.isEmpty()){
+                   mUser=FirebaseAuth.getInstance().getCurrentUser();
+                   String useridlocal=mUser.getUid();
+                   chilDatabase=FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
 
-               String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+               /*String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
                String random_timephone=number_full.getText().toString()+currentTime;
-
-               //childname_full,class_ful,school_full,parentname_full,spousename_full,number_full,email_full,address_full;
-
-               if(fullmap!=null && !TextUtils.isEmpty(random_timephone)){
-
-                   fullmap.put("child_name",childname_full.getText().toString());
-                   fullmap.put("class",class_ful.getText().toString());
-                   fullmap.put("school",school_full.getText().toString());
-                   fullmap.put("child_image","notset");
-                   fullmap.put("dob","notset");
-                   fullmap.put("pre_branch","notset");
-                   fullmap.put("child_gender","notset");
-                   chilDatabase.child(random_timephone).updateChildren(fullmap).addOnCompleteListener(new OnCompleteListener() {
-                       @Override
-                       public void onComplete(@NonNull Task task) {
-                           if(task.isSuccessful()){
-                               mUser=FirebaseAuth.getInstance().getCurrentUser();
-                               String useridlc=mUser.getUid();
-                               mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(useridlc);
-                               Map parent = new HashMap();
-                               parent.put("name",parentname_full.getText().toString());
-                               parent.put("spousename",spousename_full.getText().toString());
-                               parent.put("phone",number_full.getText().toString());
-                               parent.put("email",email_full.getText().toString());
-                               parent.put("address",address_full.getText().toString());
-                               mDatabase.updateChildren(parent);
-
-
-                           }
-                       }
-                   });
+*/
+                   //childname_full,class_ful,school_full,parentname_full,spousename_full,number_full,email_full,address_full;
+                   mUser=FirebaseAuth.getInstance().getCurrentUser();
+                   String useridlc=mUser.getUid();
+                   mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(useridlc);
+                   Map parent = new HashMap();
+                   parent.put("name",parentname_full.getText().toString());
+                   parent.put("spousename",spousename_full.getText().toString());
+                   parent.put("phone",number_full.getText().toString());
+                   parent.put("email",email_full.getText().toString());
+                   parent.put("address",address_full.getText().toString());
+                   mDatabase.updateChildren(parent);
                }
-
-
 
            }
        });
 
         recyclerView=findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        manager=new LinearLayoutManager(this);
+       // recyclerView.getLayoutManager().scrollToPosition(modelclass.getobject().size()-1);
+        recyclerView.setLayoutManager(manager);
 
         adapeter = new Adapterlistview(AccountSettingsActivity.this, modelclass.getobject());
-        recyclerView.smoothScrollToPosition(modelclass.getobject().size());
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapeter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull final RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if(dy>0){
+                    recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount()-1);
+
+                }
+            }
+        });
+
+
+
 
       /*  btnadd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -596,6 +587,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
     }
+
 
     private void saveProfile(){
 
