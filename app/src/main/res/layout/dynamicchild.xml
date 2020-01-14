@@ -229,6 +229,19 @@
                     android:id="@+id/removechild"
                     android:visibility="invisible"
                     />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="3dp"
+                    android:text="Auto"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/background_alpha32"
+                    android:textAllCaps="false"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/autobutton"
+                    android:visibility="invisible"
+                    />
 
             </LinearLayout>
 

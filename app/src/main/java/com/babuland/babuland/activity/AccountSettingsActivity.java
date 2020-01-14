@@ -3,7 +3,10 @@ package com.babuland.babuland.activity;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,6 +31,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,8 +62,11 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -105,6 +112,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     int numberprogress=0,addressprogress=0,emailprogress=0,genderprogress=0,dateofbirdthprogress=0,profilepicprogress=0;
 
     Button btn_more;
+
+    String childname_adp,dob_adp,gender_adp,class_adp,school_adp;
 
     private TextView tv_dob_full;
     private Spinner spinner_full;
@@ -497,10 +506,15 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         });*/
 
 
+        LocalBroadcastManager.getInstance(AccountSettingsActivity.this).registerReceiver(mMessageReceiver,
+                new IntentFilter("custom_message"));
 
        btn_save_full.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
+
+
+
 
 
                if(!adapter.isEmpty()){
@@ -521,7 +535,35 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                    parent.put("phone",number_full.getText().toString());
                    parent.put("email",email_full.getText().toString());
                    parent.put("address",address_full.getText().toString());
-                   mDatabase.updateChildren(parent);
+                   mDatabase.updateChildren(parent).addOnCompleteListener(new OnCompleteListener() {
+                       @Override
+                       public void onComplete(@NonNull Task task) {
+
+                           if(task.isSuccessful()){
+                               FirebaseUser mUser= FirebaseAuth.getInstance().getCurrentUser();
+                               String useridlocal=mUser.getUid();
+                               DatabaseReference chilDatabase= FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
+
+                               String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                               String random_timephone=childname_adp+currentTime;
+
+                               fullmap.put("child_name",childname_adp);
+                               fullmap.put("class",class_adp);
+                               fullmap.put("school",school_adp);
+                               fullmap.put("child_image","notset");
+                               fullmap.put("dob",dob_adp);
+                               fullmap.put("pre_branch","notset");
+                               fullmap.put("child_gender",gender_adp);
+                               chilDatabase.child(childname_adp).updateChildren(fullmap).addOnCompleteListener(new OnCompleteListener() {
+                                   @Override
+                                   public void onComplete(@NonNull Task task) {
+                                       Toast.makeText(AccountSettingsActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                                   }
+                               });
+
+                           }
+                       }
+                   });
                }
 
            }
@@ -892,5 +934,21 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         ll3=findViewById(R.id.liniarchild3);*/
 
     }
+
+
+    BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            childname_adp = intent.getStringExtra("childname");
+            dob_adp=intent.getStringExtra("dob");
+            class_adp=intent.getStringExtra("class");
+            gender_adp=intent.getStringExtra("gender");
+            school_adp=intent.getStringExtra("school");
+            Toast.makeText(AccountSettingsActivity.this,school_adp,Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
 
 }

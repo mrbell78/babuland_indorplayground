@@ -2,7 +2,10 @@ package com.babuland.babuland.adapter;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.babuland.babuland.R;
@@ -65,7 +69,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
     @Override
     public void onBindViewHolder(@NonNull final customclass holder, final int position) {
 
-
+        Boolean clicked=true;
         final modelclass current = img.get(position);
         holder.tvchild.setText("child"+(position+1));
 
@@ -73,11 +77,13 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
         final String childob = holder.tv_dob_full.getText().toString();
         final String childclass = holder.class_ful.getText().toString();
         final String childschool = holder.school_full.getText().toString();
-
+//
          ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,R.array.gender_child,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holder.spinner.setAdapter(adapter);
         holder.spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) context);
+        final String gender = holder.spinner.getSelectedItem().toString();
+
 
 
         holder.dob_txt.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +126,68 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
         }*/
+
+
+
+
+
+
+
+/*
+              if(holder.childname_full.getText().toString()!=""){
+                  holder.btnauto.setOnClickListener(new View.OnClickListener() {
+                      @Override
+                      public void onClick(View v) {
+                          Intent intent = new Intent("custom_message");
+                          intent.putExtra("childname",holder.childname_full.getText().toString());
+                          LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+                      }
+                  });
+              }else {
+                  Intent intent = new Intent("custom_message");
+                  intent.putExtra("childname","edit text empty");
+                  LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+              }
+
+
+              holder.btnauto.performClick();*/
+
+
+
+        holder.school_full.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("start", "onTextChanged: ----------------start "+start);
+                Log.d("before", "onTextChanged: ----------------before "+before);
+                Log.d("count", "onTextChanged: ----------------count "+count);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                Log.d("inside adapter ", "afterTextChanged: -------------chlidname automaticaly "+ s);
+                Intent intent = new Intent("custom_message");
+                intent.putExtra("childname",holder.childname_full.getText().toString());
+                intent.putExtra("dob",holder.tv_dob_full.getText().toString());
+                intent.putExtra("class",holder.class_ful.getText().toString());
+                intent.putExtra("school",holder.school_full.getText().toString());
+                intent.putExtra("gender",gender);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            }
+        });
+
+
+
+
+
+
 
         holder.addbtn.setOnClickListener(new View.OnClickListener() {
 
@@ -228,7 +296,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
             fullmap.put("dob",tv_dob.getText().toString());
             fullmap.put("pre_branch","notset");
             fullmap.put("child_gender",gender);
-            chilDatabase.child(random_timephone).updateChildren(fullmap).addOnCompleteListener(new OnCompleteListener() {
+            chilDatabase.child(edtchilname.getText().toString()).updateChildren(fullmap).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if(task.isSuccessful()){
@@ -258,8 +326,6 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
 
                             }
                         });
-
-
                     }
                 }
             });
@@ -283,7 +349,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
 
         View mview;
         Spinner spinner;
-        Button addbtn,removebtn;
+        Button addbtn,removebtn,btnauto;
         TextView tvchild;
         ImageView imageView;
         private TextView tv_dob_full,dob_txt;
@@ -295,6 +361,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
             tvchild=itemView.findViewById(R.id.chldnumber);
             addbtn=itemView.findViewById(R.id.addchild1);
             initializefullprofile(itemView);
+
         }
 
         private void initializefullprofile(View itemView) {
@@ -308,6 +375,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
             imageView=itemView.findViewById(R.id.imgiview);
             removebtn=itemView.findViewById(R.id.removechild);
             spinner=itemView.findViewById(R.id.genderchild_full);
+            btnauto=itemView.findViewById(R.id.autobutton);
 
 
         }

@@ -73,6 +73,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
 
 
+
     private ImageButton btn_minus_infant;
     private ImageButton  btn_minus_kids;
     private ImageButton  btn_minus_gardian;
@@ -138,7 +139,12 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
     private Connection connection;
 
     FirebaseUser mCurrentUser;
-    DatabaseReference Freeticketdb;
+    DatabaseReference Freeticketdb,parentdb,childdb;
+
+
+    String name_prnt,spouse_prnt,mobile,email_prnt,address_prnt,gender_parnt;
+    String name_child,dob_child,gender_child,class_child,school_child;
+    int childrenncount;
 
 
 
@@ -159,7 +165,13 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
         mCurrentUser= FirebaseAuth.getInstance().getCurrentUser();
        if(mCurrentUser!=null){
 
+           userId=mCurrentUser.getUid();
            Freeticketdb=FirebaseDatabase.getInstance().getReference().child("Freeticket").child(mCurrentUser.getUid());
+           parentdb=FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+           childdb=FirebaseDatabase.getInstance().getReference().child("Childdb").child(userId);
+
+           getparentData(parentdb);
+           getChilddata(childdb);
 
        }
 
@@ -170,6 +182,44 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
         return view;
     }
+
+    private void getChilddata(DatabaseReference childdb) {
+
+        childdb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                childrenncount = (int) dataSnapshot.getChildrenCount();
+                Log.d("test", "onDataChange: ------------chilnametest "+childrenncount);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getparentData(DatabaseReference parentdb) {
+
+        parentdb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                name_prnt=dataSnapshot.child("name").getValue().toString();
+                spouse_prnt=dataSnapshot.child("spousename").getValue().toString();
+                mobile=dataSnapshot.child("phone").getValue().toString();
+                email_prnt=dataSnapshot.child("email").getValue().toString();
+                address_prnt=dataSnapshot.child("address").getValue().toString();
+                gender_parnt=dataSnapshot.child("gender").getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -401,13 +451,22 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
         switch (view.getId()){
             case R.id.byTicket:
-                if(tv_buyticket.getText().toString().equals("Buy Ticket"))
+                try {
+                    verify_user();
+                } catch (SQLException e) {
+
+
+                    e.printStackTrace();
+
+                    Log.d("error message", "onClick: error inside verfication "+e.getMessage());
+                }
+           /*     if(tv_buyticket.getText().toString().equals("Buy Ticket"))
                     dialogbox();
                 else
                     dailogbox_getfreeTicket();
 
 
-
+*/
                 break;
             case R.id.btn_minus_infant:
                 if(Count_infat>0){
@@ -469,6 +528,30 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                 break;
 
             default:return;
+        }
+
+    }
+
+    private void verify_user() throws SQLException {
+        //Log.d("mobile", "verify_user: ------------------------mobilenumber "+mobile );
+
+
+        try {
+            Connection connection = createConnection();
+            String orc_mobilenumber;
+            Statement stmt=connection.createStatement();
+            ResultSet resultSet=stmt.executeQuery(" SELECT  MOBILE_NUMBER from REG_DATA WHERE  to_char(mobile_number)= '01705062665'");
+           // ResultSet resultSet=stmt.executeQuery(" SELECT  MOBILE_NUMBER from REG_DATA");
+
+            while(resultSet.next()){
+                 orc_mobilenumber=resultSet.getString("MOBILE_NUMBER");
+                Log.d("nametgag", "searchfromapexdb: ----------------- "+orc_mobilenumber);
+            }
+
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            Log.d("nofound", "verify_user: -------------------not found exception "+ e.getMessage());
         }
 
     }
