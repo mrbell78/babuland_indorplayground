@@ -11,7 +11,7 @@
 
 
     <item android:id="@+id/explore"
-        android:title="Explore"
+        android:title="Location"
         app:showAsAction="always|withText"
         android:icon="@drawable/ic_explore"
         app:labelVisibilityMode="labeled"

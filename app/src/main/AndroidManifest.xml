@@ -125,6 +125,10 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.babuland.babuland.MainActivity" />
 
+        <service
+            android:exported="false"
+            android:name="com.novoda.merlin.MerlinService" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"

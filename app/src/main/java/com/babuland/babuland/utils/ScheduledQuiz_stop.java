@@ -19,11 +19,13 @@ public class ScheduledQuiz_stop extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         FirebaseUser mUser;
-        final DatabaseReference mDatabase,admindatabase;
+        final DatabaseReference mDatabase,admindatabase,leaderboard_database;
         String userId;
 
 
         mUser= FirebaseAuth.getInstance().getCurrentUser();
+        leaderboard_database=FirebaseDatabase.getInstance().getReference().child("Leaderboard");
+        leaderboard_database.removeValue();
         if(mUser!=null) {
             userId = mUser.getUid();
             mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);

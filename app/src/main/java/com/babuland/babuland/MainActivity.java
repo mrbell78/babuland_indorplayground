@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     int  value;
     int firsttime;
 
-    DatabaseReference admindatabase,mDatabase_q;
+    DatabaseReference admindatabase,mDatabase_q,leaderboard_database;
     Integer startTime,endTime,startminitue,endminitue;
     String quiznumber;
     String concent;
@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         frameLayout=findViewById(R.id.main_framlayout);
         navigationView=findViewById(R.id.navigatgationview);
         navigationView.setNavigationItemSelectedListener(this);
+
 
 
 
@@ -313,6 +314,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         if(mUser!=null){
             userId=mUser.getUid();
             mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+            mDatabase.keepSynced(true);
 
 
 
@@ -333,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                         }
                         header_name.setText(name_fromfirebase);
                         header_number.setText(phone);
-                        Picasso.with(MainActivity.this).load(imageuri).into(header_proimg);
+                        Picasso.with(MainActivity.this).load(imageuri).placeholder(R.drawable.profiledefaultpic).error(R.drawable.profiledefaultpic).into(header_proimg);
                         headerlayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -441,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
            //String userid_local = currentUser.getUid();
           // String userid=currentUser.getUid();
-           if(currentUser==null){
+           if(currentUser==null || currentUser.getUid()==null){
                //sendToAccountSettings();
                //finish();
                //Toast.makeText(this, "u can stay here for developoing purpose", Toast.LENGTH_SHORT).show();
@@ -492,8 +494,6 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     private void sendTobabuland() {
         MediaPlayer mp =  MediaPlayer.create(this,R.raw.notification_babuland);
         mp.start();
-
-
         startActivity(new Intent(getApplicationContext(), AboutBabulandActivity.class));
     }
 
@@ -647,7 +647,9 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
-    private void dialogbox() {
+
+
+    public void dialogbox() {
 
         AlertDialog.Builder albuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.custom_dialogbox_main,null);

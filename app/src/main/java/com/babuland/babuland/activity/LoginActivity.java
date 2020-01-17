@@ -322,14 +322,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 Map<String, String> userfield = new HashMap<>();
                 userfield.put("name", fullname);
-                userfield.put("email", "Email");
-                userfield.put("phone", "Number");
+                userfield.put("email", "");
+                userfield.put("phone", "");
                 userfield.put("password", "default");
                 userfield.put("image", profileimage);
                 userfield.put("thumb_nail", "default");
-                userfield.put("gender","Gender");
+                userfield.put("gender","");
                 userfield.put("dateofbirdth","Date of Birth");
-                userfield.put("address","Your Address");
+                userfield.put("address","");
                 userfield.put("qrdata","nurhossen");
                 userfield.put("count1","avail");
                 userfield.put("count2","avail");
@@ -345,7 +345,7 @@ public class LoginActivity extends AppCompatActivity {
                 userfield.put("userid",uniqid);
                 userfield.put("availfreeTicket","avail_free");
                 userfield.put("childrenName","Child name");
-                userfield.put("spousename","Spouse name");
+                userfield.put("spousename","");
                 userfield.put("status_quz","inactive");
                 userfield.put("alrmstatus","false");
 
@@ -363,7 +363,7 @@ public class LoginActivity extends AppCompatActivity {
                         mDatabaseref.child("dob_up").setValue(0);
                         mDatabaseref.child("mail_up").setValue(0);
                         mDatabaseref.child("address_up").setValue(0);
-                        mDatabaseref.child("BabulandPoints").setValue(0);
+                        mDatabaseref.child("BabulandPoints").setValue(20);
                         mDatabaseref.child("nof_purchase_time").setValue(0);
                         mDatabaseref.child("progressvalue_stamp").setValue(0);
                         int startquiz;
@@ -505,15 +505,15 @@ public class LoginActivity extends AppCompatActivity {
                                    }else{
                                        Toast.makeText(LoginActivity.this, "new user", Toast.LENGTH_SHORT).show();
                                        Map<String, String> userfield = new HashMap<>();
-                                       userfield.put("name", "Name");
-                                       userfield.put("email", "Email");
-                                       userfield.put("phone", phonenumber);
+                                       userfield.put("name", "");
+                                       userfield.put("email", "");
+                                       userfield.put("phone", edt_number.getText().toString());
                                        userfield.put("password", "default");
                                        userfield.put("image", "default");
                                        userfield.put("thumb_nail", "default");
-                                       userfield.put("gender","Gender");
+                                       userfield.put("gender","");
                                        userfield.put("dateofbirdth","Date of Birth");
-                                       userfield.put("address","Your Address");
+                                       userfield.put("address","");
                                        userfield.put("qrdata","nurhossen");
                                        userfield.put("count1","avail");
                                        userfield.put("count2","avail");
@@ -528,7 +528,7 @@ public class LoginActivity extends AppCompatActivity {
                                        userfield.put("availfreeTicket","avail_free");
                                        userfield.put("childrenName","Child name");
                                        userfield.put("comment", "not comment yet");
-                                       userfield.put("spousename","Spouse name");
+                                       userfield.put("spousename","");
                                        userfield.put("status_quz","inactive");
                                        userfield.put("alrmstatus","false");
 
@@ -545,7 +545,7 @@ public class LoginActivity extends AppCompatActivity {
                                                    mDatabaseref.child("dob_up").setValue(0);
                                                    mDatabaseref.child("mail_up").setValue(0);
                                                    mDatabaseref.child("address_up").setValue(0);
-                                                   mDatabaseref.child("BabulandPoints").setValue(0);
+                                                   mDatabaseref.child("BabulandPoints").setValue(10);
                                                    mDatabaseref.child("nof_purchase_time").setValue(0);
                                                    mDatabaseref.child("progressvalue_stamp").setValue(0);
 

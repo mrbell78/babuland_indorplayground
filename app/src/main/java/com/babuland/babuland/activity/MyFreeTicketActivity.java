@@ -1,11 +1,5 @@
 package com.babuland.babuland.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,19 +8,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.babuland.babuland.R;
 import com.babuland.babuland.model.Model_ticket;
 import com.babuland.babuland.utils.DbHelper_freeTicket;
-import com.babuland.babuland.R;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -44,9 +48,10 @@ public class MyFreeTicketActivity extends AppCompatActivity {
     List<Model_ticket> list;
     RecyclerView recyclerView;
 
-    DatabaseReference mDatabase;
-    FirebaseUser mUser;
-    String userId;
+    DatabaseReference mDatabase,mTicketdb;
+    FirebaseUser mUser,ticketuser_free;
+    String userId,ticketuserid_free;
+    LinearLayout freeticketid;
 
 
     private FirebaseRecyclerOptions<Model_ticket> options;
@@ -59,11 +64,34 @@ public class MyFreeTicketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_free_ticket);
 
         mToolbar=findViewById(R.id.toolbar);
-
+        freeticketid=findViewById(R.id.freeticketid);
         setSupportActionBar(mToolbar);
         //db=new DbHelper_freeTicket(this);
         getSupportActionBar().setTitle("My Free Ticket");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        ticketuser_free=FirebaseAuth.getInstance().getCurrentUser();
+        ticketuserid_free=ticketuser_free.getUid();
+        mTicketdb=FirebaseDatabase.getInstance().getReference().child("Freeticket").child(ticketuserid_free);
+
+        mTicketdb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Toast.makeText(MyFreeTicketActivity.this, "number of ticket "+ dataSnapshot.getChildrenCount(), Toast.LENGTH_SHORT).show();
+                if(dataSnapshot.getChildrenCount()>0){
+                    freeticketid.setVisibility(View.INVISIBLE);
+                }else if(dataSnapshot.getChildrenCount()==0){
+                    freeticketid.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         recyclerView=findViewById(R.id.ticketrecylerview_free);
         recyclerView.setHasFixedSize(true);
@@ -158,8 +186,15 @@ public class MyFreeTicketActivity extends AppCompatActivity {
                 return  new MyFreeTicketActivity.UserViewholder(view);
             }
         };
+        Toast.makeText(this, "Number of ticket"+fadapter.getItemCount(), Toast.LENGTH_SHORT).show();
+        if(fadapter.getItemCount()>=0){
+            freeticketid.setVisibility(View.INVISIBLE);
 
+        }else {
+            freeticketid.setVisibility(View.VISIBLE);
+        }
         fadapter.startListening();
+
         recyclerView.setAdapter(fadapter);
     }
 

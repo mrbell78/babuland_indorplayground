@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -35,8 +36,11 @@ import com.babuland.babuland.activity.BabulandpointsActivity;
 import com.babuland.babuland.activity.FooditemActivity;
 import com.babuland.babuland.activity.LoginActivity;
 import com.babuland.babuland.activity.PaymentActivity;
+import com.babuland.babuland.activity.TicketfromListviewActivity;
 import com.babuland.babuland.adapter.CustomAdapter;
 import com.babuland.babuland.adapter.Viewpageradapter_homeslider;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +48,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -51,9 +56,12 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -117,7 +125,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
     TextView dob_view;
     Spinner spinner_gender,pre_branch_view;
     FirebaseUser mUser;
-    DatabaseReference mDatabase;
+    DatabaseReference mDatabase,admindatabase;
     String userId;
     LinearLayout fooditem;
     ArrayAdapter<CharSequence> adapter_gender,adapter_branch;
@@ -131,6 +139,9 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
 
     Boolean status_free=false;
+
+    ImageView img_dynamicevent;
+    TextView  tv_dynamicevent;
 
     private static final String DEFAULT_URL = "jdbc:oracle:thin:@itlimpex.ddns.net:2121:xe";
     private  static String  DEFAULT_USERNAME="bland";
@@ -160,7 +171,9 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        View view=inflater.inflate(R.layout.fragment_forth, container, false);
+        img_dynamicevent=view.findViewById(R.id.dynamicevent_img);
+        tv_dynamicevent=view.findViewById(R.id.dynamicevent_img_text);
 
         mCurrentUser= FirebaseAuth.getInstance().getCurrentUser();
        if(mCurrentUser!=null){
@@ -169,6 +182,24 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
            Freeticketdb=FirebaseDatabase.getInstance().getReference().child("Freeticket").child(mCurrentUser.getUid());
            parentdb=FirebaseDatabase.getInstance().getReference().child("User").child(userId);
            childdb=FirebaseDatabase.getInstance().getReference().child("Childdb").child(userId);
+           admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
+
+           admindatabase.addValueEventListener(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                   if(dataSnapshot.child("D_Imagelink").exists()){
+                       String imglink = dataSnapshot.child("D_Imagelink").getValue().toString();
+                       String textview_dynamic = dataSnapshot.child("dynamicEventText").getValue().toString();
+                       Picasso.with(getContext()).load(imglink).into(img_dynamicevent);
+                       tv_dynamicevent.setText(textview_dynamic);
+                   }
+               }
+
+               @Override
+               public void onCancelled(@NonNull DatabaseError databaseError) {
+
+               }
+           });
 
            getparentData(parentdb);
            getChilddata(childdb);
@@ -176,7 +207,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
        }
 
 
-        View view=inflater.inflate(R.layout.fragment_forth, container, false);
+
 
 
 
@@ -451,7 +482,11 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
         switch (view.getId()){
             case R.id.byTicket:
-                try {
+                if(tv_buyticket.getText().toString().equals("Buy Ticket"))
+                    dialogbox();
+                else
+                    {
+                         try {
                     verify_user();
                 } catch (SQLException e) {
 
@@ -460,13 +495,11 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
                     Log.d("error message", "onClick: error inside verfication "+e.getMessage());
                 }
-           /*     if(tv_buyticket.getText().toString().equals("Buy Ticket"))
-                    dialogbox();
-                else
-                    dailogbox_getfreeTicket();
+                    }
 
 
-*/
+
+
                 break;
             case R.id.btn_minus_infant:
                 if(Count_infat>0){
@@ -533,27 +566,174 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
     }
 
     private void verify_user() throws SQLException {
-        //Log.d("mobile", "verify_user: ------------------------mobilenumber "+mobile );
+        //Log.d("mobile", "verify_user: ------------------------mobilenumber "+mobile
 
 
-        try {
-            Connection connection = createConnection();
-            String orc_mobilenumber;
-            Statement stmt=connection.createStatement();
-            ResultSet resultSet=stmt.executeQuery(" SELECT  MOBILE_NUMBER from REG_DATA WHERE  to_char(mobile_number)= '01705062665'");
-           // ResultSet resultSet=stmt.executeQuery(" SELECT  MOBILE_NUMBER from REG_DATA");
 
-            while(resultSet.next()){
-                 orc_mobilenumber=resultSet.getString("MOBILE_NUMBER");
-                Log.d("nametgag", "searchfromapexdb: ----------------- "+orc_mobilenumber);
+        if(mobile==null & mobile.isEmpty()){
+            Toast.makeText(getContext(), "no mobile number at firebase "+mobile, Toast.LENGTH_SHORT).show();
+            dailogbox_getfreeTicket();
+        }else {
+            Toast.makeText(getContext(), "Mobile number in firebase exist", Toast.LENGTH_SHORT).show();
+
+            try {
+                Connection connection = createConnection();
+                String orc_mobilenumber=null;
+                String childname = null,gender=null,dob=null,educlass=null,school=null;
+                String fullname=null,spusename=null;
+                Statement stmt=connection.createStatement();
+                ResultSet resultSet=stmt.executeQuery(" CHILD_NAME,GENDER,DOB,EDU_CLASS,SCHOOL,FULLNAME,SPOUSE_NAME,MOBILE_NUMBER from REG_DATA where to_char(mobile_number)= '"+mobile+"'");
+                // ResultSet resultSet=stmt.executeQuery(" SELECT  MOBILE_NUMBER from REG_DATA");
+
+                while(resultSet.next()){
+                    orc_mobilenumber=resultSet.getString("MOBILE_NUMBER");
+                    Log.d("nametgag", "searchfromapexdb: ----------------- "+orc_mobilenumber);
+                    childname = resultSet.getString("CHILD_NAME");
+                    gender = resultSet.getString("GENDER");
+                    dob = resultSet.getString("DOB");
+                    educlass=resultSet.getString("EDU_CLASS");
+                    school=resultSet.getString("SCHOOL");
+                    fullname=resultSet.getString("FULLNAME");
+                    spusename=resultSet.getString("SPOUSE_NAME");
+                    //Toast.makeText(getContext(), orc_mobilenumber, Toast.LENGTH_SHORT).show();
+                }
+
+                if( orc_mobilenumber!=null && !orc_mobilenumber.isEmpty()){
+
+
+                    if(!name_prnt.isEmpty() && !address_prnt.isEmpty() && !email_prnt.isEmpty() && !spouse_prnt.isEmpty() && !mobile.isEmpty() && childrenncount>0){
+                        Toast.makeText(getContext(), "congrats you won a free ticket", Toast.LENGTH_SHORT).show();
+
+                        getfreeTicket(mobile);
+
+
+                    }else {
+
+                        if(childname!=null || !childname.isEmpty() && gender!=null
+                                || !gender.isEmpty() && dob!=null && dob.isEmpty() && educlass!=null || !gender.isEmpty()
+                                && school!=null || !school.isEmpty() && fullname!=null || !fullname.isEmpty() && spusename!=null && !spusename.isEmpty()){
+
+
+
+                            saveParentdata(fullname,spusename,orc_mobilenumber,childname,gender,dob,educlass,school);
+
+
+                        }else {
+                            Toast.makeText(getContext(), "Register first", Toast.LENGTH_SHORT).show();
+                            dailogbox_getfreeTicket();
+                        }
+
+                        /*Toast.makeText(getContext(), "Register first", Toast.LENGTH_SHORT).show();
+                        dailogbox_getfreeTicket();*/
+                    }
+
+                }else {
+
+                       if(!name_prnt.isEmpty() && !address_prnt.isEmpty() && !email_prnt.isEmpty() && !spouse_prnt.isEmpty() && !mobile.isEmpty() && childrenncount>0){
+                        Toast.makeText(getContext(), "congrats you won a free ticket", Toast.LENGTH_SHORT).show();
+
+                        getfreeTicket(mobile);
+                    }else {
+                           Toast.makeText(getContext(), "Register first "+orc_mobilenumber, Toast.LENGTH_SHORT).show();
+                           dailogbox_getfreeTicket();
+                       }
+
+
+                }
+
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                Log.d("nofound", "verify_user: -------------------not found exception "+ e.getMessage());
+                Toast.makeText(getContext(), "not found error", Toast.LENGTH_SHORT).show();
+            }catch (SQLException e){
+                Toast.makeText(getContext(), "Sql error", Toast.LENGTH_SHORT).show();
+                Log.d("dberror ", "verify_user: -------------------database error free ticket "+e.getMessage());
             }
-
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            Log.d("nofound", "verify_user: -------------------not found exception "+ e.getMessage());
         }
 
+
+
+
+    }
+
+    private void saveParentdata(String fullname, String spusename, final String orc_mobilenumber, final String childname, final String gender, final String dob, final String educlass, final String school) {
+
+        Toast.makeText(getContext(), "orc db exist", Toast.LENGTH_SHORT).show();
+
+        mUser= FirebaseAuth.getInstance().getCurrentUser();
+        userId = mUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+
+        Map parentdatamap = new HashMap();
+
+        parentdatamap.put("name",fullname);
+        parentdatamap.put("spousename",spusename);
+        parentdatamap.put("phone",orc_mobilenumber);
+
+        mDatabase.updateChildren(parentdatamap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                mUser= FirebaseAuth.getInstance().getCurrentUser();
+                userId = mUser.getUid();
+                childdb = FirebaseDatabase.getInstance().getReference().child("Childdb").child(userId);
+                Map childdata = new HashMap();
+                childdata.put("child_name",childname);
+                childdata.put("dob",dob);
+                childdata.put("child_gender",gender);
+                childdata.put("class",educlass);
+                childdata.put("school",school);
+
+
+                childdb.child(childname).updateChildren(childdata).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        getfreeTicket(orc_mobilenumber);
+                    }
+                });
+            }
+        });
+
+    }
+
+
+    private void getfreeTicket(final String mobile) {
+
+
+
+        String currentTime_rdm = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+        Map imagedatawiththum=  new HashMap();
+        imagedatawiththum.put("status","Free ticket");
+        imagedatawiththum.put("phone",mobile);
+        imagedatawiththum.put("total_amount",0);
+        imagedatawiththum.put("branch","any");
+        imagedatawiththum.put("time","One time");
+        imagedatawiththum.put("orderid",0);
+        String childname=mobile+currentTime_rdm;
+
+        Freeticketdb.child(childname).updateChildren(imagedatawiththum).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+
+                if(task.isSuccessful()){
+                    Map freeticket = new HashMap();
+                    freeticket.put("availfreeTicket","avail_expired");
+                    mdialog.dismiss();
+                    mUser= FirebaseAuth.getInstance().getCurrentUser();
+                    userId = mUser.getUid();
+                    mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+
+                    mDatabase.updateChildren(freeticket).addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            startActivity(new Intent(getContext(), TicketfromListviewActivity.class).putExtra("orderid", Integer.parseInt(mobile)));
+
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
     @Override
@@ -1041,10 +1221,6 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                             SystemClock.sleep(100);
                             mViewpager_home.setCurrentItem(0,true);
                         }
-
-
-
-
                     /*if(mViewpager.getCurrentItem()==6){
                         mViewpager.setCurrentItem(0,true);
                     }*/

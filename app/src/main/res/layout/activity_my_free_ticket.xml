@@ -23,6 +23,7 @@
         android:layout_centerVertical="true"
         android:orientation="horizontal"
         android:gravity="center"
+        android:id="@+id/freeticketid"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +35,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             />
-        <Button
+       <!-- <Button
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:text="Redeeme ticket"
@@ -44,7 +45,7 @@
             android:textColor="#0053F1"
             android:background="@drawable/childrcvbackground"
             android:padding="10dp"
-            />
+            />-->
 
 
 

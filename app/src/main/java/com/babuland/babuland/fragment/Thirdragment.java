@@ -127,7 +127,7 @@ public class Thirdragment extends Fragment {
         btn_d=getActivity().findViewById(R.id.buttond);
 
 
-        tv_correctans=getActivity().findViewById(R.id.tv_Correctans);
+       // tv_correctans=getActivity().findViewById(R.id.tv_Correctans);
         tv_anserstatus=getActivity().findViewById(R.id.anserstatus);
 
         btn_next=getActivity().findViewById(R.id.next);
@@ -169,8 +169,8 @@ public class Thirdragment extends Fragment {
                             tv_time.setVisibility(View.INVISIBLE);
 
                             // tv_anserstatus.setText("You answered this question & its correct");
-                            tv_correctans.setText("Correct Answer  " + answer);
-                            tv_correctans.setVisibility(View.VISIBLE);
+                            //tv_correctans.setText("Correct Answer  " + answer);
+                           // tv_correctans.setVisibility(View.VISIBLE);
                             //tv_anserstatus.setVisibility(View.VISIBLE);
 
                         } else {
@@ -186,7 +186,7 @@ public class Thirdragment extends Fragment {
                             btn_d.setEnabled(true);
 
                             tv_time.setVisibility(View.VISIBLE);
-                            tv_correctans.setVisibility(View.INVISIBLE);
+                            //tv_correctans.setVisibility(View.INVISIBLE);
                             tv_anserstatus.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -265,11 +265,11 @@ public class Thirdragment extends Fragment {
                                 }
                             });
 
-                            tv_correctans.setVisibility(View.VISIBLE);
+                            //tv_correctans.setVisibility(View.VISIBLE);
                             tv_anserstatus.setVisibility(View.VISIBLE);
                             tv_time.setVisibility(View.INVISIBLE);
-                            tv_anserstatus.setText("Quiz will start at 9:00pm");
-                            tv_correctans.setText("Correct answer " + answer);
+                            tv_anserstatus.setText("Today Quiz will start at 9:00pm");
+                            //tv_correctans.setText("Correct answer " + answer);
                         }
 
                     }
@@ -322,7 +322,37 @@ public class Thirdragment extends Fragment {
                     btn_b.setText(question.getOption2());
                     btn_c.setText(question.getOption3());
                     btn_d.setText(question.getOption4());
-                    tv_correctans.setText("Correct answer "+question.getAnswer());
+
+
+                    if(btn_a.getText().toString().equals(question.getAnswer())){
+                        btn_a.setBackgroundColor(Color.parseColor("#22BB33"));
+                        btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                    }
+
+                    else if(btn_b.getText().toString().equals(question.getAnswer())){
+
+                        btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_b.setBackgroundColor(Color.parseColor("#22BB33"));
+                        btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                    }
+
+                    else if(btn_c.getText().toString().equals(question.getAnswer())){
+                        btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_c.setBackgroundColor(Color.parseColor("#22BB33"));
+                        btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                    }
+                    else if(btn_d.getText().toString().equals(question.getAnswer())){
+                        btn_a.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_b.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                        btn_d.setBackgroundColor(Color.parseColor("#22BB33"));
+                    }
+
+                   // tv_correctans.setText("Correct answer "+question.getAnswer());
                 }else {
                     Log.d("question data", "onDataChange: ----------------question data not exist ");
                 }
@@ -436,14 +466,14 @@ public class Thirdragment extends Fragment {
                                         btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
                                         btn_d.setEnabled(false);
                                         btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                        tv_correctans.setVisibility(View.VISIBLE);
+                                        //tv_correctans.setVisibility(View.VISIBLE);
                                         tv_anserstatus.setVisibility(View.VISIBLE);
                                         tv_time.setVisibility(View.INVISIBLE);
 
 
                                         tv_anserstatus.setText("You answered this question & its correct");
-                                        tv_correctans.setText("Correct Answer  "+answer);
-                                        tv_correctans.setVisibility(View.VISIBLE);
+                                       // tv_correctans.setText("Correct Answer  "+answer);
+                                        //tv_correctans.setVisibility(View.VISIBLE);
                                         tv_anserstatus.setVisibility(View.VISIBLE);
 
                                         FirebaseUser mUserfrg;
@@ -512,8 +542,8 @@ public class Thirdragment extends Fragment {
                                                 mDatabase.child("status_quz").setValue("inactive");
 
 
-                                                tv_correctans.setText("Correct Answer  "+question.getAnswer());
-                                                tv_correctans.setVisibility(View.VISIBLE);
+                                                //tv_correctans.setText("Correct Answer  "+question.getAnswer());
+                                              //  tv_correctans.setVisibility(View.VISIBLE);
                                                 //prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
 
                                             }
@@ -583,13 +613,13 @@ public class Thirdragment extends Fragment {
                                         btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
                                         btn_d.setEnabled(false);
                                         btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                        tv_correctans.setVisibility(View.VISIBLE);
+                                        //tv_correctans.setVisibility(View.VISIBLE);
                                         tv_anserstatus.setVisibility(View.VISIBLE);
                                         tv_time.setVisibility(View.INVISIBLE);
 
                                         tv_anserstatus.setText("You answered this question & its correct");
-                                        tv_correctans.setText("Correct Answer  "+answer);
-                                        tv_correctans.setVisibility(View.VISIBLE);
+                                       // tv_correctans.setText("Correct Answer  "+answer);
+                                        //tv_correctans.setVisibility(View.VISIBLE);
                                         tv_anserstatus.setVisibility(View.VISIBLE);
 
 
@@ -656,8 +686,8 @@ public class Thirdragment extends Fragment {
                                             }
 
 
-                                            tv_correctans.setText("Correct Answer  "+question.getAnswer());
-                                            tv_correctans.setVisibility(View.VISIBLE);
+                                           // tv_correctans.setText("Correct Answer  "+question.getAnswer());
+                                            //tv_correctans.setVisibility(View.VISIBLE);
                                             // prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
 
                                             Updatequestion();
@@ -718,8 +748,8 @@ public class Thirdragment extends Fragment {
                                     if(correct!=0){
 
                                         tv_anserstatus.setText("You answered this question & its correct");
-                                        tv_correctans.setText("Correct Answer  "+answer);
-                                        tv_correctans.setVisibility(View.VISIBLE);
+                                        //tv_correctans.setText("Correct Answer  "+answer);
+                                        //tv_correctans.setVisibility(View.VISIBLE);
                                         tv_anserstatus.setVisibility(View.VISIBLE);
 
 
@@ -731,7 +761,7 @@ public class Thirdragment extends Fragment {
                                         btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
                                         btn_d.setEnabled(false);
                                         btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                        tv_correctans.setVisibility(View.VISIBLE);
+                                        //tv_correctans.setVisibility(View.VISIBLE);
                                         tv_anserstatus.setVisibility(View.VISIBLE);
                                         tv_time.setVisibility(View.INVISIBLE);
 
@@ -799,8 +829,8 @@ public class Thirdragment extends Fragment {
 
                                                 mDatabase.child("status_quz").setValue("inactive");
 
-                                                tv_correctans.setText("Correct Answer  "+question.getAnswer());
-                                                tv_correctans.setVisibility(View.VISIBLE);
+                                               // tv_correctans.setText("Correct Answer  "+question.getAnswer());
+                                               // tv_correctans.setVisibility(View.VISIBLE);
                                                 //prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
                                             }
 
@@ -856,8 +886,8 @@ public class Thirdragment extends Fragment {
                                     if(correct!=0){
 
                                         tv_anserstatus.setText("You answered this question & its correct");
-                                        tv_correctans.setText("Correct Answer  "+answer);
-                                        tv_correctans.setVisibility(View.VISIBLE);
+                                        //tv_correctans.setText("Correct Answer  "+answer);
+                                        //tv_correctans.setVisibility(View.VISIBLE);
                                         tv_anserstatus.setVisibility(View.VISIBLE);
 
                                         btn_a.setEnabled(false);
@@ -868,7 +898,7 @@ public class Thirdragment extends Fragment {
                                         btn_c.setBackgroundColor(Color.parseColor("#D3D3D3"));
                                         btn_d.setEnabled(false);
                                         btn_d.setBackgroundColor(Color.parseColor("#D3D3D3"));
-                                        tv_correctans.setVisibility(View.VISIBLE);
+                                        //tv_correctans.setVisibility(View.VISIBLE);
                                         tv_anserstatus.setVisibility(View.VISIBLE);
                                         tv_time.setVisibility(View.INVISIBLE);
 
@@ -931,8 +961,8 @@ public class Thirdragment extends Fragment {
                                                 mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
 
                                                 mDatabase.child("status_quz").setValue("inactive");
-                                                tv_correctans.setText("Correct Answer  "+question.getAnswer());
-                                                tv_correctans.setVisibility(View.VISIBLE);
+                                                //tv_correctans.setText("Correct Answer  "+question.getAnswer());
+                                                //tv_correctans.setVisibility(View.VISIBLE);
                                                 //prefs.edit().putString("wrongforCorrectans",question.getAnswer()).apply();
                                             }
                                             //Updatequestion();

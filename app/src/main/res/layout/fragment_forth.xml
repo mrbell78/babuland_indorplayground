@@ -86,23 +86,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        android:src="@drawable/pitha"
+                        android:src="@drawable/hydrobaby"
                         android:layout_marginBottom="52dp"
+                        android:id="@+id/dynamicevent_img"
                         />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
 
-                        android:background="#F8F8F8"
-                        android:text="পিঠা উৎসব ২০২০"
+                        android:background="#229C27"
+                        android:text="Babuland Nutrition Day"
                         android:textStyle="bold"
                         android:textAlignment="center"
                         android:gravity="center"
-                        android:textColor="#202020"
+                        android:textColor="#FFFFFF"
                         android:textSize="15sp"
                         android:layout_marginTop="-50dp"
                         android:minHeight="50dp"
+                        android:id="@+id/dynamicevent_img_text"
+
                         />
 
 
@@ -156,7 +159,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
-                android:background="#90cc00"
+                android:background="#4caf50"
                 android:orientation="vertical"
                 android:id="@+id/fooditem"
                 >
@@ -170,8 +173,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="#c6ff00"
-                    android:text="Virtual Reality"
+                    android:background="#087f23"
+                    android:text="Food Item"
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:gravity="center"

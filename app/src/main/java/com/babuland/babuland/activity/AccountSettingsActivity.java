@@ -21,6 +21,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -128,6 +130,11 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     Adapterlistview adapeter;
     Button btnadd,btnbinus;
     LinearLayoutManager manager;
+
+    RadioGroup gender_radiogroup;
+    RadioButton radioButton;
+    RadioButton radioButton_male,radioButton_female;
+
 
 
 
@@ -244,7 +251,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                         e.printStackTrace();
                     }
 
-                    Picasso.with(getApplicationContext()).load(imgeuri).into(cr_profileimage);
+                    Picasso.with(getApplicationContext()).load(imgeuri).placeholder(R.drawable.profiledefaultpic).error(R.drawable.profiledefaultpic).into(cr_profileimage);
 
                     int  pic_up = dataSnapshot.child("pic_up").getValue(Integer.class);
                     int  name_up = dataSnapshot.child("name_up").getValue(Integer.class);
@@ -510,61 +517,89 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 new IntentFilter("custom_message"));
 
        btn_save_full.setOnClickListener(new View.OnClickListener() {
+
            @Override
            public void onClick(View v) {
+               String gendertext=null;
+               if(gender_radiogroup.getCheckedRadioButtonId()==-1){
+                   Toast.makeText(AccountSettingsActivity.this, "select gender", Toast.LENGTH_SHORT).show();
+                   gender_radiogroup.findFocus();
+               }else {
+                   int id  = gender_radiogroup.getCheckedRadioButtonId();
+                   radioButton= findViewById(id);
+                   gendertext = radioButton.getText().toString();
+
+               }
 
 
 
+               if(!adapter.isEmpty() && gendertext!=null){
+                       mUser=FirebaseAuth.getInstance().getCurrentUser();
+                       String useridlocal=mUser.getUid();
+                       chilDatabase=FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
 
-
-               if(!adapter.isEmpty()){
-                   mUser=FirebaseAuth.getInstance().getCurrentUser();
-                   String useridlocal=mUser.getUid();
-                   chilDatabase=FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
 
                /*String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
                String random_timephone=number_full.getText().toString()+currentTime;
 */
-                   //childname_full,class_ful,school_full,parentname_full,spousename_full,number_full,email_full,address_full;
-                   mUser=FirebaseAuth.getInstance().getCurrentUser();
-                   String useridlc=mUser.getUid();
-                   mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(useridlc);
-                   Map parent = new HashMap();
-                   parent.put("name",parentname_full.getText().toString());
-                   parent.put("spousename",spousename_full.getText().toString());
-                   parent.put("phone",number_full.getText().toString());
-                   parent.put("email",email_full.getText().toString());
-                   parent.put("address",address_full.getText().toString());
-                   mDatabase.updateChildren(parent).addOnCompleteListener(new OnCompleteListener() {
-                       @Override
-                       public void onComplete(@NonNull Task task) {
+                       //childname_full,class_ful,school_full,parentname_full,spousename_full,number_full,email_full,address_full;
 
-                           if(task.isSuccessful()){
-                               FirebaseUser mUser= FirebaseAuth.getInstance().getCurrentUser();
-                               String useridlocal=mUser.getUid();
-                               DatabaseReference chilDatabase= FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
 
-                               String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-                               String random_timephone=childname_adp+currentTime;
+                       mUser=FirebaseAuth.getInstance().getCurrentUser();
+                       String useridlc=mUser.getUid();
+                       mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(useridlc);
+                       Map parent = new HashMap();
+                       parent.put("name",parentname_full.getText().toString());
+                       parent.put("spousename",spousename_full.getText().toString());
+                       parent.put("phone",number_full.getText().toString());
+                       parent.put("email",email_full.getText().toString());
+                       parent.put("address",address_full.getText().toString());
+                       parent.put("gender",gendertext);
 
-                               fullmap.put("child_name",childname_adp);
-                               fullmap.put("class",class_adp);
-                               fullmap.put("school",school_adp);
-                               fullmap.put("child_image","notset");
-                               fullmap.put("dob",dob_adp);
-                               fullmap.put("pre_branch","notset");
-                               fullmap.put("child_gender",gender_adp);
-                               chilDatabase.child(childname_adp).updateChildren(fullmap).addOnCompleteListener(new OnCompleteListener() {
-                                   @Override
-                                   public void onComplete(@NonNull Task task) {
-                                       Toast.makeText(AccountSettingsActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                       mDatabase.updateChildren(parent).addOnCompleteListener(new OnCompleteListener() {
+                           @Override
+                           public void onComplete(@NonNull Task task) {
+
+                               if(task.isSuccessful()){
+                                   FirebaseUser mUser= FirebaseAuth.getInstance().getCurrentUser();
+                                   String useridlocal=mUser.getUid();
+                                   DatabaseReference chilDatabase= FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
+
+                                   String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                                   String random_timephone=childname_adp+currentTime;
+
+                                   fullmap.put("child_name",childname_adp);
+                                   fullmap.put("class",class_adp);
+                                   fullmap.put("school",school_adp);
+                                   fullmap.put("child_image","notset");
+                                   fullmap.put("dob",dob_adp);
+                                   fullmap.put("pre_branch","notset");
+                                   fullmap.put("child_gender",gender_adp);
+
+                                   if(childname_adp!=null && !childname_adp.isEmpty()){
+
+                                       chilDatabase.child(childname_adp).updateChildren(fullmap).addOnCompleteListener(new OnCompleteListener() {
+                                           @Override
+                                           public void onComplete(@NonNull Task task) {
+                                               Toast.makeText(AccountSettingsActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                                               btn_save_full.setText("Edit Profile");
+                                           }
+                                       });
                                    }
-                               });
 
+                               }
                            }
-                       }
-                   });
-               }
+                       });
+                       Toast.makeText(AccountSettingsActivity.this, "Upload successful.No child added", Toast.LENGTH_SHORT).show();
+                       btn_save_full.setText("Edit Profile");
+
+
+                   }
+
+
+
+
+
 
            }
        });
@@ -590,6 +625,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 }
             }
         });
+
+
+        showdatgadefault();
 
 
 
@@ -625,6 +663,50 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
             }
         });*/
 
+
+
+
+    }
+
+    private void showdatgadefault() {
+
+        DatabaseReference showdatgabse;
+        FirebaseUser mshowuser;
+        String showuserid;
+
+        mshowuser=FirebaseAuth.getInstance().getCurrentUser();
+        showuserid=mshowuser.getUid();
+        showdatgabse = FirebaseDatabase.getInstance().getReference().child("User").child(showuserid);
+
+        showdatgabse.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    parentname_full.setText(dataSnapshot.child("name").getValue().toString());
+                    spousename_full.setText(dataSnapshot.child("spousename").getValue().toString());
+                    number_full.setText(dataSnapshot.child("phone").getValue().toString());
+                    email_full.setText(dataSnapshot.child("email").getValue().toString());
+                    address_full.setText(dataSnapshot.child("address").getValue().toString());
+                    String gender = dataSnapshot.child("gender").getValue().toString();
+
+                    if(gender.equals("Mr.")){
+                        radioButton_male.setChecked(true);
+                        radioButton_female.setChecked(false);
+                    }else{
+                        radioButton_male.setChecked(true);
+                        radioButton_female.setChecked(false);
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
 
@@ -926,6 +1008,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         number_full=findViewById(R.id.number_full);
         email_full=findViewById(R.id.email_full);
         address_full=findViewById(R.id.address_full);
+        gender_radiogroup=findViewById(R.id.radiogroup_gender);
+        radioButton_male=findViewById(R.id.radio_male);
+        radioButton_female=findViewById(R.id.radio_female);
+
 
 
         //ll2,ll3;

@@ -216,6 +216,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center"
+                        android:id="@+id/radiogroup_gender"
                         >
 
                         <RadioButton
@@ -223,12 +224,15 @@
                             android:layout_height="wrap_content"
                             android:text="Mr."
                             android:layout_marginRight="20dp"
-                            ></RadioButton>
+                            android:id="@+id/radio_male"
+                            />
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Mrs."></RadioButton>
+                            android:text="Mrs."
+                            android:id="@+id/radio_female"
+                            />
 
                     </RadioGroup>
 

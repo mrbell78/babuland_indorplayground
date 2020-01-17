@@ -311,13 +311,15 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
                         parent.put("address",address_full.getText().toString());
                         mDatabase.updateChildren(parent);*/
 
-                        chilDatabase.child(random_timephone).addValueEventListener(new ValueEventListener() {
+                        chilDatabase.child(edtchilname.getText().toString()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                edtchilname.setText(dataSnapshot.child("child_name").getValue().toString());
-                                childclass.setText(dataSnapshot.child("class").getValue().toString());
-                                tv_dob.setText(dataSnapshot.child("dob").getValue().toString());
-                                childschool.setText(dataSnapshot.child("school").getValue().toString());
+                               if(dataSnapshot.exists()){
+                                   edtchilname.setText(dataSnapshot.child("child_name").getValue().toString());
+                                   childclass.setText(dataSnapshot.child("class").getValue().toString());
+                                   tv_dob.setText(dataSnapshot.child("dob").getValue().toString());
+                                   childschool.setText(dataSnapshot.child("school").getValue().toString());
+                               }
 
                             }
 
