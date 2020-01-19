@@ -1,14 +1,14 @@
 package com.babuland.babuland.activity;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-
-import com.babuland.babuland.adapter.CustomAdapter;
 import com.babuland.babuland.R;
+import com.babuland.babuland.adapter.CustomAdapter;
 
 public class FooditemActivity extends AppCompatActivity {
 
@@ -17,7 +17,7 @@ public class FooditemActivity extends AppCompatActivity {
     CustomAdapter adapter;
     String[] heading;
     String []content;
-    int []imgrclr={R.drawable.testpic1,R.drawable.souppic,R.drawable.testpic3,R.drawable.choclet_cake1,R.drawable.thai_soup,R.drawable.jouce2,R.drawable.jouce2};
+    int []imgrclr={R.drawable.item1,R.drawable.item2,R.drawable.item3,R.drawable.item4};
 
 
     Toolbar mToolbar;

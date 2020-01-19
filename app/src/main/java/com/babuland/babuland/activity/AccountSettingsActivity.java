@@ -135,6 +135,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     RadioButton radioButton;
     RadioButton radioButton_male,radioButton_female;
 
+    CardView mCardview;
+
 
 
 
@@ -150,6 +152,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
         initializefullprofile();
         btn_save_full=findViewById(R.id.save_full);
+        mCardview=findViewById(R.id.cardview_profile);
 
 
         edt_name=findViewById(R.id.name_id_accountSettings);
@@ -520,20 +523,23 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
            @Override
            public void onClick(View v) {
-               String gendertext=null;
-               if(gender_radiogroup.getCheckedRadioButtonId()==-1){
-                   Toast.makeText(AccountSettingsActivity.this, "select gender", Toast.LENGTH_SHORT).show();
-                   gender_radiogroup.findFocus();
-               }else {
-                   int id  = gender_radiogroup.getCheckedRadioButtonId();
-                   radioButton= findViewById(id);
-                   gendertext = radioButton.getText().toString();
-
-               }
+               if(btn_save_full.getText().equals("Save")){
 
 
+                   String gendertext=null;
+                   if(gender_radiogroup.getCheckedRadioButtonId()==-1){
+                       Toast.makeText(AccountSettingsActivity.this, "select gender", Toast.LENGTH_SHORT).show();
+                       gender_radiogroup.findFocus();
+                   }else {
+                       int id  = gender_radiogroup.getCheckedRadioButtonId();
+                       radioButton= findViewById(id);
+                       gendertext = radioButton.getText().toString();
 
-               if(!adapter.isEmpty() && gendertext!=null){
+                   }
+
+
+
+                   if(!adapter.isEmpty() && gendertext!=null){
                        mUser=FirebaseAuth.getInstance().getCurrentUser();
                        String useridlocal=mUser.getUid();
                        chilDatabase=FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
@@ -583,6 +589,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                                            public void onComplete(@NonNull Task task) {
                                                Toast.makeText(AccountSettingsActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
                                                btn_save_full.setText("Edit Profile");
+
+
                                            }
                                        });
                                    }
@@ -592,15 +600,16 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                        });
                        Toast.makeText(AccountSettingsActivity.this, "Upload successful.No child added", Toast.LENGTH_SHORT).show();
                        btn_save_full.setText("Edit Profile");
+                       
 
 
                    }
 
+               }
+               else if(btn_save_full.getText().equals("Edit Profile")){
+                   btn_save_full.setText("Save");
 
-
-
-
-
+               }
            }
        });
 

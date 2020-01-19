@@ -185,6 +185,7 @@
             android:layout_height="match_parent"
             app:cardCornerRadius="10dp"
             android:visibility="visible"
+            android:id="@+id/cardview_profile"
             >
 
             <LinearLayout
@@ -385,7 +386,7 @@
                android:layout_height="wrap_content"
                android:layout_marginRight="20dp"
                android:padding="10dp"
-               android:text="Save Change"
+               android:text="Save"
                android:textAllCaps="false"
                android:textColor="@android:color/white"
                android:background="@color/colorPrimary"

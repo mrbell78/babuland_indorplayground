@@ -44,13 +44,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.customclass> {
+public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.customclass>  {
 
     private Context  context;
     private List<modelclass>img;
     private DatePickerDialog.OnDateSetListener mDatesetListener;
-    String dateOfbirdthglb,removeid[]=new String[15];
+    String removeid[]=new String[15];
     int index_remove=0;
+    String dateOfbirdthglb;
 
     public Adapterlistview(Context context, List<modelclass> img) {
         this.context = context;
@@ -107,7 +108,10 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1=i1+1;
                 dateOfbirdthglb=i2+"/"+i1+"/"+i;
+
                 holder.tv_dob_full.setText(dateOfbirdthglb);
+                holder.dob_alter.setText(dateOfbirdthglb);
+                Toast.makeText(context, "dob "+dateOfbirdthglb, Toast.LENGTH_SHORT).show();
 
             }
         };
@@ -194,6 +198,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
             @Override
             public void onClick(View v) {
 
+                holder.tv_dob_full.setText(dateOfbirdthglb);
 
                 String name = holder.childname_full.getText().toString();
                 String class_child=holder.class_ful.getText().toString();
@@ -201,6 +206,45 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
                 String dob = holder.tv_dob_full.getText().toString();
                 String gender = holder.spinner.getSelectedItem().toString();
                 Log.d("gender", "onClick: -------------gender "+gender);
+
+
+
+               /* holder.dob_txt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        Calendar calendar = Calendar.getInstance();
+
+                        int year = calendar.get(Calendar.YEAR);
+                        int month= calendar.get(Calendar.MONTH);
+                        int day  = calendar.get(Calendar.DAY_OF_MONTH);
+
+                        DatePickerDialog dialog  = new DatePickerDialog(context,android.R.style.Theme_Holo_Dialog_MinWidth,mDatesetListener,year,month,day);
+                        dialog.getWindow();
+                        dialog.show();
+                    }
+                });
+
+                mDatesetListener=new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        i1=i1+1;
+                        dateOfbirdthglb=i2+"/"+i1+"/"+i;
+
+                        holder.tv_dob_full.setText(dateOfbirdthglb);
+                        Toast.makeText(context, "dob "+dateOfbirdthglb, Toast.LENGTH_SHORT).show();
+
+                    }
+                };*/
+
+
+
+
+
+
+
+
+
 
 
                 if(TextUtils.isEmpty(name)){
@@ -226,9 +270,6 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
 
                 }
                 else {
-
-
-
                     holder.imageView.setImageResource(current.getImg());
                     img.add(position,current);
                     notifyItemInserted(position);
@@ -236,6 +277,9 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
                     savechildren(holder.childname_full,holder.class_ful,holder.school_full,holder.tv_dob_full,gender);
 
                 }
+
+
+
 
 
 
@@ -317,8 +361,9 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
                                if(dataSnapshot.exists()){
                                    edtchilname.setText(dataSnapshot.child("child_name").getValue().toString());
                                    childclass.setText(dataSnapshot.child("class").getValue().toString());
-                                   tv_dob.setText(dataSnapshot.child("dob").getValue().toString());
+                                   //tv_dob.setText(dataSnapshot.child("dob").getValue().toString());
                                    childschool.setText(dataSnapshot.child("school").getValue().toString());
+
                                }
 
                             }
@@ -352,9 +397,9 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
         View mview;
         Spinner spinner;
         Button addbtn,removebtn,btnauto;
-        TextView tvchild;
+        TextView tvchild,tv_dob_full,dob_txt,dob_alter;
         ImageView imageView;
-        private TextView tv_dob_full,dob_txt;
+
         private Spinner spinner_full;
         private EditText childname_full,class_ful,school_full,parentname_full,spousename_full,number_full,email_full,address_full;
         public customclass(@NonNull View itemView) {
@@ -378,6 +423,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
             removebtn=itemView.findViewById(R.id.removechild);
             spinner=itemView.findViewById(R.id.genderchild_full);
             btnauto=itemView.findViewById(R.id.autobutton);
+
 
 
         }

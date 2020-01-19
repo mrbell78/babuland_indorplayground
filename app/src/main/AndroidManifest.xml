@@ -62,7 +62,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.babuland.babuland.activity.TicketfromListviewActivity"
-            android:parentActivityName="com.babuland.babuland.MainActivity"
+            android:parentActivityName="com.babuland.babuland.activity.MyeTicketActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.babuland.babuland.activity.Profiling_moreActivity"

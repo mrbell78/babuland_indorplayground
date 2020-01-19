@@ -3,6 +3,7 @@ package com.babuland.babuland.fragment;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.os.SystemClock;
@@ -144,6 +145,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
     TextView  tv_dynamicevent;
 
     private static final String DEFAULT_URL = "jdbc:oracle:thin:@itlimpex.ddns.net:2121:xe";
+   // private static final String DEFAULT_URL = "jdbc:oracle:thin:27.147.163.93:2121:xe";
     private  static String  DEFAULT_USERNAME="bland";
     private static final String DEFAULT_PASSWORD = "servicepack3";
 
@@ -190,11 +192,14 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                    if(dataSnapshot.child("D_Imagelink").exists()){
                        String imglink = dataSnapshot.child("D_Imagelink").getValue().toString();
                        String textview_dynamic = dataSnapshot.child("dynamicEventText").getValue().toString();
-                       Picasso.with(getContext()).load(imglink).into(img_dynamicevent);
+                       Picasso.with(getContext()).load(imglink).placeholder(R.drawable.eventpic).error(R.drawable.eventpic).into(img_dynamicevent);
                        tv_dynamicevent.setText(textview_dynamic);
+                       String color = dataSnapshot.child("color").getValue().toString();
+                       Log.d("imllink", "onDataChange: ------------------imagellinkdynamic "+ imglink);
+                       //Toast.makeText(getContext(), color, Toast.LENGTH_SHORT).show();
+                       tv_dynamicevent.setBackgroundColor(Color.parseColor(color));
                    }
                }
-
                @Override
                public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -205,12 +210,6 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
            getChilddata(childdb);
 
        }
-
-
-
-
-
-
         return view;
     }
 
@@ -325,8 +324,6 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                });
            }
         }
-
-
 
         //viewpager adpter event
 
@@ -582,7 +579,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                 String childname = null,gender=null,dob=null,educlass=null,school=null;
                 String fullname=null,spusename=null;
                 Statement stmt=connection.createStatement();
-                ResultSet resultSet=stmt.executeQuery(" CHILD_NAME,GENDER,DOB,EDU_CLASS,SCHOOL,FULLNAME,SPOUSE_NAME,MOBILE_NUMBER from REG_DATA where to_char(mobile_number)= '"+mobile+"'");
+                    ResultSet resultSet=stmt.executeQuery(" SELECT CHILD_NAME,GENDER,DOB,EDU_CLASS,SCHOOL,FULLNAME,SPOUSE_NAME,MOBILE_NUMBER from REG_DATA where to_char(mobile_number)= '"+mobile+"'");
                 // ResultSet resultSet=stmt.executeQuery(" SELECT  MOBILE_NUMBER from REG_DATA");
 
                 while(resultSet.next()){
@@ -598,6 +595,11 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                     //Toast.makeText(getContext(), orc_mobilenumber, Toast.LENGTH_SHORT).show();
                 }
 
+                ResultSet fodditem = stmt.executeQuery("select PRODUCT_NAME,CATEGORY,PRODUCT_AVAIL,LIST_PRICE,BUYING_PRICE,VENDOR from DEMO_PRODUCT_INFO");
+                while (fodditem.next()){
+                    String foodname = fodditem.getString("PRODUCT_NAME");
+                    Log.d("foodname", "verify_user: .................food name " + foodname);
+                }
                 if( orc_mobilenumber!=null && !orc_mobilenumber.isEmpty()){
 
 
@@ -683,8 +685,6 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                 childdata.put("child_gender",gender);
                 childdata.put("class",educlass);
                 childdata.put("school",school);
-
-
                 childdb.child(childname).updateChildren(childdata).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
@@ -1061,7 +1061,6 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                         //dob
                         String dob=dataSnapshot.child("dateofbirdth").getValue().toString();
                         dob_view.setText(dob);
-
                         //spouse name
                         String spousename=dataSnapshot.child("spousename").getValue().toString();
                         spousename_view.setText(spousename);
