@@ -201,7 +201,8 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             @Override
             public void onClick(View view) {
 /*
-                mDatabase = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
+                mDatabase
+                 = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
                getphone(mDatabase);*/
                 Log.d(TAG, "onClick: ---------------------------------------phone "+phone);
                 if(!phone.equals("default") && phone!=null){
@@ -307,13 +308,35 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
 
             if(branchname.equals("mirpur")){
 
+                ResultSet fodditem = stmt.executeQuery("select PRODUCT_NAME,CATEGORY,PRODUCT_AVAIL,LIST_PRICE,BUYING_PRICE,VENDOR from DEMO_PRODUCT_INFO");
+                while (fodditem.next()){
+                    String foodname = fodditem.getString("PRODUCT_NAME");
+                    String pirce= fodditem.getString("LIST_PRICE");
+                    Log.d("foodname", "verify_user: .................food name " + foodname+"price"+pirce);
+
+                    //Log.d("foodname", "verify_user: .................food price " + pirce);
+                }
+
+
                 stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVED_AMOUNT,PAYMENT_TYPE,PHONE) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'Card',"+phone+")");
 
                 ResultSet productid_gardianl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='PARENT'");
                 while(productid_gardianl.next())
                     productid_gardian=productid_gardianl.getInt(1);
 
+
+
+
             }else if(branchname.equals("wari")){
+
+                ResultSet fodditem = stmt.executeQuery("select PRODUCT_NAME,CATEGORY,PRODUCT_AVAIL,LIST_PRICE,BUYING_PRICE,VENDOR from DEMO_PRODUCT_INFO");
+                while (fodditem.next()){
+                    String foodname = fodditem.getString("PRODUCT_NAME");
+                    String pirce= fodditem.getString("LIST_PRICE");
+                    Log.d("foodname", "verify_user: .................food name " + foodname+"price"+pirce);
+
+                }
+
 
                 stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVE_AMOUNT,PAYMENT_TYPE,PHONE_NUMBER) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'Card',"+phone+")");
 
@@ -322,6 +345,13 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
                     productid_gardian=productid_gardianl.getInt(1);
             }
             else if(branchname.equals("uttara")){
+
+                ResultSet fodditem = stmt.executeQuery("select PRODUCT_NAME,CATEGORY,PRODUCT_AVAIL,LIST_PRICE,BUYING_PRICE,VENDOR from DEMO_PRODUCT_INFO");
+                while (fodditem.next()){
+                    String foodname = fodditem.getString("PRODUCT_NAME");
+                    String pirce= fodditem.getString("LIST_PRICE");
+                    Log.d("foodname", "verify_user: .................food name " + foodname+"price"+pirce);
+                }
 
                             stmt.executeUpdate("INSERT INTO TICKET_ORDERS (ORDER_ID,CUSTOMER_ID,ORDER_TOTAL,ORDER_TIMESTAMP,USER_NAME,RECEIVE_AMOUNT,PAYMENT_TYPE,PHONE_NUMBER) " + "VALUES (null,null,null,systimestamp,'NUR',"+Total+",'Card',"+phone+")");
 
@@ -351,6 +381,12 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
             ResultSet productid_socksl=stmt.executeQuery(" SELECT  PRODUCT_ID from  DEMO_PRODUCT_INFO WHERE PRODUCT_NAME='SOCKS'");
             while(productid_socksl.next())
                 productid_socks=productid_socksl.getInt(1);
+
+
+
+
+
+
 
 
             Log.d("ordermaxvalue", "onCreate: ---------------------------------------------------ordermaxvalue="+orderid_maxvalue);
@@ -406,7 +442,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         mProgress.setTitle("Processing");
         mProgress.setMessage("Please wait");
         mProgress.show();
-         point =  (Total*10)/100;
+         point =  Total;//(Total*10)/100;
 
         mUser=FirebaseAuth.getInstance().getCurrentUser();
         if(mUser!=null) {

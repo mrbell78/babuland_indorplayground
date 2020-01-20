@@ -595,11 +595,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                     //Toast.makeText(getContext(), orc_mobilenumber, Toast.LENGTH_SHORT).show();
                 }
 
-                ResultSet fodditem = stmt.executeQuery("select PRODUCT_NAME,CATEGORY,PRODUCT_AVAIL,LIST_PRICE,BUYING_PRICE,VENDOR from DEMO_PRODUCT_INFO");
-                while (fodditem.next()){
-                    String foodname = fodditem.getString("PRODUCT_NAME");
-                    Log.d("foodname", "verify_user: .................food name " + foodname);
-                }
+
                 if( orc_mobilenumber!=null && !orc_mobilenumber.isEmpty()){
 
 

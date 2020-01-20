@@ -44,7 +44,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Customclas
         holder.img.setImageResource(img[position]);
         holder.tvheading.setText(heading[position]);
         holder.content.setText(content[position]);
-        holder.imgLike.setOnClickListener(new View.OnClickListener() {
+       /* holder.imgLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(imglike_status==false){
@@ -61,7 +61,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Customclas
                 }
 
             }
-        });
+        });*/
 
    }
 
@@ -86,8 +86,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Customclas
            content=mView.findViewById(R.id.content);
           /* response=mView.findViewById(R.id.response);
            swithchc=mView.findViewById(R.id.swithch);*/
-          imgLike=mView.findViewById(R.id.like_unlike);
-          like_number=mView.findViewById(R.id.num_like);
+          /*imgLike=mView.findViewById(R.id.like_unlike);
+          like_number=mView.findViewById(R.id.num_like);*/
        }
    }
 }

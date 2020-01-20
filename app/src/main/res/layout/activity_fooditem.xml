@@ -16,6 +16,4 @@
         android:id="@+id/fooditem_recylerview"
         ></androidx.recyclerview.widget.RecyclerView>
 
-
-
 </RelativeLayout>

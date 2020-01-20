@@ -26,25 +26,25 @@
     </string-array>
 
     <string-array name="heading">
-        <item>Platter</item>
-        <item>Garlic soup </item>
-        <item>ozinbutter</item>
-        <item>Chocolate cake </item>
-        <item>Thai soup</item>
-        <item>Orange Juce</item>
-        <item>Virtual Reality </item>
+        <item>Chicken cashwnut salad</item>
+        <item>Chicken pizza</item>
+        <item>Thai soup thick</item>
+        <item>Cream of mushroom</item>
+        <item>Chicken tenders</item>
+        <item>Chicken lolipop</item>
+
 
 
     </string-array>
     <string-array name="contetn">
 
-        <item>120tk</item>
-        <item>350tk</item>
-        <item>90tk</item>
+        <item>275tk</item>
+        <item>550tk</item>
+        <item>190tk</item>
+        <item>175tk</item>
         <item>220tk</item>
-        <item>70tk</item>
-        <item>300tk</item>
-        <item>130tk</item>
+        <item>340tk</item>
+
 
     </string-array>
 

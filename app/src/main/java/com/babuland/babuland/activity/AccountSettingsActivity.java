@@ -13,7 +13,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,7 +42,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.babuland.babuland.R;
 import com.babuland.babuland.adapter.Adapterlistview;
+import com.babuland.babuland.model.Childlist_newreg;
 import com.babuland.babuland.model.modelclass;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -134,11 +139,16 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     RadioGroup gender_radiogroup;
     RadioButton radioButton;
     RadioButton radioButton_male,radioButton_female;
-
     CardView mCardview;
 
+    private FirebaseRecyclerOptions<Childlist_newreg> options;
+    private FirebaseRecyclerAdapter<Childlist_newreg, AccountSettingsActivity.UserViewholder> fadapter;
 
 
+
+    FirebaseUser rcvuser;
+    String rcvuserid;
+    DatabaseReference rcvdata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +164,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         btn_save_full=findViewById(R.id.save_full);
         mCardview=findViewById(R.id.cardview_profile);
 
+        rcvuser= FirebaseAuth.getInstance().getCurrentUser();
+        rcvuserid =rcvuser.getUid();
 
         edt_name=findViewById(R.id.name_id_accountSettings);
         email=findViewById(R.id.email_accountsettings);
@@ -336,10 +348,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
             @Override
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
-
                 cdoesent = s;
                 Toast.makeText(AccountSettingsActivity.this, "code sent", Toast.LENGTH_SHORT).show();
-
             }
         };
 
@@ -523,8 +533,6 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
            @Override
            public void onClick(View v) {
-               if(btn_save_full.getText().equals("Save")){
-
 
                    String gendertext=null;
                    if(gender_radiogroup.getCheckedRadioButtonId()==-1){
@@ -589,12 +597,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                                            public void onComplete(@NonNull Task task) {
                                                Toast.makeText(AccountSettingsActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
                                                btn_save_full.setText("Edit Profile");
-
-
                                            }
                                        });
                                    }
-
                                }
                            }
                        });
@@ -605,11 +610,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
                    }
 
-               }
-               else if(btn_save_full.getText().equals("Edit Profile")){
-                   btn_save_full.setText("Save");
 
-               }
+
            }
        });
 
@@ -1044,6 +1046,52 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         }
     };
 
+    public class UserViewholder extends RecyclerView.ViewHolder{
+
+        EditText childname_ed,class_ed,school_ed;
+        TextView dob_ed;
+        public UserViewholder(@NonNull View itemView) {
+            super(itemView);
+
+            childname_ed= itemView.findViewById(R.id.childname_full);
+            dob_ed=itemView.findViewById(R.id.dateofbirth_full);
+            class_ed=itemView.findViewById(R.id.class_full);
+            school_ed=itemView.findViewById(R.id.schoolname_full);
+
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
 
+
+        Log.d("userid", "onStart: -----userid "+ userId);
+        rcvdata=FirebaseDatabase.getInstance().getReference().child("Childdb").child(rcvuserid);
+        options=new FirebaseRecyclerOptions.Builder<Childlist_newreg>().setQuery(rcvdata,Childlist_newreg.class).build();
+
+        fadapter= new FirebaseRecyclerAdapter<Childlist_newreg, UserViewholder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull UserViewholder userViewholder, int i, @NonNull Childlist_newreg childlist_newreg) {
+
+                userViewholder.childname_ed.setText(childlist_newreg.getChild_name());
+                userViewholder.dob_ed.setText(childlist_newreg.getDob());
+                userViewholder.school_ed.setText(childlist_newreg.getSchool());
+                userViewholder.class_ed.setText(childlist_newreg.getClasss());
+            }
+
+            @NonNull
+            @Override
+            public UserViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dynamicchild,parent,false);
+
+                return  new AccountSettingsActivity.UserViewholder(view);
+            }
+        };
+
+        fadapter.startListening();
+        recyclerView.setAdapter(fadapter);
+
+    }
 }

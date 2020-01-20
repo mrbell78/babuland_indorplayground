@@ -110,7 +110,6 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
                 dateOfbirdthglb=i2+"/"+i1+"/"+i;
 
                 holder.tv_dob_full.setText(dateOfbirdthglb);
-                holder.dob_alter.setText(dateOfbirdthglb);
                 Toast.makeText(context, "dob "+dateOfbirdthglb, Toast.LENGTH_SHORT).show();
 
             }

@@ -46,7 +46,7 @@ public class Thirdragment extends Fragment {
 
 
     Button btn_a,btn_b,btn_c,btn_d;
-    TextView tv_question,tv_time,tv_correctans,tv_anserstatus;
+    TextView tv_question,tv_time,tv_correctans,tv_anserstatus,yesterdayquestion;
     DatabaseReference mdatabase;
     DatabaseReference Leaderboard;
 
@@ -125,6 +125,7 @@ public class Thirdragment extends Fragment {
         btn_b=getActivity().findViewById(R.id.buttonb);
         btn_c=getActivity().findViewById(R.id.buttonc);
         btn_d=getActivity().findViewById(R.id.buttond);
+        yesterdayquestion=getActivity().findViewById(R.id.questiostaus);
 
 
        // tv_correctans=getActivity().findViewById(R.id.tv_Correctans);
@@ -224,6 +225,7 @@ public class Thirdragment extends Fragment {
                             //startCountdown();
                             tv_anserstatus.setVisibility(View.VISIBLE);
                             tv_anserstatus.setText("Quiz will End at 11:00pm");
+                            yesterdayquestion.setVisibility(View.INVISIBLE);
 
                         } else {
 
@@ -267,6 +269,7 @@ public class Thirdragment extends Fragment {
 
                             //tv_correctans.setVisibility(View.VISIBLE);
                             tv_anserstatus.setVisibility(View.VISIBLE);
+                            yesterdayquestion.setVisibility(View.VISIBLE);
                             tv_time.setVisibility(View.INVISIBLE);
                             tv_anserstatus.setText("Today Quiz will start at 9:00pm");
                             //tv_correctans.setText("Correct answer " + answer);
