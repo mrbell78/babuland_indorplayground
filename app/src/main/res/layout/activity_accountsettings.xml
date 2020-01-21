@@ -170,12 +170,16 @@
 
 
 
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/provielview"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="70dp"
+
+
 
         >
 
@@ -196,12 +200,19 @@
 
                 >
 
-                <androidx.recyclerview.widget.RecyclerView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:id="@+id/recyclerview"
+                    android:layout_height="wrap_content">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:id="@+id/recyclerview"
 
-                    />
+                        />
+
+
+                </RelativeLayout>
+
 
                 <!--parent information-->
                 <LinearLayout
@@ -381,408 +392,285 @@
            android:gravity="center"
            >
 
-           <Button
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginRight="20dp"
-               android:padding="10dp"
-               android:text="Save"
-               android:textAllCaps="false"
-               android:textColor="@android:color/white"
-               android:background="@color/colorPrimary"
-               android:elevation="5dp"
-               android:layout_marginBottom="15dp"
-               android:id="@+id/save_full"
-               />
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             >
+
+             <Button
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginRight="20dp"
+                 android:padding="10dp"
+                 android:text="Save"
+                 android:textAllCaps="false"
+                 android:textColor="@android:color/white"
+                 android:background="@color/colorPrimary"
+                 android:elevation="5dp"
+                 android:layout_marginBottom="15dp"
+                 android:id="@+id/save_full"
+                 android:layout_centerHorizontal="true"
+                 android:visibility="invisible"
+                 />
+             <Button
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginRight="20dp"
+                 android:padding="10dp"
+                 android:text="Edit Profile"
+                 android:textAllCaps="false"
+                 android:textColor="@android:color/white"
+                 android:background="@color/colorPrimary"
+                 android:elevation="5dp"
+                 android:layout_marginBottom="15dp"
+                 android:id="@+id/Edit_full"
+                 android:layout_centerHorizontal="true"
+                 android:visibility="visible"
+                 />
+
+         </RelativeLayout>
+
 
        </LinearLayout>
 
     </RelativeLayout>
 
 
-    <LinearLayout
+
+
+    <!--show full prifle-->
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/provielview"
-        android:orientation="vertical"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:id="@+id/editlayout"
-        android:visibility="invisible"
-        android:background="@android:color/white"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="70dp"
+
+
         >
 
-        <com.google.android.material.textfield.TextInputLayout
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Name">
+            android:layout_height="match_parent"
+            app:cardCornerRadius="10dp"
+            android:visibility="invisible"
+            android:id="@+id/show_cardview_profile"
+            app:cardBackgroundColor="#F1EFEC"
 
-            <EditText
-                android:id="@+id/name_id_accountSettings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:inputType="textImeMultiLine"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Mobile number">
-
-            <EditText
-                android:id="@+id/number_id_accountSettings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:inputType="phone"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height ="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="7">
-
-            <!--<com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:hint="Gender"
-                >-->
-
-               <!-- <TextView
-                    android:id="@+id/gender_accountSettings"
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:padding="5dp"
-                    android:layout_height="match_parent"
-                    android:textAlignment="center"
-                    android:text="Male"
-                    android:gravity="center"
-                    android:textStyle="bold" />-->
-
-          <!--  </com.google.android.material.textfield.TextInputLayout>-->
-
-           <!-- <Spinner
-
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                >
-            </Spinner>-->
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:weightSum="3"
-                android:layout_marginRight="20dp"
-                android:id="@+id/gender_select"
-                android:layout_gravity="center"
-                >
-
-               <!-- <TextView
-                    android:id="@+id/gender_accountSettings"
-                    android:layout_width="match_parent"
-                    android:layout_weight="2"
-                    android:padding="5dp"
-                    android:layout_height="match_parent"
-                    android:textAlignment="center"
-                    android:text="Male"
-                    android:gravity="center"
-                    android:textStyle="bold" />-->
-
-                <Spinner
-                    android:id="@+id/account_spiner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1"
-                    >
-
-                </Spinner>
-
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/tv_dateofBirdth"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:text="Date of Birdth"
-                android:textSize="18sp"
-                android:textAlignment="center"
-
-                />
-        </LinearLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/email_accountsettings"
-                android:inputType="textEmailAddress"
-
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Address">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/address_accountsettings"
-                android:inputType="textImeMultiLine"
-
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="center"
-          android:orientation="horizontal"
-          android:layout_marginBottom="10dp"
-          >
-
-          <Button
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Save Change"
-              android:background="#FF5722"
-              android:textStyle="bold"
-              android:textColor="@android:color/white"
-              android:textAllCaps="false"
-              android:layout_gravity="center"
-              android:padding="10dp"
-              android:id="@+id/btn_saveChange"/>
-          <Button
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="My Child Profile"
-              android:background="#039BE5"
-              android:textStyle="bold"
-              android:textColor="@android:color/white"
-              android:layout_marginLeft="30dp"
-              android:layout_gravity="center"
-              android:textAllCaps="false"
-              android:padding="10dp"
-              android:id="@+id/btn_more"/>
-
-
-      </LinearLayout>
-
-
-
-
-    </LinearLayout>
-    <!--textviewlayout-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/provielview"
-        android:orientation="vertical"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:id="@+id/viewlayout"
-        android:visibility="invisible"
-        android:background="#393838"
-        android:layout_marginTop="5dp"
-
-
-  >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Name:"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginRight="8dp"
-                    android:textColor="@android:color/white"
-                    />
-
-                <TextView
-                    android:id="@+id/name_id_account"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Nurhossen rubel"
-                    android:textColor="@android:color/white"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mobile:"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginRight="8dp"
-                    android:textColor="@android:color/white"
-                    />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="017XXXX....."
-                    android:id="@+id/tv_mobile"
-                    android:textColor="@android:color/white"
-                    />
-            </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_marginTop="5dp"
             >
 
-
-
-                <TextView
-                    android:id="@+id/gender_account"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Male"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-
-                    android:textColor="@android:color/white"
-
-
-                    />
-
-
-            <TextView
-                android:id="@+id/tv_birdthdday"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"
 
+                >
 
-                android:text="Date of Birdth"
-                android:textSize="18sp"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                />
-
-
-        </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
 
 
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginTop="5dp"
-              >
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:id="@+id/recyclerview_show"
 
-              <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="Email:"
-                  android:textSize="18sp"
-                  android:layout_marginRight="8dp"
-                  android:textStyle="bold"
-                  android:textColor="@android:color/white"
-                  />
+                        />
 
-              <TextView
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/email_account"
-                  android:text="example@gmail.com"
-                  android:textSize="18sp"
-
-                  android:textColor="@android:color/white"
-                  />
-
-          </LinearLayout>
+                </RelativeLayout>
 
 
+                <!--parent information-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:weightSum="2"
+                    >
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    >
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:id="@+id/tv_radiogroup_gender"
+                        >
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mr."
+                            android:layout_marginRight="20dp"
+                            android:id="@+id/tv_radio_male"
+                            />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mrs."
+                            android:id="@+id/tv_radio_female"
+                            />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+
+                <!--parent name-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your Name"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter your name"
+                        android:inputType="text"
+                        android:id="@+id/tv_name_parent_full"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        />
+                </LinearLayout>
+
+                <!--spouse name-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Spouse Name"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter spouse name"
+                        android:inputType="text"
+                        android:id="@+id/tv_spousename_full"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        />
+                        />
+                </LinearLayout>
+
+
+                <!--mobile number-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mobile Number"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter mobile numer"
+                        android:inputType="phone"
+                        android:id="@+id/tv_number_full"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        />
+
+                </LinearLayout>
+
+                <!--email address-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email Address"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter email address"
+                        android:inputType="textEmailAddress"
+                        android:id="@+id/tv_email_full"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        />
+                        />
+                </LinearLayout>
+
+                <!--email address-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter your address"
+                        android:inputType="textMultiLine"
+                        android:id="@+id/tv_address_full"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        />
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.core.widget.NestedScrollView>
 
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:text="Address"
-        android:layout_marginRight="8dp"
-        android:textColor="@android:color/white"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/address_accounts"
-        android:textSize="18sp"
-        android:text="Mirpur12/Dohs Dhaka-1216"
-        android:textColor="@android:color/white"
-        />
-
-</LinearLayout>
-
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Edit profile"
-            android:background="#FF5722"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:padding="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:textAllCaps="false"
-            android:id="@+id/forEditbtn"
-
-            />
-
-    </LinearLayout>
 
 
 

@@ -235,12 +235,14 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                name_prnt=dataSnapshot.child("name").getValue().toString();
-                spouse_prnt=dataSnapshot.child("spousename").getValue().toString();
-                mobile=dataSnapshot.child("phone").getValue().toString();
-                email_prnt=dataSnapshot.child("email").getValue().toString();
-                address_prnt=dataSnapshot.child("address").getValue().toString();
-                gender_parnt=dataSnapshot.child("gender").getValue().toString();
+                if(dataSnapshot.exists()){
+                    name_prnt=dataSnapshot.child("name").getValue().toString();
+                    spouse_prnt=dataSnapshot.child("spousename").getValue().toString();
+                    mobile=dataSnapshot.child("phone").getValue().toString();
+                    email_prnt=dataSnapshot.child("email").getValue().toString();
+                    address_prnt=dataSnapshot.child("address").getValue().toString();
+                    gender_parnt=dataSnapshot.child("gender").getValue().toString();
+                }
             }
 
             @Override
@@ -617,7 +619,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
 
                         }else {
-                            Toast.makeText(getContext(), "Register first", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Register first"+ childrenncount, Toast.LENGTH_SHORT).show();
                             dailogbox_getfreeTicket();
                         }
 
@@ -632,7 +634,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
                         getfreeTicket(mobile);
                     }else {
-                           Toast.makeText(getContext(), "Register first "+orc_mobilenumber, Toast.LENGTH_SHORT).show();
+                           Toast.makeText(getContext(), "Register first ----------"+childrenncount, Toast.LENGTH_SHORT).show();
                            dailogbox_getfreeTicket();
                        }
 
@@ -679,7 +681,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
                 childdata.put("child_name",childname);
                 childdata.put("dob",dob);
                 childdata.put("child_gender",gender);
-                childdata.put("class",educlass);
+                childdata.put("classs",educlass);
                 childdata.put("school",school);
                 childdb.child(childname).updateChildren(childdata).addOnCompleteListener(new OnCompleteListener() {
                     @Override
@@ -813,7 +815,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
 
 
-        startActivity(new Intent(getContext(), AccountSettingsActivity.class));
+        startActivity(new Intent(getContext(), AccountSettingsActivity.class).putExtra("boolean","freeticket"));
 
       /*  AlertDialog.Builder albuilder = new AlertDialog.Builder(getContext());
         final View view = getLayoutInflater().inflate(R.layout.freeticket_getinformation,null);

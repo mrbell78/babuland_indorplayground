@@ -333,7 +333,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
             //removeid[index_remove++]=random_timephone;
 
             fullmap.put("child_name",edtchilname.getText().toString());
-            fullmap.put("class",childclass.getText().toString());
+            fullmap.put("classs",childclass.getText().toString());
             fullmap.put("school",childschool.getText().toString());
             fullmap.put("child_image","notset");
             fullmap.put("dob",tv_dob.getText().toString());
@@ -359,8 +359,8 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                if(dataSnapshot.exists()){
                                    edtchilname.setText(dataSnapshot.child("child_name").getValue().toString());
-                                   childclass.setText(dataSnapshot.child("class").getValue().toString());
-                                   //tv_dob.setText(dataSnapshot.child("dob").getValue().toString());
+                                   childclass.setText(dataSnapshot.child("classs").getValue().toString());
+                                   tv_dob.setText(dataSnapshot.child("dob").getValue().toString());
                                    childschool.setText(dataSnapshot.child("school").getValue().toString());
 
                                }

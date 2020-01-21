@@ -17,9 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -62,7 +60,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -70,7 +67,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -139,16 +135,30 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     RadioGroup gender_radiogroup;
     RadioButton radioButton;
     RadioButton radioButton_male,radioButton_female;
-    CardView mCardview;
+
+    RadioGroup tv_gender_radiogroup;
+    RadioButton tv_radioButton;
+    RadioButton tv_radioButton_male,tv_radioButton_female;
+    CardView mCardview,show_mCardview;
 
     private FirebaseRecyclerOptions<Childlist_newreg> options;
     private FirebaseRecyclerAdapter<Childlist_newreg, AccountSettingsActivity.UserViewholder> fadapter;
 
 
 
-    FirebaseUser rcvuser;
-    String rcvuserid;
-    DatabaseReference rcvdata;
+    FirebaseUser rcvuser,ticketuser;
+    String rcvuserid,ticketuserid;
+    DatabaseReference rcvdata,mTicketdb;
+
+    private RecyclerView recyclerView_childshow;
+
+    String ticket_free=null;
+    int childcount =0;
+    String btnvalue;
+    Button btn_editprofile;
+
+    private TextView tv_childname_full,tv_class_ful,tv_school_full,tv_parentname_full,tv_spousename_full,tv_number_full,tv_email_full,tv_address_full;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +169,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.editprofile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        initializefullprofile_show();
         initializefullprofile();
         btn_save_full=findViewById(R.id.save_full);
         mCardview=findViewById(R.id.cardview_profile);
@@ -167,18 +177,18 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         rcvuser= FirebaseAuth.getInstance().getCurrentUser();
         rcvuserid =rcvuser.getUid();
 
-        edt_name=findViewById(R.id.name_id_accountSettings);
-        email=findViewById(R.id.email_accountsettings);
+
         //gender=findViewById(R.id.gender_accountSettings);
-        address=findViewById(R.id.address_accountsettings);
+        show_mCardview=findViewById(R.id.show_cardview_profile);
+
         cr_profileimage=findViewById(R.id.cr_account_imagesettings);
         btn_saveChange=findViewById(R.id.btn_saveChange);
-        foreditbtn=findViewById(R.id.forEditbtn);
+
         mstorage= FirebaseStorage.getInstance().getReference();
-        edt_enternumber=findViewById(R.id.number_id_accountSettings);
+
 
         saveimage=findViewById(R.id.saveimage);
-        edit_dateofBirdth=findViewById(R.id.tv_dateofBirdth);
+
 
         progressBar=findViewById(R.id.myprogressbar_accountsettings);
         cardViewaddimage=findViewById(R.id.addimagee);
@@ -187,7 +197,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
        // Log.d(TAG, "onCreate: ----------------------------------------------------------------------------------------fb varificationcode-----------------------------"+fbVarificationId);
 
 
-        btn_more=findViewById(R.id.btn_more);
+
+        btn_editprofile=findViewById(R.id.Edit_full);
 
         //mAuth= FirebaseAuth.getInstance();
       //  mUser=mAuth.getCurrentUser();
@@ -202,12 +213,11 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
         mdialog=new ProgressDialog(this);
-        editlayout=findViewById(R.id.editlayout);
-        viewlayout=findViewById(R.id.viewlayout);
+
         prifilemap=new HashMap<>();
 
 
-
+/*
         //for view layout
         tv_name=findViewById(R.id.name_id_account);
         tv_gender=findViewById(R.id.gender_account);
@@ -281,11 +291,11 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                         profilestatus=totalProgress;
                         progressBar.setProgress(profilestatus);
                         tv_profilestatus.setText(Integer.toString(profilestatus)+"%");
-                    }/*else {
+                    }*//*else {
 
                         progressBar.setProgress(profilestatus);
                         tv_profilestatus.setText(progressvalueformdb+"%");
-                    }*/
+                    }*//*
 
 
                     String addressl=dataSnapshot.child("address").getValue().toString();
@@ -329,7 +339,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
         // til now block
 
@@ -408,13 +418,11 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
             }
         });
 
-        dateofBirdth=findViewById(R.id.tv_dateofBirdth);
-
-        spinner=findViewById(R.id.account_spiner);
 
 
 
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.gender,android.R.layout.simple_spinner_item);
+
+    /*    final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.gender,android.R.layout.simple_spinner_item);
          adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
          spinner.setAdapter(adapter);
          spinner.setOnItemSelectedListener(this);
@@ -435,9 +443,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 dialog.getWindow();
                 dialog.show();
             }
-        });
+        });*/
 
-        mDatesetListener=new DatePickerDialog.OnDateSetListener() {
+     /*   mDatesetListener=new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1=i1+1;
@@ -445,22 +453,22 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 dateofBirdth.setText(dateOfbirdthglb);
 
             }
-        };
+        };*/
 
-        foreditbtn.setOnClickListener(new View.OnClickListener() {
+      /*  foreditbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 editlayout.setVisibility(View.VISIBLE);
                 viewlayout.setVisibility(View.INVISIBLE);
             }
         });
+*/
 
 
 
 
 
-
-        btn_more.setOnClickListener(new View.OnClickListener() {
+        /*btn_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(AccountSettingsActivity.this,Profiling_moreActivity.class).putExtra("progress",profilestatus));
@@ -482,46 +490,30 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                     Log.d(TAG, "onClick: ----------------------------------------------------fbvarefication----------------------................--------"+dateOfbirdthglb);
 
 
-                        //pin_layout.setVisibility(View.VISIBLE);
+                        pin_layout.setVisibility(View.VISIBLE);
                         editlayout.setVisibility(View.INVISIBLE);
-                        //viewlayout.setVisibility(View.VISIBLE);
-                       // sendVarificationcode();
+                        viewlayout.setVisibility(View.VISIBLE);
+
                     mdialog.setTitle("Updating profile");
                     mdialog.setMessage("Please wait...................");
                     mdialog.setCanceledOnTouchOutside(false);
                     mdialog.show();
 
                     mdialog.show();
-                    saveProfile();
 
-                    /*//Toast.makeText(AccountSettingsActivity.this, (CharSequence) imgeuri, Toast.LENGTH_SHORT).show();
-                    if(imgeuri==null){
-                        Toast.makeText(AccountSettingsActivity.this, "image is empty", Toast.LENGTH_SHORT).show();
-                    }else if(imgeuri!=null){
-                       *//* mdialog.setTitle("Updating profile");
-                        mdialog.setMessage("Please wait...................");
-                        mdialog.setCanceledOnTouchOutside(false);
-                        mdialog.show();
-                        saveProfile();*//*
-                    }*/
+
+
                 }else {
                     Toast.makeText(AccountSettingsActivity.this, "You must have to fill up the following field", Toast.LENGTH_SHORT).show();
                     edt_name.setError("your name pleaes");
-                    email.setError("your email ");
-                   // gender.setError("Enter gender please");
+                    email.setError("your email");
+
                     dateofBirdth.setError("your date of birth");
 
                 }
 
 
-                //editlayout.setVisibility(View.INVISIBLE);
-                ;
-            }
-        });
-       /* btn_enterpin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                varyfycode();
+
             }
         });*/
 
@@ -529,10 +521,54 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         LocalBroadcastManager.getInstance(AccountSettingsActivity.this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom_message"));
 
+        recyclerView=findViewById(R.id.recyclerview);
+        recyclerView_childshow=findViewById(R.id.recyclerview_show);
+        recyclerView_childshow.setLayoutManager(new LinearLayoutManager(this));
+
+        manager=new LinearLayoutManager(this);
+        // recyclerView.getLayoutManager().scrollToPosition(modelclass.getobject().size()-1);
+        recyclerView.setLayoutManager(manager);
+
+        adapeter = new Adapterlistview(AccountSettingsActivity.this, modelclass.getobject());
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapeter);
+        btnvalue=btn_save_full.getText().toString();
+
+        Intent i  = getIntent();
+        ticket_free = i.getStringExtra("boolean");
+       if(ticket_free!=null ){
+           if(ticket_free.equals("freeticket")){
+               recyclerView_childshow.setVisibility(View.INVISIBLE);
+               recyclerView.setVisibility(View.VISIBLE);
+               btn_save_full.setVisibility(View.VISIBLE);
+               btn_editprofile.setVisibility(View.INVISIBLE);
+
+           }
+       }
+
+        btn_editprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView_childshow.setVisibility(View.INVISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                btn_save_full.setVisibility(View.VISIBLE);
+                btn_editprofile.setVisibility(View.INVISIBLE);
+                show_mCardview.setVisibility(View.INVISIBLE);
+                mCardview.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+
+
        btn_save_full.setOnClickListener(new View.OnClickListener() {
 
            @Override
            public void onClick(View v) {
+
+                   Toast.makeText(AccountSettingsActivity.this, "save button clicked", Toast.LENGTH_SHORT).show();
+                   Log.d(TAG, "onClick: ................btnvalue "+btnvalue);
 
                    String gendertext=null;
                    if(gender_radiogroup.getCheckedRadioButtonId()==-1){
@@ -545,9 +581,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
                    }
 
-
-
-                   if(!adapter.isEmpty() && gendertext!=null){
+                   if( gendertext!=null){
                        mUser=FirebaseAuth.getInstance().getCurrentUser();
                        String useridlocal=mUser.getUid();
                        chilDatabase=FirebaseDatabase.getInstance().getReference().child("Childdb").child(useridlocal);
@@ -583,7 +617,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                                    String random_timephone=childname_adp+currentTime;
 
                                    fullmap.put("child_name",childname_adp);
-                                   fullmap.put("class",class_adp);
+                                   fullmap.put("classs",class_adp);
                                    fullmap.put("school",school_adp);
                                    fullmap.put("child_image","notset");
                                    fullmap.put("dob",dob_adp);
@@ -596,34 +630,35 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                                            @Override
                                            public void onComplete(@NonNull Task task) {
                                                Toast.makeText(AccountSettingsActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
-                                               btn_save_full.setText("Edit Profile");
+
+                                               recyclerView_childshow.setVisibility(View.VISIBLE);
+                                               recyclerView.setVisibility(View.INVISIBLE);
+                                              btn_save_full.setVisibility(View.INVISIBLE);
+                                              btn_editprofile.setVisibility(View.VISIBLE);
+
+                                               show_mCardview.setVisibility(View.VISIBLE);
+                                               mCardview.setVisibility(View.INVISIBLE);
                                            }
                                        });
                                    }
                                }
                            }
                        });
-                       Toast.makeText(AccountSettingsActivity.this, "Upload successful.No child added", Toast.LENGTH_SHORT).show();
-                       btn_save_full.setText("Edit Profile");
-                       
+                       Toast.makeText(AccountSettingsActivity.this, "Upload successful.No new child added", Toast.LENGTH_SHORT).show();
 
+                       btn_save_full.setVisibility(View.INVISIBLE);
+                       btn_editprofile.setVisibility(View.VISIBLE);
+
+                       show_mCardview.setVisibility(View.VISIBLE);
+                       mCardview.setVisibility(View.INVISIBLE);
 
                    }
 
 
 
+
            }
        });
-
-        recyclerView=findViewById(R.id.recyclerview);
-        manager=new LinearLayoutManager(this);
-       // recyclerView.getLayoutManager().scrollToPosition(modelclass.getobject().size()-1);
-        recyclerView.setLayoutManager(manager);
-
-        adapeter = new Adapterlistview(AccountSettingsActivity.this, modelclass.getobject());
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapeter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -639,6 +674,35 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
         showdatgadefault();
+
+
+        ticketuser=FirebaseAuth.getInstance().getCurrentUser();
+        ticketuserid=ticketuser.getUid();
+        mTicketdb=FirebaseDatabase.getInstance().getReference().child("Childdb").child(ticketuserid);
+
+        mTicketdb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                childcount= (int) dataSnapshot.getChildrenCount();
+                if(dataSnapshot.getChildrenCount()>0){
+
+                  /*  recyclerView_childshow.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.INVISIBLE);*/
+                }else if(dataSnapshot.getChildrenCount()==0){
+
+
+                    recyclerView_childshow.setVisibility(View.INVISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
 
@@ -724,7 +788,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     }
 
 
-    private void saveProfile(){
+   /* private void saveProfile(){
 
         mUser=FirebaseAuth.getInstance().getCurrentUser();
         String useridlc=mUser.getUid();
@@ -811,7 +875,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
 
-    }
+    }*/
     private void saveImage() {
 
          if( imgeuri!=null){
@@ -906,7 +970,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                imgeuri  = result.getUri();
+                imgeuri = result.getUri();
                 cr_profileimage.setImageURI(imgeuri);
                 saveimage.setVisibility(View.VISIBLE);
                 cardViewaddimage.setVisibility(View.INVISIBLE);
@@ -1007,13 +1071,33 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 });
     }*/
 
+  private void initializefullprofile_show(){
+
+      tv_parentname_full=findViewById(R.id.tv_name_parent_full);
+      tv_spousename_full=findViewById(R.id.tv_spousename_full);
+      tv_number_full=findViewById(R.id.tv_number_full);
+      tv_email_full=findViewById(R.id.tv_email_full);
+      tv_address_full=findViewById(R.id.tv_address_full);
+
+      tv_gender_radiogroup=findViewById(R.id.tv_radiogroup_gender);
+      tv_radioButton_male=findViewById(R.id.tv_radio_male);
+      tv_radioButton_female=findViewById(R.id.tv_radio_female);
+  }
+
+
+
+
+
+
     private void initializefullprofile() {
 
-        tv_dob_full=findViewById(R.id.dateofbirth_full);
+        /*tv_dob_full=findViewById(R.id.dateofbirth_full);
         spinner_full=findViewById(R.id.genderchild_full);
         childname_full=findViewById(R.id.childname_full);
         class_ful=findViewById(R.id.class_full);
-        school_full=findViewById(R.id.schoolname_full);
+        school_full=findViewById(R.id.schoolname_full);*/
+
+
         parentname_full=findViewById(R.id.name_parent_full);
         spousename_full=findViewById(R.id.spousename_full);
         number_full=findViewById(R.id.number_full);
@@ -1042,21 +1126,25 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
             class_adp=intent.getStringExtra("class");
             gender_adp=intent.getStringExtra("gender");
             school_adp=intent.getStringExtra("school");
+
+
             Toast.makeText(AccountSettingsActivity.this,school_adp,Toast.LENGTH_SHORT).show();
         }
     };
 
     public class UserViewholder extends RecyclerView.ViewHolder{
 
-        EditText childname_ed,class_ed,school_ed;
-        TextView dob_ed;
+        TextView childname_ed,class_ed,school_ed;
+        TextView dob_ed,childnumber_ed,gendertxt;
         public UserViewholder(@NonNull View itemView) {
             super(itemView);
 
-            childname_ed= itemView.findViewById(R.id.childname_full);
-            dob_ed=itemView.findViewById(R.id.dateofbirth_full);
-            class_ed=itemView.findViewById(R.id.class_full);
-            school_ed=itemView.findViewById(R.id.schoolname_full);
+            childname_ed= itemView.findViewById(R.id.tv_childname_full);
+            dob_ed=itemView.findViewById(R.id.tv_dateofbirth_full);
+            class_ed=itemView.findViewById(R.id.tv_class_full);
+            school_ed=itemView.findViewById(R.id.tv_schoolname_full);
+            childnumber_ed=itemView.findViewById(R.id.tv_chldnumber);
+            gendertxt=itemView.findViewById(R.id.tv_gendertxt);
 
         }
     }
@@ -1079,19 +1167,21 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 userViewholder.dob_ed.setText(childlist_newreg.getDob());
                 userViewholder.school_ed.setText(childlist_newreg.getSchool());
                 userViewholder.class_ed.setText(childlist_newreg.getClasss());
+                userViewholder.childnumber_ed.setText("child"+(i+1));
+                userViewholder.gendertxt.setText(childlist_newreg.getChild_gender());
             }
 
             @NonNull
             @Override
             public UserViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dynamicchild,parent,false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.childshow_layout,parent,false);
 
                 return  new AccountSettingsActivity.UserViewholder(view);
             }
         };
 
         fadapter.startListening();
-        recyclerView.setAdapter(fadapter);
+        recyclerView_childshow.setAdapter(fadapter);
 
     }
 }
