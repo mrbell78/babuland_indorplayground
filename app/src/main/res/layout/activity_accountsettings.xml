@@ -178,6 +178,8 @@
         android:layout_below="@+id/provielview"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="70dp"
+        android:visibility="invisible"
+        android:id="@+id/nestedview_edit"
 
 
 
@@ -188,7 +190,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="10dp"
-            android:visibility="visible"
             android:id="@+id/cardview_profile"
             >
 
@@ -446,16 +447,19 @@
         android:layout_below="@+id/provielview"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="70dp"
+        android:id="@+id/nestedview_show"
+        android:visibility="visible"
 
 
         >
+
 
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="10dp"
-            android:visibility="invisible"
+
             android:id="@+id/show_cardview_profile"
             app:cardBackgroundColor="#F1EFEC"
 
@@ -544,11 +548,16 @@
                         android:hint="Enter your name"
                         android:inputType="text"
                         android:id="@+id/tv_name_parent_full"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:textSize="17sp"
+
                         android:padding="5dp"
                         />
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFFFFF"
+                    />
 
                 <!--spouse name-->
                 <LinearLayout
@@ -571,12 +580,17 @@
                         android:hint="Enter spouse name"
                         android:inputType="text"
                         android:id="@+id/tv_spousename_full"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:textSize="17sp"
                         android:padding="5dp"
                         />
-                        />
+
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFFFFF"
+                    />
 
 
                 <!--mobile number-->
@@ -600,12 +614,17 @@
                         android:hint="Enter mobile numer"
                         android:inputType="phone"
                         android:id="@+id/tv_number_full"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:textSize="17sp"
+
                         android:padding="5dp"
                         />
 
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFFFFF"
+                    />
 
                 <!--email address-->
                 <LinearLayout
@@ -628,12 +647,16 @@
                         android:hint="Enter email address"
                         android:inputType="textEmailAddress"
                         android:id="@+id/tv_email_full"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:textSize="17sp"
                         android:padding="5dp"
                         />
-                        />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFFFFF"
+                    />
 
                 <!--email address-->
                 <LinearLayout
@@ -656,12 +679,18 @@
                         android:hint="Enter your address"
                         android:inputType="textMultiLine"
                         android:id="@+id/tv_address_full"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:textSize="17sp"
                         android:padding="5dp"
                         />
-                        />
+                    />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FFFFFF"
+                    />
+
             </LinearLayout>
 
 

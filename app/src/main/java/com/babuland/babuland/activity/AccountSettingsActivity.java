@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,6 +62,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -140,7 +143,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     RadioButton tv_radioButton;
     RadioButton tv_radioButton_male,tv_radioButton_female;
     CardView mCardview,show_mCardview;
-
+    NestedScrollView nestedScrollView_edit,nestedScrollView_show;
     private FirebaseRecyclerOptions<Childlist_newreg> options;
     private FirebaseRecyclerAdapter<Childlist_newreg, AccountSettingsActivity.UserViewholder> fadapter;
 
@@ -173,6 +176,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         initializefullprofile();
         btn_save_full=findViewById(R.id.save_full);
         mCardview=findViewById(R.id.cardview_profile);
+
+        nestedScrollView_show=findViewById(R.id.nestedview_show);
+        nestedScrollView_edit=findViewById(R.id.nestedview_edit);
 
         rcvuser= FirebaseAuth.getInstance().getCurrentUser();
         rcvuserid =rcvuser.getUid();
@@ -544,6 +550,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                btn_save_full.setVisibility(View.VISIBLE);
                btn_editprofile.setVisibility(View.INVISIBLE);
 
+               nestedScrollView_show.setVisibility(View.INVISIBLE);
+               nestedScrollView_edit.setVisibility(View.VISIBLE);
+
            }
        }
 
@@ -553,9 +562,12 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 recyclerView_childshow.setVisibility(View.INVISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 btn_save_full.setVisibility(View.VISIBLE);
-                btn_editprofile.setVisibility(View.INVISIBLE);
+                btn_editprofile.setVisibility(View.INVISIBLE);/*
                 show_mCardview.setVisibility(View.INVISIBLE);
                 mCardview.setVisibility(View.VISIBLE);
+                */
+                nestedScrollView_show.setVisibility(View.INVISIBLE);
+                nestedScrollView_edit.setVisibility(View.VISIBLE);
 
             }
         });
@@ -598,10 +610,31 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                        mDatabase= FirebaseDatabase.getInstance().getReference().child("User").child(useridlc);
                        Map parent = new HashMap();
                        parent.put("name",parentname_full.getText().toString());
+                       if(!TextUtils.isEmpty(parentname_full.getText().toString())){
+                           parent.put("name_up",10);
+                       }
+
                        parent.put("spousename",spousename_full.getText().toString());
+
+
                        parent.put("phone",number_full.getText().toString());
+
+                       if(!TextUtils.isEmpty(number_full.getText().toString())){
+                           parent.put("number_up",10);
+                       }
+
                        parent.put("email",email_full.getText().toString());
+
+                       if(!TextUtils.isEmpty(email_full.getText().toString())){
+                           parent.put("mail_up",10);
+                       }
+
                        parent.put("address",address_full.getText().toString());
+
+                       if(!TextUtils.isEmpty(address_full.getText().toString())){
+                           parent.put("address_up",10);
+                       }
+
                        parent.put("gender",gendertext);
 
                        mDatabase.updateChildren(parent).addOnCompleteListener(new OnCompleteListener() {
@@ -636,8 +669,12 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                                               btn_save_full.setVisibility(View.INVISIBLE);
                                               btn_editprofile.setVisibility(View.VISIBLE);
 
-                                               show_mCardview.setVisibility(View.VISIBLE);
-                                               mCardview.setVisibility(View.INVISIBLE);
+                                               /*show_mCardview.setVisibility(View.VISIBLE);
+                                               mCardview.setVisibility(View.INVISIBLE);*/
+
+                                               nestedScrollView_show.setVisibility(View.VISIBLE);
+                                               nestedScrollView_edit.setVisibility(View.INVISIBLE);
+                                               fadapter.notifyDataSetChanged();
                                            }
                                        });
                                    }
@@ -649,8 +686,13 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                        btn_save_full.setVisibility(View.INVISIBLE);
                        btn_editprofile.setVisibility(View.VISIBLE);
 
-                       show_mCardview.setVisibility(View.VISIBLE);
+                       /*show_mCardview.setVisibility(View.VISIBLE);
                        mCardview.setVisibility(View.INVISIBLE);
+                       */
+                       nestedScrollView_show.setVisibility(View.VISIBLE);
+                       nestedScrollView_edit.setVisibility(View.INVISIBLE);
+
+                       fadapter.notifyDataSetChanged();
 
                    }
 
@@ -765,12 +807,37 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                     address_full.setText(dataSnapshot.child("address").getValue().toString());
                     String gender = dataSnapshot.child("gender").getValue().toString();
 
+                    tv_parentname_full.setText(dataSnapshot.child("name").getValue().toString());
+                    tv_spousename_full.setText(dataSnapshot.child("spousename").getValue().toString());
+                    tv_number_full.setText(dataSnapshot.child("phone").getValue().toString());
+                    tv_email_full.setText(dataSnapshot.child("email").getValue().toString());
+                    tv_address_full.setText(dataSnapshot.child("address").getValue().toString());
+                    String tv_gender = dataSnapshot.child("gender").getValue().toString();
+
+
+
+                    Uri imlink= Uri.parse(dataSnapshot.child("image").getValue().toString());
+                    imgeuri= imlink;
+                    Picasso.with(getApplicationContext()).load(imgeuri).placeholder(R.drawable.defaultpic).error(R.drawable.defaultpic).into(cr_profileimage);
+
+
+
+                    //for edit
                     if(gender.equals("Mr.")){
                         radioButton_male.setChecked(true);
                         radioButton_female.setChecked(false);
                     }else{
-                        radioButton_male.setChecked(true);
-                        radioButton_female.setChecked(false);
+                        radioButton_male.setChecked(false);
+                        radioButton_female.setChecked(true);
+                    }
+
+                    //for view
+                    if(tv_gender.equals("Mr.")){
+                        tv_radioButton_male.setChecked(true);
+                        tv_radioButton_female.setChecked(false);
+                    }else{
+                        tv_radioButton_male.setChecked(false);
+                        tv_radioButton_female.setChecked(true);
                     }
 
 
@@ -1157,6 +1224,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
         Log.d("userid", "onStart: -----userid "+ userId);
         rcvdata=FirebaseDatabase.getInstance().getReference().child("Childdb").child(rcvuserid);
+        rcvdata.keepSynced(true);
         options=new FirebaseRecyclerOptions.Builder<Childlist_newreg>().setQuery(rcvdata,Childlist_newreg.class).build();
 
         fadapter= new FirebaseRecyclerAdapter<Childlist_newreg, UserViewholder>(options) {
@@ -1179,9 +1247,11 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 return  new AccountSettingsActivity.UserViewholder(view);
             }
         };
-
+        fadapter.notifyDataSetChanged();
         fadapter.startListening();
         recyclerView_childshow.setAdapter(fadapter);
+
+
 
     }
 }

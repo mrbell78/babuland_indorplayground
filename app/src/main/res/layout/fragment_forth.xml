@@ -86,7 +86,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        android:src="@drawable/hydrobaby"
+                        android:src="@drawable/eventpic"
                         android:layout_marginBottom="50dp"
                         android:id="@+id/dynamicevent_img"
                         />
@@ -94,7 +94,6 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-
                         android:background="#229C27"
                         android:text="Babuland Nutrition Day"
                         android:textStyle="bold"

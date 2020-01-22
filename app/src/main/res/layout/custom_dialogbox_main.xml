@@ -68,11 +68,11 @@
                       android:text="Wash Room"
                       android:textAlignment="center"
                       android:textSize="15sp"
-                      android:background="@drawable/background_dialogdbtn"
+                      android:background="@drawable/reviewbackground_option"
                       android:textAllCaps="false"
                       android:layout_marginRight="30dp"
                       android:elevation="10dp"
-                      android:textColor="@android:color/white"
+
                       android:id="@+id/btn_washroom"
                       />
 
@@ -86,11 +86,10 @@
                       android:text="Pga Service"
                       android:textAlignment="center"
                       android:textSize="15sp"
-                      android:background="@drawable/background_dialogdbtn"
+                      android:background="@drawable/reviewbackground_option"
                       android:textAllCaps="false"
                       android:elevation="10dp"
                       android:layout_marginRight="10dp"
-                      android:textColor="@android:color/white"
                       android:id="@+id/btn_pgaservice"
                       />
 
@@ -121,11 +120,10 @@
                       android:text="Food Quality"
                       android:textAlignment="center"
                       android:textSize="15sp"
-                      android:background="@drawable/background_dialogdbtn"
+                      android:background="@drawable/reviewbackground_option"
                       android:textAllCaps="false"
                       android:layout_marginRight="30dp"
                       android:elevation="10dp"
-                      android:textColor="@android:color/white"
                       android:id="@+id/foodquality"
                       />
 
@@ -139,11 +137,10 @@
                       android:text="Hygiene"
                       android:textAlignment="center"
                       android:textSize="15sp"
-                      android:background="@drawable/background_dialogdbtn"
+                      android:background="@drawable/reviewbackground_option"
                       android:textAllCaps="false"
                       android:elevation="10dp"
                       android:layout_marginRight="10dp"
-                      android:textColor="@android:color/white"
                       android:id="@+id/hygin"
                       />
 
@@ -174,11 +171,10 @@
                    android:text="Others"
                    android:textAlignment="center"
                    android:textSize="15sp"
-                   android:background="@drawable/background_dialogdbtn"
+                   android:background="@drawable/reviewbackground_option"
                    android:textAllCaps="false"
                    android:layout_marginRight="30dp"
                    android:elevation="10dp"
-                   android:textColor="@android:color/white"
                    android:id="@+id/other"
                    />
 

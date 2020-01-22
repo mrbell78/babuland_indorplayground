@@ -335,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                         }
                         header_name.setText(name_fromfirebase);
                         header_number.setText(phone);
-                        Picasso.with(MainActivity.this).load(imageuri).placeholder(R.drawable.profiledefaultpic).error(R.drawable.profiledefaultpic).into(header_proimg);
+                        Picasso.with(MainActivity.this).load(imageuri).placeholder(R.drawable.defaultpic).error(R.drawable.defaultpic).into(header_proimg);
                         headerlayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
