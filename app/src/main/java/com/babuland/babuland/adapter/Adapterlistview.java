@@ -86,34 +86,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
         final String gender = holder.spinner.getSelectedItem().toString();
 
 
-
-        holder.dob_txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Calendar calendar = Calendar.getInstance();
-
-                int year = calendar.get(Calendar.YEAR);
-                int month= calendar.get(Calendar.MONTH);
-                int day  = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog  = new DatePickerDialog(context,android.R.style.Theme_Holo_Dialog_MinWidth,mDatesetListener,year,month,day);
-                dialog.getWindow();
-                dialog.show();
-            }
-        });
-
-        mDatesetListener=new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                i1=i1+1;
-                dateOfbirdthglb=i2+"/"+i1+"/"+i;
-
-                holder.tv_dob_full.setText(dateOfbirdthglb);
-                Toast.makeText(context, "dob "+dateOfbirdthglb, Toast.LENGTH_SHORT).show();
-
-            }
-        };
+        holder.tv_dob_full.setText(dateOfbirdthglb);
 
         holder.imageView.setImageResource(current.getImg());
         if( position!=0){
@@ -403,17 +376,48 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
         private EditText childname_full,class_ful,school_full,parentname_full,spousename_full,number_full,email_full,address_full;
         public customclass(@NonNull View itemView) {
             super(itemView);
+
+
             mview=itemView;
             tvchild=itemView.findViewById(R.id.chldnumber);
             addbtn=itemView.findViewById(R.id.addchild1);
             initializefullprofile(itemView);
+            dob_txt=itemView.findViewById(R.id.dob_txt);
+
+            dob_txt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Calendar calendar = Calendar.getInstance();
+
+                    int year = calendar.get(Calendar.YEAR);
+                    int month= calendar.get(Calendar.MONTH);
+                    int day  = calendar.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog dialog  = new DatePickerDialog(context,android.R.style.Theme_Holo_Dialog_MinWidth,mDatesetListener,year,month,day);
+                    dialog.getWindow();
+                    dialog.show();
+                }
+            });
+
+            mDatesetListener=new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                    i1=i1+1;
+                    dateOfbirdthglb=i2+"/"+i1+"/"+i;
+
+                    tv_dob_full.setText(dateOfbirdthglb);
+                    Toast.makeText(context, "dob "+dateOfbirdthglb, Toast.LENGTH_SHORT).show();
+
+                }
+            };
+
 
         }
 
         private void initializefullprofile(View itemView) {
 
             tv_dob_full=itemView.findViewById(R.id.dateofbirth_full);
-            dob_txt=itemView.findViewById(R.id.dob_txt);
             spinner_full=itemView.findViewById(R.id.genderchild_full);
             childname_full=itemView.findViewById(R.id.childname_full);
             class_ful=itemView.findViewById(R.id.class_full);

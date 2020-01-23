@@ -219,7 +219,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 childrenncount = (int) dataSnapshot.getChildrenCount();
-                Log.d("test", "onDataChange: ------------chilnametest "+childrenncount);
+
             }
 
             @Override
@@ -570,10 +570,10 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
 
         if(mobile==null & mobile.isEmpty()){
-            Toast.makeText(getContext(), "no mobile number at firebase "+mobile, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "no mobile number at firebase "+mobile, Toast.LENGTH_SHORT).show();
             dailogbox_getfreeTicket();
         }else {
-            Toast.makeText(getContext(), "Mobile number in firebase exist", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "Mobile number in firebase exist", Toast.LENGTH_SHORT).show();
 
             try {
                 Connection connection = createConnection();

@@ -17,9 +17,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -160,8 +163,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     String btnvalue;
     Button btn_editprofile;
 
-    private TextView tv_childname_full,tv_class_ful,tv_school_full,tv_parentname_full,tv_spousename_full,tv_number_full,tv_email_full,tv_address_full;
+    private TextView tv_childname_full,tv_class_ful,tv_school_full,tv_parentname_full,tv_spousename_full,tv_number_full,tv_email_full,tv_address_full,childlist;
 
+    ImageView imageView_rotation;
+    boolean roation=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,6 +210,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
         btn_editprofile=findViewById(R.id.Edit_full);
+        tv_profilestatus=findViewById(R.id.tv_profilepercentage);
 
         //mAuth= FirebaseAuth.getInstance();
       //  mUser=mAuth.getCurrentUser();
@@ -553,6 +559,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                nestedScrollView_show.setVisibility(View.INVISIBLE);
                nestedScrollView_edit.setVisibility(View.VISIBLE);
 
+
+
            }
        }
 
@@ -568,6 +576,11 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                 */
                 nestedScrollView_show.setVisibility(View.INVISIBLE);
                 nestedScrollView_edit.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams params=recyclerView_childshow.getLayoutParams();
+                params.height=0;
+                recyclerView_childshow.setLayoutParams(params);
+                recyclerView_childshow.setVisibility(View.INVISIBLE);
+                roation=false;
 
             }
         });
@@ -675,6 +688,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                                                nestedScrollView_show.setVisibility(View.VISIBLE);
                                                nestedScrollView_edit.setVisibility(View.INVISIBLE);
                                                fadapter.notifyDataSetChanged();
+
                                            }
                                        });
                                    }
@@ -693,6 +707,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                        nestedScrollView_edit.setVisibility(View.INVISIBLE);
 
                        fadapter.notifyDataSetChanged();
+
 
                    }
 
@@ -746,6 +761,52 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
             }
         });
 
+
+        childlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                /*final Drawable[] myTextViewCompoundDrawables = childlist.getCompoundDrawables();
+                for(Drawable drawable: myTextViewCompoundDrawables) {
+
+                    if(drawable == null)
+                        continue;
+
+                    ObjectAnimator anim = ObjectAnimator.ofInt(drawable, "level", 0,MAX_LEVEL);
+                    anim.start();
+                    recyclerView_childshow.setVisibility(View.VISIBLE);
+                }*/
+
+
+                if(roation){
+
+                    RotateAnimation animation = new RotateAnimation(360,0, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                    animation.setDuration(500);
+                    imageView_rotation.setImageResource(R.drawable.ic_keyboard_arrow_up);
+                    imageView_rotation.setAnimation(animation);
+                    imageView_rotation.startAnimation(animation);
+                    ViewGroup.LayoutParams params=recyclerView_childshow.getLayoutParams();
+                    params.height=0;
+                    recyclerView_childshow.setLayoutParams(params);
+                    recyclerView_childshow.setVisibility(View.INVISIBLE);
+                    roation=false;
+
+                }else if(!roation){
+
+                    RotateAnimation animation = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                    animation.setDuration(500);
+                    imageView_rotation.setImageResource(R.drawable.ic_keyboard_arrow_down);
+                    imageView_rotation.setAnimation(animation);
+                    imageView_rotation.startAnimation(animation);
+
+                    ViewGroup.LayoutParams params=recyclerView_childshow.getLayoutParams();
+                    params.height=1000;
+                    recyclerView_childshow.setLayoutParams(params);
+                    recyclerView_childshow.setVisibility(View.VISIBLE);
+                    roation=true;
+                }
+            }
+        });
 
 
 
@@ -806,6 +867,27 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                     email_full.setText(dataSnapshot.child("email").getValue().toString());
                     address_full.setText(dataSnapshot.child("address").getValue().toString());
                     String gender = dataSnapshot.child("gender").getValue().toString();
+
+
+                    int  pic_up = dataSnapshot.child("pic_up").getValue(Integer.class);
+                    int  name_up = dataSnapshot.child("name_up").getValue(Integer.class);
+                    int  number_up = dataSnapshot.child("number_up").getValue(Integer.class);
+                    int dob_up = dataSnapshot.child("dob_up").getValue(Integer.class);
+                    int mail_up = dataSnapshot.child("mail_up").getValue(Integer.class);
+                    int address_up = dataSnapshot.child("address_up").getValue(Integer.class);
+                    int totalProgress= pic_up+name_up+number_up+dob_up+mail_up+address_up;
+
+
+                    if(totalProgress!=0){
+                        profilestatus=totalProgress;
+                        progressBar.setProgress(profilestatus);
+                        tv_profilestatus.setText(Integer.toString(profilestatus)+"%");
+                    }else {
+
+                    progressBar.setProgress(profilestatus);
+                    tv_profilestatus.setText(Integer.toString(profilestatus)+"%");
+                }
+
 
                     tv_parentname_full.setText(dataSnapshot.child("name").getValue().toString());
                     tv_spousename_full.setText(dataSnapshot.child("spousename").getValue().toString());
@@ -1144,7 +1226,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
       tv_spousename_full=findViewById(R.id.tv_spousename_full);
       tv_number_full=findViewById(R.id.tv_number_full);
       tv_email_full=findViewById(R.id.tv_email_full);
+      imageView_rotation=findViewById(R.id.imageview_roation);
       tv_address_full=findViewById(R.id.tv_address_full);
+      childlist=findViewById(R.id.childlist);
 
       tv_gender_radiogroup=findViewById(R.id.tv_radiogroup_gender);
       tv_radioButton_male=findViewById(R.id.tv_radio_male);
@@ -1219,9 +1303,6 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     @Override
     protected void onStart() {
         super.onStart();
-
-
-
         Log.d("userid", "onStart: -----userid "+ userId);
         rcvdata=FirebaseDatabase.getInstance().getReference().child("Childdb").child(rcvuserid);
         rcvdata.keepSynced(true);

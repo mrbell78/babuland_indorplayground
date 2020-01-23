@@ -159,7 +159,6 @@
             android:windowSoftInputMode="adjustResize|stateHidden"
             />
         <activity android:name="com.babuland.babuland.MainActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"
             />
 
         <service
