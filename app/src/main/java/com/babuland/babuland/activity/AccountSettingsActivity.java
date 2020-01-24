@@ -647,6 +647,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                        if(!TextUtils.isEmpty(address_full.getText().toString())){
                            parent.put("address_up",10);
                        }
+                       if(childcount>0){
+                           parent.put("dob_up",childcount*10);
+                       }
 
                        parent.put("gender",gendertext);
 
@@ -746,6 +749,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
                   /*  recyclerView_childshow.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.INVISIBLE);*/
+
                 }else if(dataSnapshot.getChildrenCount()==0){
 
 
@@ -1312,12 +1316,13 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
             @Override
             protected void onBindViewHolder(@NonNull UserViewholder userViewholder, int i, @NonNull Childlist_newreg childlist_newreg) {
 
-                userViewholder.childname_ed.setText(childlist_newreg.getChild_name());
-                userViewholder.dob_ed.setText(childlist_newreg.getDob());
-                userViewholder.school_ed.setText(childlist_newreg.getSchool());
-                userViewholder.class_ed.setText(childlist_newreg.getClasss());
-                userViewholder.childnumber_ed.setText("child"+(i+1));
-                userViewholder.gendertxt.setText(childlist_newreg.getChild_gender());
+                    userViewholder.childname_ed.setText(childlist_newreg.getChild_name());
+                    userViewholder.dob_ed.setText(childlist_newreg.getDob());
+                    userViewholder.school_ed.setText(childlist_newreg.getSchool());
+                    userViewholder.class_ed.setText(childlist_newreg.getClasss());
+                    userViewholder.childnumber_ed.setText("child"+(i+1));
+                    userViewholder.gendertxt.setText(childlist_newreg.getChild_gender());
+
             }
 
             @NonNull
