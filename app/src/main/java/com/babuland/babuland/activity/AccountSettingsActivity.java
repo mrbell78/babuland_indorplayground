@@ -167,7 +167,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
     private TextView tv_childname_full,tv_class_ful,tv_school_full,tv_parentname_full,tv_spousename_full,tv_number_full,tv_email_full,tv_address_full,childlist;
 
     ImageView imageView_rotation;
-    boolean roation=false;
+    boolean roation=true;
     Dbhelper_childprofile db;
 
     @Override

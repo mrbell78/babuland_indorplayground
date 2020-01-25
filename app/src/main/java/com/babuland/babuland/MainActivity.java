@@ -186,6 +186,9 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                                     final String useralrm = dataSnapshot.child("alrmstatus").getValue().toString();
                                     Log.d(TAG, "onDataChange: --------------------------alrmvalue fetch");
 
+                                    final String activiequiz=dataSnapshot.child("status_quz").getValue().toString();
+
+
                                     if(useralrm.equals("false")){
                                         admindatabase.addValueEventListener(new ValueEventListener() {
                                             @Override
@@ -227,8 +230,6 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                                                     Log.d(TAG, "onDataChange: .............startminitue "+startminitue);
                                                     Log.d(TAG, "onDataChange: .............endtime "+endTime);
                                                     Log.d(TAG, "onDataChange: .............endminute "+endminitue);
-
-                                                    String activiequiz=dataSnapshot.child("status_quz").getValue().toString();
 
                                                     if(activiequiz.equals("active")){
 
