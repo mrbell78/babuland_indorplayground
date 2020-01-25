@@ -24,7 +24,6 @@
             android:textSize="15sp"
             android:padding="3dp"
             android:textColor="#FF5722"
-            android:background="@drawable/account_settingfrgbackground"
             android:id="@+id/chldnumber"
 
             />

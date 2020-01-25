@@ -1,6 +1,8 @@
 package com.babuland.babuland.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,7 +26,7 @@ public class BabulandpointsActivity extends AppCompatActivity {
     FirebaseUser mUser;
     String mUserid;
 
-    TextView tv_babulandpoints,tv_accountprogress;
+    TextView tv_babulandpoints,tv_accountprogress,getprogress_tv;
     ProgressBar bland_progress,account_progress;
 
     Toolbar mToolbar;
@@ -45,6 +47,13 @@ public class BabulandpointsActivity extends AppCompatActivity {
         bland_progress=findViewById(R.id.myprogressbar_points);
         account_progress=findViewById(R.id.myprogressbar);
         tv_accountprogress=findViewById(R.id.tv_percentage);
+        getprogress_tv=findViewById(R.id.getprogress_tv);
+        getprogress_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),AccountSettingsActivity.class));
+            }
+        });
 
 
 

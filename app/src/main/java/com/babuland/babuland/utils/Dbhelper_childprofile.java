@@ -36,7 +36,7 @@ public class Dbhelper_childprofile extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(" CREATE TABLE  " + TABLE_NAME + "(id INTEGER PRIMARY KEY AUTOINCREMENT,  name TEXT )");
+        db.execSQL(" CREATE TABLE  " + TABLE_NAME + "(id INTEGER PRIMARY KEY AUTOINCREMENT,  title TEXT,name TEXT, firebaseindex INTEGER )");
 
     }
 
@@ -49,13 +49,15 @@ public class Dbhelper_childprofile extends SQLiteOpenHelper {
     }
 
 
-    public boolean insertdata_childpro(String name){
+    public boolean insertdata_childpro(String title, String name, int firebaseindex){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
 
         contentValues.put("name",name);
+        contentValues.put("title",title);
+        contentValues.put("firebaseindex",firebaseindex);
 
 
         long result =  db.insert(TABLE_NAME,null,contentValues);

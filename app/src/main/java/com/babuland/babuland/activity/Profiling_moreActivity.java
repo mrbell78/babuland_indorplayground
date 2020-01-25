@@ -349,7 +349,7 @@ public class Profiling_moreActivity extends AppCompatActivity implements Adapter
                                       childata.put("pre_branch",preferedBranch);
                                       childata.put("child_image",imgeuri.toString());
 
-                                      db.insertdata_childpro(random_timephone);
+                                      //db.insertdata_childpro(random_timephone);
                                       chilDatabase.child(random_timephone).updateChildren(childata).addOnCompleteListener(new OnCompleteListener<Void>() {
                                           @Override
                                           public void onComplete(@NonNull Task<Void> task) {

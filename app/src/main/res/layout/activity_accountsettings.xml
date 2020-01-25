@@ -477,7 +477,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="4"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    >
 
                     <TextView
                         android:layout_width="0dp"
@@ -485,7 +487,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="5dp"
                         android:text="Child List"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold"
                         android:id="@+id/childlist"
                         />
@@ -498,6 +500,7 @@
                         />
 
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -571,7 +574,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Your Name"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -580,7 +583,7 @@
                         android:hint="Enter your name"
                         android:inputType="text"
                         android:id="@+id/tv_name_parent_full"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
 
                         android:padding="5dp"
                         />
@@ -604,7 +607,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Spouse Name"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -612,7 +615,7 @@
                         android:hint="Enter spouse name"
                         android:inputType="text"
                         android:id="@+id/tv_spousename_full"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         android:padding="5dp"
                         />
 
@@ -638,7 +641,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mobile Number"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -646,7 +649,7 @@
                         android:hint="Enter mobile numer"
                         android:inputType="phone"
                         android:id="@+id/tv_number_full"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
 
                         android:padding="5dp"
                         />
@@ -671,7 +674,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email Address"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -679,7 +682,7 @@
                         android:hint="Enter email address"
                         android:inputType="textEmailAddress"
                         android:id="@+id/tv_email_full"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         android:padding="5dp"
                         />
                 </LinearLayout>
@@ -703,7 +706,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Address"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -711,7 +714,7 @@
                         android:hint="Enter your address"
                         android:inputType="textMultiLine"
                         android:id="@+id/tv_address_full"
-                        android:textSize="17sp"
+                        android:textSize="16sp"
                         android:padding="5dp"
                         />
                     />

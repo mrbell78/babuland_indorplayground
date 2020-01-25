@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.babuland.babuland.R;
 import com.babuland.babuland.model.modelclass;
+import com.babuland.babuland.utils.Dbhelper_childprofile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,6 +53,9 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
     String removeid[]=new String[15];
     int index_remove=0;
     String dateOfbirdthglb;
+
+    Dbhelper_childprofile db;
+
 
     public Adapterlistview(Context context, List<modelclass> img) {
         this.context = context;
@@ -164,7 +168,6 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
 
 
 
-
         holder.addbtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -179,6 +182,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
                 String gender = holder.spinner.getSelectedItem().toString();
                 Log.d("gender", "onClick: -------------gender "+gender);
 
+                db.insertdata_childpro("child"+position,name,position);
 
 
                /* holder.dob_txt.setOnClickListener(new View.OnClickListener() {
@@ -383,6 +387,7 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
             addbtn=itemView.findViewById(R.id.addchild1);
             initializefullprofile(itemView);
             dob_txt=itemView.findViewById(R.id.dob_txt);
+            db=new Dbhelper_childprofile(context);
 
             dob_txt.setOnClickListener(new View.OnClickListener() {
                 @Override

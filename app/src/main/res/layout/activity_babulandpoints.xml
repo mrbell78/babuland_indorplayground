@@ -110,6 +110,24 @@
 
 
                   />
+              <RelativeLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="10dp"
+                  android:padding="5dp"
+                  >
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Get Progress"
+                      android:layout_alignParentEnd="true"
+                      android:layout_marginRight="10dp"
+                      android:textStyle="bold"
+                      android:textSize="16sp"
+                      android:textColor="#2196F3"
+                      android:id="@+id/getprogress_tv"/>
+              </RelativeLayout>
 
           </LinearLayout>
 

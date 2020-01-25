@@ -4,19 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.NonNull;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class ScheduledQuiz_stop extends BroadcastReceiver {
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, final Intent intent) {
 
         FirebaseUser mUser;
         final DatabaseReference mDatabase,admindatabase,leaderboard_database;
@@ -33,26 +28,13 @@ public class ScheduledQuiz_stop extends BroadcastReceiver {
             mDatabase.child("status_quz").setValue("inactive");
             admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
 
-            admindatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            /*admindatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
-                        String value = dataSnapshot.child("quiznumber").getValue().toString();
-                        DatabaseReference mdatabase_broadcast;
 
-                        if(value.equals("1")){
-                            value="2";
-                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
-                            mdatabase_broadcast.child("quiznumber").setValue(value);
-                            mdatabase_broadcast.child("update_quiznumber").setValue("1");
-                        }else if(value.equals("2")){
-                            value="3";
-                            mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
-                            mdatabase_broadcast.child("quiznumber").setValue(value);
-                            mdatabase_broadcast.child("update_quiznumber").setValue("2");
-                        }
 
-                        else if(value.equals("3")){
+                         if(value.equals("3")){
                             value="4";
                             mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
                             mdatabase_broadcast.child("quiznumber").setValue(value);
@@ -100,6 +82,9 @@ public class ScheduledQuiz_stop extends BroadcastReceiver {
                             mdatabase_broadcast.child("update_quiznumber").setValue("9");
                         }
 
+
+
+
                     }
                 }
 
@@ -107,7 +92,15 @@ public class ScheduledQuiz_stop extends BroadcastReceiver {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });
+            });*/
+
+
+            DatabaseReference mdatabase_broadcast;
+            int valuee = Integer.parseInt(intent.getStringExtra("quiznumber"));
+            int  updatevalue=valuee+1;
+            mdatabase_broadcast = FirebaseDatabase.getInstance().getReference().child("Admin");
+            mdatabase_broadcast.child("quiznumber").setValue(String.valueOf(updatevalue));
+            mdatabase_broadcast.child("update_quiznumber").setValue( String.valueOf(valuee));
         }
     }
 }

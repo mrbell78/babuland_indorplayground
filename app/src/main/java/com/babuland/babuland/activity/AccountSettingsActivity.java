@@ -47,6 +47,7 @@ import com.babuland.babuland.R;
 import com.babuland.babuland.adapter.Adapterlistview;
 import com.babuland.babuland.model.Childlist_newreg;
 import com.babuland.babuland.model.modelclass;
+import com.babuland.babuland.utils.Dbhelper_childprofile;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -167,6 +168,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
     ImageView imageView_rotation;
     boolean roation=false;
+    Dbhelper_childprofile db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +201,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
 
 
         saveimage=findViewById(R.id.saveimage);
-
+        db=new Dbhelper_childprofile(this);
 
         progressBar=findViewById(R.id.myprogressbar_accountsettings);
         cardViewaddimage=findViewById(R.id.addimagee);
@@ -536,11 +538,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
         recyclerView=findViewById(R.id.recyclerview);
         recyclerView_childshow=findViewById(R.id.recyclerview_show);
         recyclerView_childshow.setLayoutManager(new LinearLayoutManager(this));
-
         manager=new LinearLayoutManager(this);
         // recyclerView.getLayoutManager().scrollToPosition(modelclass.getobject().size()-1);
         recyclerView.setLayoutManager(manager);
-
         adapeter = new Adapterlistview(AccountSettingsActivity.this, modelclass.getobject());
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -568,6 +568,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
             @Override
             public void onClick(View v) {
                 recyclerView_childshow.setVisibility(View.INVISIBLE);
+
                 recyclerView.setVisibility(View.VISIBLE);
                 btn_save_full.setVisibility(View.VISIBLE);
                 btn_editprofile.setVisibility(View.INVISIBLE);/*
@@ -669,6 +670,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                                    fullmap.put("dob",dob_adp);
                                    fullmap.put("pre_branch","notset");
                                    fullmap.put("child_gender",gender_adp);
+                                   db.insertdata_childpro("child"+1,name,1);
 
                                    if(childname_adp!=null && !childname_adp.isEmpty()){
 
@@ -688,6 +690,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Adapte
                                                nestedScrollView_show.setVisibility(View.VISIBLE);
                                                nestedScrollView_edit.setVisibility(View.INVISIBLE);
                                                fadapter.notifyDataSetChanged();
+
 
                                            }
                                        });
