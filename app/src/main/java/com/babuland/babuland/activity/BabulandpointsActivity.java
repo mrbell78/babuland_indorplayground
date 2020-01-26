@@ -26,7 +26,13 @@ public class BabulandpointsActivity extends AppCompatActivity {
     FirebaseUser mUser;
     String mUserid;
 
+
     TextView tv_babulandpoints,tv_accountprogress,getprogress_tv;
+
+    TextView tv_getprogress;
+
+   // tv_babulandpoints,tv_accountprogress,
+
     ProgressBar bland_progress,account_progress;
 
     Toolbar mToolbar;
@@ -47,6 +53,7 @@ public class BabulandpointsActivity extends AppCompatActivity {
         bland_progress=findViewById(R.id.myprogressbar_points);
         account_progress=findViewById(R.id.myprogressbar);
         tv_accountprogress=findViewById(R.id.tv_percentage);
+
         getprogress_tv=findViewById(R.id.getprogress_tv);
         getprogress_tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +62,17 @@ public class BabulandpointsActivity extends AppCompatActivity {
             }
         });
 
+        tv_getprogress=findViewById(R.id.tv_getprogress);
 
+
+
+        tv_getprogress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),AccountSettingsActivity.class));
+
+            }
+        });
 
         mUser= FirebaseAuth.getInstance().getCurrentUser();
         mUserid=mUser.getUid();

@@ -295,6 +295,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
         });
 
 
+
         Intent intent = getIntent();
 
         name=intent.getStringExtra("fullname");
