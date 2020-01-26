@@ -476,7 +476,6 @@ public class LoginActivity extends AppCompatActivity {
 
             codesent=s;
             Toast.makeText(LoginActivity.this, "code sent", Toast.LENGTH_SHORT).show();
-
             btn_continiue.setVisibility(View.INVISIBLE);
             btn_varyfycode.setVisibility(View.VISIBLE);
             edt_number.setHint("Enter pin");

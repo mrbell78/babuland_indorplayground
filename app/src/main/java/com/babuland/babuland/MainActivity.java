@@ -231,22 +231,18 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                                                     Log.d(TAG, "onDataChange: .............endtime "+endTime);
                                                     Log.d(TAG, "onDataChange: .............endminute "+endminitue);
 
-                                                    if(activiequiz.equals("active")){
-
                                                         scheduliedquiz_stop(calendar_stop);
 
-                                                    }else if(activiequiz.equals("inactive")){
+                                                        scheduleNotification(getNotification("Dont miss out todays quiz"), 100, calendar);
 
-                                                        scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
 
-                                                    }
 
 
 
                                                     //admindatabase.child("editmode").setValue("no");
 
                                                     mUserr=FirebaseAuth.getInstance().getCurrentUser();
-                                                     String userid = mUserr.getUid();
+                                                    String userid = mUserr.getUid();
                                                     mDatabase_q.child(userid).child("alrmstatus").setValue("true");
 
                                                 }else {
@@ -940,8 +936,15 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
     private void scheduliedquiz_stop(final Calendar calendar_stop) {
 
-        final Intent notificationIntent = new Intent( this, ScheduledQuiz_stop. class ) ;
-        DatabaseReference admindatabaseforquestion;
+        Intent notificationIntent = new Intent( this, ScheduledQuiz_stop. class ) ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( MainActivity.this, 0 , notificationIntent ,PendingIntent.FLAG_UPDATE_CURRENT ) ;
+        AlarmManager alarmManagerr = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        assert alarmManagerr != null;
+        alarmManagerr.setRepeating(AlarmManager.RTC_WAKEUP, calendar_stop.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+
+
+       /* DatabaseReference admindatabaseforquestion;
 
 
         admindatabaseforquestion=FirebaseDatabase.getInstance().getReference().child("Admin");
@@ -953,11 +956,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
                  String question_online = dataSnapshot.child("quiznumber").getValue().toString();
                  notificationIntent.putExtra("quiznumber",question_online);
-                    PendingIntent pendingIntent = PendingIntent. getBroadcast ( MainActivity.this, 0 , notificationIntent ,PendingIntent.FLAG_UPDATE_CURRENT ) ;
                     //long futureInMillis = SystemClock. elapsedRealtime () + delay ;
-                    AlarmManager alarmManagerr = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
-                    assert alarmManagerr != null;
-                    alarmManagerr.setRepeating(AlarmManager.RTC_WAKEUP, calendar_stop.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 
                 }
             }
@@ -967,10 +966,9 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
             }
         });
+*/
 
-
-
-    }
+          }
 
 
 
