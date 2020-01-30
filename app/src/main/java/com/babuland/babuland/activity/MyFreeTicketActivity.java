@@ -153,7 +153,7 @@ public class MyFreeTicketActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull MyFreeTicketActivity.UserViewholder userViewholder, int i, @NonNull final Model_ticket model_ticket) {
 
                 userViewholder.tv_total.setText(Integer.toString(model_ticket.getTotal_amount()));
-                userViewholder.status.setText(model_ticket.getStatus());
+                userViewholder.status.setText(model_ticket.getTime());
 
                 //userViewholder.imageView.setImageResource(R.drawable.ticket);
 

@@ -204,7 +204,8 @@ public class MyeTicketActivity extends AppCompatActivity implements View.OnClick
             protected void onBindViewHolder(@NonNull UserViewholder userViewholder, int i, @NonNull final Model_ticket model_ticket) {
 
                 userViewholder.tv_total.setText(Integer.toString(model_ticket.getTotal_amount()));
-                userViewholder.status.setText(model_ticket.getStatus());
+                userViewholder.status.setText(model_ticket.getTime());
+                userViewholder.ticketstatus_modified.setText(model_ticket.getStatus());
 
                 //userViewholder.imageView.setImageResource(R.drawable.ticket);
 
@@ -321,7 +322,7 @@ public class MyeTicketActivity extends AppCompatActivity implements View.OnClick
 
 
         ImageView imageView;
-        TextView tv_total;
+        TextView tv_total,ticketstatus_modified;
         TextView status;
         RelativeLayout layout;
         public UserViewholder(@NonNull View itemView) {
@@ -332,6 +333,7 @@ public class MyeTicketActivity extends AppCompatActivity implements View.OnClick
             tv_total=itemView.findViewById(R.id.amountid);
             status=itemView.findViewById(R.id.statusid);
             layout=itemView.findViewById(R.id.relativeListener);
+            ticketstatus_modified=itemView.findViewById(R.id.ticketstatus);
         }
     }
 

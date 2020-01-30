@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child("editmode").exists()){
 
-                    concent=dataSnapshot.child("editmode").getValue().toString();
+                    String concent_new=dataSnapshot.child("editmode").getValue().toString();
 
 
 
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
 
 
-                    if(concent.equals("yes") ){
+                    if(concent_new.equals("yes") ){
 
                         Toast.makeText(MainActivity.this, "concetvalue "+ concent, Toast.LENGTH_SHORT).show();
                         mUserr=FirebaseAuth.getInstance().getCurrentUser();
@@ -222,8 +222,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                                                     Calendar calendar_stop= Calendar.getInstance();
                                                     calendar_stop.set(Calendar.HOUR_OF_DAY,endTime);
                                                     calendar_stop.set(Calendar.MINUTE,endminitue);
-                                                    calendar_stop.setTimeInMillis(System.currentTimeMillis());
-                                                    calendar_stop.set(Calendar.SECOND,10);
+                                                    calendar_stop.set(Calendar.SECOND,0);
 
 
                                                     Log.d(TAG, "onDataChange: .............starttime "+startTime);
@@ -231,16 +230,14 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                                                     Log.d(TAG, "onDataChange: .............endtime "+endTime);
                                                     Log.d(TAG, "onDataChange: .............endminute "+endminitue);
 
-                                                        scheduliedquiz_stop(calendar_stop);
-
+                                                        //scheduliedquiz_stop(calendar_stop);
                                                         scheduleNotification(getNotification("Dont miss out todays quiz"), 100, calendar);
 
 
 
 
 
-                                                    //admindatabase.child("editmode").setValue("no");
-
+                                                    admindatabase.child("editmode").setValue("no");
                                                     mUserr=FirebaseAuth.getInstance().getCurrentUser();
                                                     String userid = mUserr.getUid();
                                                     mDatabase_q.child(userid).child("alrmstatus").setValue("true");
@@ -276,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
 
                     }else {
-                        Log.d(TAG, "onDataChange: ---------------yes not found");
+                        Log.d(TAG, "onDataChange: ---------------concet value is no ");
                     }
 
 
@@ -898,7 +895,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
     private void scheduleNotification (Notification notification , int delay,Calendar calendar) {
 
 
-
+        Toast.makeText(this, "start scheduled is called ", Toast.LENGTH_SHORT).show();
         Intent notificationIntent = new Intent( this, Scheduling_quiz. class ) ;
         notificationIntent.putExtra(Scheduling_quiz. NOTIFICATION_ID , 1 ) ;
         notificationIntent.putExtra(Scheduling_quiz. NOTIFICATION , notification) ;
@@ -936,9 +933,12 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
 
     private void scheduliedquiz_stop(final Calendar calendar_stop) {
 
-        Intent notificationIntent = new Intent( this, ScheduledQuiz_stop. class ) ;
-        PendingIntent pendingIntent = PendingIntent. getBroadcast ( MainActivity.this, 0 , notificationIntent ,PendingIntent.FLAG_UPDATE_CURRENT ) ;
+        Toast.makeText(this, "stop scheduling manager is called", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent( this, ScheduledQuiz_stop. class ) ;
         AlarmManager alarmManagerr = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( MainActivity.this, 0 , intent ,PendingIntent.FLAG_UPDATE_CURRENT ) ;
+
         assert alarmManagerr != null;
         alarmManagerr.setRepeating(AlarmManager.RTC_WAKEUP, calendar_stop.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
 

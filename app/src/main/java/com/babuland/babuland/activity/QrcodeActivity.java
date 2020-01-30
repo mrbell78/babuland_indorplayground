@@ -1,9 +1,5 @@
 package com.babuland.babuland.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,8 +12,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.babuland.babuland.utils.DbHelper;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.babuland.babuland.R;
+import com.babuland.babuland.utils.DbHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -364,7 +364,7 @@ public class QrcodeActivity extends AppCompatActivity {
             final Integer orderid = intent.getIntExtra("orderid",0);
 
             Map imagedatawiththum=  new HashMap();
-            imagedatawiththum.put("status","valid");
+            imagedatawiththum.put("status","not used");
             imagedatawiththum.put("phone",phone);
             imagedatawiththum.put("total_amount",totalamount);
             imagedatawiththum.put("branch",Branch);

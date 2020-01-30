@@ -230,9 +230,15 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
        /* sslCommerzInitialization = new SSLCommerzInitialization("babul5dc25b039d6e8",
                 "babul5dc25b039d6e8@ssl", Total, CurrencyType.BDT,
                 "123456789098765", "food", SdkType.TESTBOX);*/
-        sslCommerzInitialization = new SSLCommerzInitialization("babul5df0bda12386c",
+
+        /*sslCommerzInitialization = new SSLCommerzInitialization("babul5df0bda12386c",
                 "babul5df0bda12386c@ssl", Total, CurrencyType.BDT,
-                "123456789098765", "food", SdkType.TESTBOX);
+                "123456789098765", "food", SdkType.TESTBOX);*/
+
+
+        sslCommerzInitialization = new SSLCommerzInitialization("babulandlive",
+                "5E2FF64689E5829675", Total, CurrencyType.BDT,
+                "", "food", SdkType.LIVE);
 
         customerInfoInitializer = new CustomerInfoInitializer("reza", "rubel12131103078@gmail.com",
                 "mirpur12", "dhaka", "1216", "Bangladesh", "01762957451");
@@ -455,7 +461,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
                     if (dataSnapshot != null && dataSnapshot.child("BabulandPoints").exists()) {
                         databaspoint = dataSnapshot.child("BabulandPoints").getValue(Integer.class);
                         Log.d(TAG, "onDataChange: -------------------------------------babulandpoints "+databaspoint);
-                        Toast.makeText(PaymentActivity.this, "datapull success", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(PaymentActivity.this, "datapull success", Toast.LENGTH_SHORT).show();
                         mProgress.dismiss();
                     }else {
                         databaspoint=0;
@@ -522,7 +528,7 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
 
 
                 }else {
-                    Toast.makeText(PaymentActivity.this, "db problem", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PaymentActivity.this, "Database problem", Toast.LENGTH_SHORT).show();
                 }
 
             }

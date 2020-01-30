@@ -23,8 +23,11 @@ public class Scheduling_quiz extends BroadcastReceiver {
 
 
         FirebaseUser mUser;
-        DatabaseReference mDatabase;
+        DatabaseReference mDatabase,leaderboard_database;
         String userId;
+
+        leaderboard_database=FirebaseDatabase.getInstance().getReference().child("Leaderboard");
+        leaderboard_database.removeValue();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context. NOTIFICATION_SERVICE ) ;
         Notification notification = intent.getParcelableExtra( NOTIFICATION ) ;

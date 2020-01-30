@@ -167,7 +167,7 @@ public class FirstFragment extends Fragment implements Qr_cameraopenerActivity.q
 
 
                             Map imagedatawiththum=  new HashMap();
-                            imagedatawiththum.put("status","Free ticket");
+                            imagedatawiththum.put("status","not used");
                             imagedatawiththum.put("phone",phone);
                             imagedatawiththum.put("total_amount",0);
                             imagedatawiththum.put("branch","any");

@@ -384,13 +384,13 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "onDataChange: ------------------------------quiznumber "+quiznumber);
 
                         Calendar calendar_stop= Calendar.getInstance();
-                        calendar_stop.set(Calendar.HOUR_OF_DAY,endquiz);
-                        calendar_stop.set(Calendar.MINUTE,55);
+                        calendar_stop.set(Calendar.HOUR_OF_DAY,23);
+                        calendar_stop.set(Calendar.MINUTE,59);
                         calendar_stop.set(Calendar.SECOND,0);
 
                         Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.HOUR_OF_DAY,startquiz);
-                        calendar.set(Calendar.MINUTE,52);
+                        calendar.set(Calendar.HOUR_OF_DAY,21);
+                        calendar.set(Calendar.MINUTE,1);
                         calendar.set(Calendar.SECOND,0);
 
 
@@ -408,6 +408,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void scheduliedquiz_stop(Calendar calendar_stop) {
+        Toast.makeText(this, "scheduled stop notification is called tata", Toast.LENGTH_SHORT).show();
 
         Intent notificationIntent = new Intent( this, ScheduledQuiz_stop. class ) ;
         PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
@@ -506,7 +507,7 @@ public class LoginActivity extends AppCompatActivity {
                                        Map<String, String> userfield = new HashMap<>();
                                        userfield.put("name", "");
                                        userfield.put("email", "");
-                                       userfield.put("phone", edt_number.getText().toString());
+                                       userfield.put("phone", phonenumber);
                                        userfield.put("password", "default");
                                        userfield.put("image", "default");
                                        userfield.put("thumb_nail", "default");
@@ -561,14 +562,14 @@ public class LoginActivity extends AppCompatActivity {
                                                    }
 
                                                    Calendar calendar_stop= Calendar.getInstance();
-                                                   calendar_stop.set(Calendar.HOUR_OF_DAY,endquiz);
-                                                   calendar_stop.set(Calendar.MINUTE,0);
+                                                   calendar_stop.set(Calendar.HOUR_OF_DAY,23);
+                                                   calendar_stop.set(Calendar.MINUTE,59);
                                                    calendar_stop.set(Calendar.SECOND,0);
 
                                                    Calendar calendar = Calendar.getInstance();
-                                                   calendar.set(Calendar.HOUR_OF_DAY,startquiz);
+                                                   calendar.set(Calendar.HOUR_OF_DAY,21);
                                                    calendar.set(Calendar.MINUTE,0);
-                                                   calendar.set(Calendar.SECOND,0);
+                                                   calendar.set(Calendar.SECOND,5);
 
                                                    scheduleNotification(getNotification("Dont miss out todays quiz"),100,calendar);
                                                    scheduliedquiz_stop(calendar_stop);
@@ -641,7 +642,7 @@ public class LoginActivity extends AppCompatActivity {
     private void scheduleNotification (Notification notification , int delay, Calendar calendar) {
 
 
-
+        Toast.makeText(this, "scheduled notification is called for quiz", Toast.LENGTH_SHORT).show();
         Intent notificationIntent = new Intent( this, Scheduling_quiz. class ) ;
         notificationIntent.putExtra(Scheduling_quiz. NOTIFICATION_ID , 1 ) ;
         notificationIntent.putExtra(Scheduling_quiz. NOTIFICATION , notification) ;

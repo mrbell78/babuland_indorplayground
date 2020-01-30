@@ -571,7 +571,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
         if(mobile==null & mobile.isEmpty()){
             //Toast.makeText(getContext(), "no mobile number at firebase "+mobile, Toast.LENGTH_SHORT).show();
-            dailogbox_getfreeTicket();
+            //dailogbox_getfreeTicket();
         }else {
             //Toast.makeText(getContext(), "Mobile number in firebase exist", Toast.LENGTH_SHORT).show();
 
@@ -619,7 +619,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
 
                         }else {
-                            Toast.makeText(getContext(), "Register first"+ childrenncount, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Register first", Toast.LENGTH_SHORT).show();
                             dailogbox_getfreeTicket();
                         }
 
@@ -634,7 +634,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
                         getfreeTicket(mobile);
                     }else {
-                           Toast.makeText(getContext(), "Register first ----------"+childrenncount, Toast.LENGTH_SHORT).show();
+                           Toast.makeText(getContext(), "Register first ", Toast.LENGTH_SHORT).show();
                            dailogbox_getfreeTicket();
                        }
 
@@ -697,15 +697,17 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
 
     private void getfreeTicket(final String mobile) {
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy hh.mm.ss. aa");
+        String formattedDate = dateFormat.format(new Date()).toString();
 
 
         String currentTime_rdm = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
         Map imagedatawiththum=  new HashMap();
-        imagedatawiththum.put("status","Free ticket");
+        imagedatawiththum.put("status","not used");
         imagedatawiththum.put("phone",mobile);
         imagedatawiththum.put("total_amount",0);
         imagedatawiththum.put("branch","any");
-        imagedatawiththum.put("time","One time");
+        imagedatawiththum.put("time",formattedDate);
         imagedatawiththum.put("orderid",0);
         String childname=mobile+currentTime_rdm;
 

@@ -50,11 +50,17 @@ public class ScheduledQuiz_stop extends BroadcastReceiver {
 
                                 value=dataSnapshot.child("quiznumber").getValue().toString();
 
-                                if(value.equals("1")){
+                                int castvalue= Integer.parseInt(value);
+
+                                mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
+                                mdatabase_broadcast.child("quiznumber").setValue(String.valueOf(castvalue+1));
+                                mdatabase_broadcast.child("update_quiznumber").setValue(String.valueOf(castvalue));
+                                //SystemClock.sleep(1*1000);
+
+
+                                /*if(value.equals("1")){
                                     value="2";
-                                    mdatabase_broadcast= FirebaseDatabase.getInstance().getReference().child("Admin");
-                                    mdatabase_broadcast.child("quiznumber").setValue(value);
-                                    mdatabase_broadcast.child("update_quiznumber").setValue("1");
+
                                 }
 
                                 else if(value.equals("2")){
@@ -97,7 +103,7 @@ public class ScheduledQuiz_stop extends BroadcastReceiver {
                                     mdatabase_broadcast.child("quiznumber").setValue(value);
                                     mdatabase_broadcast.child("update_quiznumber").setValue("7");
                                 }
-
+*/
 
 
 
