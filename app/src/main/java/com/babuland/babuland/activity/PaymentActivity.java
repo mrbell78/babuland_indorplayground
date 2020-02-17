@@ -155,8 +155,6 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
         Log.d(TAG, "onCreate: dbname  ------------------------"+DEFAULT_USERNAME);
 
         //pruduct id event start mirpur
-
-
         infant_ticket_product_id = intent.getIntExtra("infant_id",0);
         kids_ticket_product_id = intent.getIntExtra("kids_id",0);
         gardian_ticket_product_id = intent.getIntExtra("gardian_id",0);
@@ -231,17 +229,17 @@ public class PaymentActivity extends AppCompatActivity  implements TransactionRe
                 "babul5dc25b039d6e8@ssl", Total, CurrencyType.BDT,
                 "123456789098765", "food", SdkType.TESTBOX);*/
 
-        /*sslCommerzInitialization = new SSLCommerzInitialization("babul5df0bda12386c",
+        sslCommerzInitialization = new SSLCommerzInitialization("babul5df0bda12386c",
                 "babul5df0bda12386c@ssl", Total, CurrencyType.BDT,
-                "123456789098765", "food", SdkType.TESTBOX);*/
+                "123456789098765", "food", SdkType.TESTBOX);
 
 
-        sslCommerzInitialization = new SSLCommerzInitialization("babulandlive",
+        /*sslCommerzInitialization = new SSLCommerzInitialization("babulandlive",
                 "5E2FF64689E5829675", Total, CurrencyType.BDT,
-                "", "food", SdkType.LIVE);
+                "", "food", SdkType.LIVE);*/
 
-        customerInfoInitializer = new CustomerInfoInitializer("reza", "rubel12131103078@gmail.com",
-                "mirpur12", "dhaka", "1216", "Bangladesh", "01762957451");
+        customerInfoInitializer = new CustomerInfoInitializer("koli reza", "rubel12131103078@gmail.com",
+                "mirpur12", "dhaka", "1216", "Bangladesh", "01682612644");
     }
 
     private void startPayment() {

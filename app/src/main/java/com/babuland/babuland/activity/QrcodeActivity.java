@@ -11,11 +11,13 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.babuland.babuland.MainActivity;
 import com.babuland.babuland.R;
 import com.babuland.babuland.utils.DbHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,8 +25,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -75,6 +80,10 @@ public class QrcodeActivity extends AppCompatActivity {
     QRGEncoder qrgEncoder;
 
 
+
+    DatabaseReference ticketchilddb;
+    FirebaseUser ticketuser;
+    String usrId ;
 
 
     @Override
@@ -199,9 +208,37 @@ public class QrcodeActivity extends AppCompatActivity {
         }
     }
 
-    public void qrcodegenaretorfromadapter(String orderid){
+    public void qrcodegenaretorfromadapter(String orderid,String childname){
 
         if( orderid!=null){
+
+            Log.d("childid", "qrcodegenaretorfromadapter: .........................values from orderid "+ orderid);
+
+
+            mUser= FirebaseAuth.getInstance().getCurrentUser();
+            usrId = mUser.getUid();
+
+            ticketchilddb= FirebaseDatabase.getInstance().getReference().child("Buyticket").child(usrId).child(childname);
+            ticketchilddb.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        String ticketstatus = dataSnapshot.child("status").getValue().toString();
+
+                        if(ticketstatus.equals("used")){
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            Toast.makeText(QrcodeActivity.this, "Ticket Scan Successful", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
 
             WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
             Display display = manager.getDefaultDisplay();
@@ -213,7 +250,7 @@ public class QrcodeActivity extends AppCompatActivity {
             smallerDimension=smallerDimension*3/4;
 
             //String totalvalue="Total price="+Integer.toString(totalamount)+"\nBranch Name: "+branchname+"\n"+"Userid "+userId;
-            qrgEncoder = new QRGEncoder(orderid, null, QRGContents.Type.TEXT, smallerDimension);
+            qrgEncoder = new QRGEncoder(orderid+childname, null, QRGContents.Type.TEXT, smallerDimension);
 
             boolean save;
 
@@ -370,13 +407,13 @@ public class QrcodeActivity extends AppCompatActivity {
             imagedatawiththum.put("branch",Branch);
             imagedatawiththum.put("time",formattedDate);
             imagedatawiththum.put("orderid",orderid);
-            String childname=phone+currentTime;
+            final String childname=phone+currentTime;
             Buyticketref.child(childname).updateChildren(imagedatawiththum).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if(task.isSuccessful()){
                         //Picasso.with(getApplicationContext()).load(imageuri).into(imageView);
-                       qrcodegenaretorfromadapter(Integer.toString(orderid));
+                       qrcodegenaretorfromadapter(userId,childname);
                         mDialog.dismiss();
 
                     }

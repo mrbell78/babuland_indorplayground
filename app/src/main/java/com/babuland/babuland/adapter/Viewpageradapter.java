@@ -33,7 +33,7 @@ public class Viewpageradapter extends PagerAdapter {
             R.drawable.ballpool
     };
     public String[] headline={
-        "Ball ocean Fun Ocean","Enjoy Car City","Be strong and climb rock","ha ha fun is life","we are flying"
+        "Ball ocean Fun Ocean","Enjoy Car City","Be strong and climb rock","ha ha fun is life","Enjoy Babuland"
     };
 
     @Override

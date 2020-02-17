@@ -231,12 +231,7 @@ public class MainActivity extends AppCompatActivity implements Qr_cameraopenerAc
                                                     Log.d(TAG, "onDataChange: .............endminute "+endminitue);
 
                                                         //scheduliedquiz_stop(calendar_stop);
-                                                        scheduleNotification(getNotification("Dont miss out todays quiz"), 100, calendar);
-
-
-
-
-
+                                                    scheduleNotification(getNotification("Dont miss out todays quiz"), 100, calendar);
                                                     admindatabase.child("editmode").setValue("no");
                                                     mUserr=FirebaseAuth.getInstance().getCurrentUser();
                                                     String userid = mUserr.getUid();

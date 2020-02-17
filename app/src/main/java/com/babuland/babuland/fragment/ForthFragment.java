@@ -75,7 +75,7 @@ public class ForthFragment extends Fragment implements View.OnClickListener {
     CustomAdapter adapter;
     String[] heading;
     String []content;
-    int []imgrclr={R.drawable.testpic1,R.drawable.souppic,R.drawable.testpic3,R.drawable.choclet_cake1,R.drawable.thai_soup,R.drawable.jouce2,R.drawable.jouce2};
+    //int []imgrclr={R.drawable.testpic1,R.drawable.souppic,R.drawable.testpic3,R.drawable.choclet_cake1,R.drawable.thai_soup,R.drawable.jouce2,R.drawable.jouce2};
     LinearLayout btn_buyticket;
     int delay=2500,priod=3000;
 

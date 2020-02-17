@@ -2,6 +2,7 @@ package com.babuland.babuland.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +53,7 @@ public class MyeTicketActivity extends AppCompatActivity implements View.OnClick
     TextView tv;
     List<Model_ticket> list;
     RecyclerView recyclerView;
-    DatabaseReference mDatabase,mTicketdb;
+    DatabaseReference mDatabase,mTicketdb,usedTicketdb;
     FirebaseUser mUser,ticketuser;
     String userId,ticketuserid;
     String status;
@@ -198,10 +200,11 @@ public class MyeTicketActivity extends AppCompatActivity implements View.OnClick
         userId=mUser.getUid();
         Log.d("userid", "onStart: -----userid "+ userId);
         mDatabase=FirebaseDatabase.getInstance().getReference().child("Buyticket").child(userId);
+
         options=new FirebaseRecyclerOptions.Builder<Model_ticket>().setQuery(mDatabase,Model_ticket.class).build();
         fadapter= new FirebaseRecyclerAdapter<Model_ticket, UserViewholder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull UserViewholder userViewholder, int i, @NonNull final Model_ticket model_ticket) {
+            protected void onBindViewHolder(@NonNull final UserViewholder userViewholder, int i, @NonNull final Model_ticket model_ticket) {
 
                 userViewholder.tv_total.setText(Integer.toString(model_ticket.getTotal_amount()));
                 userViewholder.status.setText(model_ticket.getTime());
@@ -211,21 +214,47 @@ public class MyeTicketActivity extends AppCompatActivity implements View.OnClick
 
                 final String itemkey = getRef(i).getKey();
 
-                Log.d("itemkey", "onBindViewHolder: user childkey= "+ itemkey);
+                usedTicketdb=FirebaseDatabase.getInstance().getReference().child("Buyticket").child(userId).child(itemkey);
 
-                userViewholder.layout.setOnClickListener(new View.OnClickListener() {
+                usedTicketdb.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onClick(View view) {
-                        startActivity(new Intent(getApplicationContext(),TicketfromListviewActivity.class).putExtra("itemkey",itemkey)
-                        .putExtra("branch_adp",model_ticket.getBranch()).putExtra("total",model_ticket.getTotal_amount())
-                                .putExtra("validity",model_ticket.getStatus()).putExtra("time",model_ticket.getTime()).putExtra("orderid",model_ticket.getOrderid())
-                        );
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            String ticketstatus = dataSnapshot.child("status").getValue().toString();
+
+                            if(ticketstatus.equals("used")){
+
+                                userViewholder.cardView.setCardBackgroundColor(Color.parseColor("#D3D3D3"));
+                                userViewholder.ticketstatus_modified.setTextColor(Color.parseColor("#990000"));
+                                userViewholder.cardView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(MyeTicketActivity.this, " Already used ", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }else {
+                                Log.d("itemkey", "onBindViewHolder: user childkey= "+ itemkey);
+
+                                userViewholder.layout.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        startActivity(new Intent(getApplicationContext(),TicketfromListviewActivity.class).putExtra("itemkey",itemkey)
+                                                .putExtra("branch_adp",model_ticket.getBranch()).putExtra("total",model_ticket.getTotal_amount())
+                                                .putExtra("validity",model_ticket.getStatus()).putExtra("time",model_ticket.getTime()).putExtra("orderid",model_ticket.getOrderid())
+                                        );
+                                    }
+                                });
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
-
-
-
-
 
             }
 
@@ -325,15 +354,19 @@ public class MyeTicketActivity extends AppCompatActivity implements View.OnClick
         TextView tv_total,ticketstatus_modified;
         TextView status;
         RelativeLayout layout;
+        View customitem;
+        CardView cardView;
+
         public UserViewholder(@NonNull View itemView) {
             super(itemView);
 
-
+            customitem=itemView;
             imageView=itemView.findViewById(R.id.img_ticketlogo);
             tv_total=itemView.findViewById(R.id.amountid);
             status=itemView.findViewById(R.id.statusid);
             layout=itemView.findViewById(R.id.relativeListener);
             ticketstatus_modified=itemView.findViewById(R.id.ticketstatus);
+            cardView=itemView.findViewById(R.id.cardview);
         }
     }
 

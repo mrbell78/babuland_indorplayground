@@ -168,6 +168,9 @@ public class Adapterlistview extends RecyclerView.Adapter<Adapterlistview.custom
 
 
 
+
+
+
         holder.addbtn.setOnClickListener(new View.OnClickListener() {
 
             @Override

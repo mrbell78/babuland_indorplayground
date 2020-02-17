@@ -125,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
         mdialog.setTitle("Login");
         mdialog.setMessage("Please wait.......:)");
 
+
 /*
         admindatabase=FirebaseDatabase.getInstance().getReference().child("Admin");
 
